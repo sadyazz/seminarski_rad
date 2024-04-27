@@ -1,0 +1,59 @@
+<div class="home-content">
+  <div class="header">
+    <div class="logo">
+
+      <img src="./assets/logo.png" alt="Airbnb logo">
+    </div>
+
+    <div class="search-container">
+      <div class="where">
+        <p class="pp">Where</p>
+        <input id="search" type="text" placeholder="Where are you going">
+      </div>
+      <div class="when">
+        <p class="pp">When</p>
+        <input class="dateInput" type="date" placeholder="When are you going">
+      </div>
+      <div class="who" >
+        <p class="pp">Who</p>
+        <p>Add guests</p>
+        <section class="dropdown">
+
+        <span class="menuitem">
+          <div>Adults
+        <p class="pg">Ages 13 or above</p></div>
+<div class="dugmici">
+            <button (click)="smanjiA()">-</button>
+          <p class="numberOfAdults"> {{brojacA}}</p>
+            <button (click)="uvecajA()">+</button>
+</div>
+</span>
+          <span class="menuitem">
+          <div>Children
+<p class="pg">Ages 12 or below</p></div>
+            <div class="dugmici">
+             <button  tabindex="-1" aria-label="decreace value" (click)="smanjiC()">-</button>
+          <p class="numberOfChildren">{{brojacC}}</p>
+            <button (click)="uvecajC()">+</button>
+</div>
+        </span>
+
+        </section>
+      </div>
+    </div>
+
+    <div class="profile-menu">
+      <div class="cont">
+        <img src="./assets/nav.png">
+        <img style="width: 50px" src="./assets/profile-pic.png"></div>
+      <div  class="sidebar">
+        <a routerLink="/login">Log in</a>
+        <a href="#">Sign up</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="">
+
+</div>

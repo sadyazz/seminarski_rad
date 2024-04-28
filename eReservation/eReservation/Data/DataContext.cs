@@ -27,6 +27,9 @@ namespace eReservation.Data
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<Admin> Admin { get; set; }
 
+        public DbSet<AutentifikacijaToken> AutentifikacijaToken { get; set; }
+        public DbSet<KorisnickiNalog> KorisnickiNalog { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PropertiesAmenities>()

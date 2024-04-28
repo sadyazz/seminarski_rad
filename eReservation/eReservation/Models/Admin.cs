@@ -2,7 +2,7 @@
 
 namespace eReservation.Models
 {
-    public class Admin
+    public class Admin:KorisnickiNalog
     {
         [Key]
         public int ID { get; set; }

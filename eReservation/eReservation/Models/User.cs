@@ -2,7 +2,7 @@
 
 namespace eReservation.Models
 {
-    public class User
+    public class User : KorisnickiNalog
     {
         [Key]
         public int ID { get; set; }

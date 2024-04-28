@@ -1,4 +1,5 @@
 using eReservation.Data;
+using eReservation.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddTransient<AuthService>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

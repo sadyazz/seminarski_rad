@@ -12,8 +12,8 @@ using eReservation.Data;
 namespace eReservation.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231218140834_Migracija1")]
-    partial class Migracija1
+    [Migration("20240429121136_novaMigracija")]
+    partial class novaMigracija
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,34 @@ namespace eReservation.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Amenities");
+                });
+
+            modelBuilder.Entity("eReservation.Models.AutentifikacijaToken", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("KorisnickiNalogId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ipAdresa")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vrijednost")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("vrijemeEvidentiranja")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("KorisnickiNalogId");
+
+                    b.ToTable("AutentifikacijaToken");
                 });
 
             modelBuilder.Entity("eReservation.Models.CalendarAvailability", b =>
@@ -156,6 +184,29 @@ namespace eReservation.Migrations
                     b.HasIndex("PropertiesID");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("eReservation.Models.KorisnickiNalog", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("KorisnickiNalog");
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("eReservation.Models.PaymentMethods", b =>
@@ -327,49 +378,6 @@ namespace eReservation.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("eReservation.Models.User", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<DateTime>("DateBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateOfRegistraion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("User");
-                });
-
             modelBuilder.Entity("eReservation.Models.Wishlist", b =>
                 {
                     b.Property<int>("UserID")
@@ -386,6 +394,61 @@ namespace eReservation.Migrations
                     b.HasIndex("PropertiesID");
 
                     b.ToTable("Wishlist");
+                });
+
+            modelBuilder.Entity("eReservation.Models.Admin", b =>
+                {
+                    b.HasBaseType("eReservation.Models.KorisnickiNalog");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Admin");
+                });
+
+            modelBuilder.Entity("eReservation.Models.User", b =>
+                {
+                    b.HasBaseType("eReservation.Models.KorisnickiNalog");
+
+                    b.Property<DateTime>("DateBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfRegistraion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("eReservation.Models.AutentifikacijaToken", b =>
+                {
+                    b.HasOne("eReservation.Models.KorisnickiNalog", "korisnickiNalog")
+                        .WithMany()
+                        .HasForeignKey("KorisnickiNalogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("korisnickiNalog");
                 });
 
             modelBuilder.Entity("eReservation.Models.CalendarAvailability", b =>
@@ -549,6 +612,24 @@ namespace eReservation.Migrations
                     b.Navigation("Properties");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("eReservation.Models.Admin", b =>
+                {
+                    b.HasOne("eReservation.Models.KorisnickiNalog", null)
+                        .WithOne()
+                        .HasForeignKey("eReservation.Models.Admin", "ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eReservation.Models.User", b =>
+                {
+                    b.HasOne("eReservation.Models.KorisnickiNalog", null)
+                        .WithOne()
+                        .HasForeignKey("eReservation.Models.User", "ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("eReservation.Models.Amenities", b =>

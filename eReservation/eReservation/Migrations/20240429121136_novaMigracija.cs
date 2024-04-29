@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace eReservation.Migrations
 {
     /// <inheritdoc />
-    public partial class Migracija1 : Migration
+    public partial class novaMigracija : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,6 +39,20 @@ namespace eReservation.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "KorisnickiNalog",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KorisnickiNalog", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PaymentMethods",
                 columns: table => new
                 {
@@ -66,26 +80,6 @@ namespace eReservation.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfRegistraion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Cities",
                 columns: table => new
                 {
@@ -101,8 +95,68 @@ namespace eReservation.Migrations
                         name: "FK_Cities_Countries_CountryID",
                         column: x => x.CountryID,
                         principalTable: "Countries",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Admin",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admin", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Admin_KorisnickiNalog_ID",
+                        column: x => x.ID,
+                        principalTable: "KorisnickiNalog",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AutentifikacijaToken",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    vrijednost = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KorisnickiNalogId = table.Column<int>(type: "int", nullable: false),
+                    vrijemeEvidentiranja = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ipAdresa = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AutentifikacijaToken", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_AutentifikacijaToken_KorisnickiNalog_KorisnickiNalogId",
+                        column: x => x.KorisnickiNalogId,
+                        principalTable: "KorisnickiNalog",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfRegistraion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_User_KorisnickiNalog_ID",
+                        column: x => x.ID,
+                        principalTable: "KorisnickiNalog",
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -127,20 +181,17 @@ namespace eReservation.Migrations
                         name: "FK_Properties_Cities_CityID",
                         column: x => x.CityID,
                         principalTable: "Cities",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Properties_PropertyType_PropertyTypeID",
                         column: x => x.PropertyTypeID,
                         principalTable: "PropertyType",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Properties_User_UserID",
                         column: x => x.UserID,
                         principalTable: "User",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -160,8 +211,7 @@ namespace eReservation.Migrations
                         name: "FK_CalendarAvailability_Properties_PropertiesID",
                         column: x => x.PropertiesID,
                         principalTable: "Properties",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -179,8 +229,7 @@ namespace eReservation.Migrations
                         name: "FK_Images_Properties_PropertiesID",
                         column: x => x.PropertiesID,
                         principalTable: "Properties",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -197,14 +246,12 @@ namespace eReservation.Migrations
                         name: "FK_PropertiesAmenities_Amenities_AmenitiesID",
                         column: x => x.AmenitiesID,
                         principalTable: "Amenities",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_PropertiesAmenities_Properties_PropertiesID",
                         column: x => x.PropertiesID,
                         principalTable: "Properties",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -227,20 +274,17 @@ namespace eReservation.Migrations
                         name: "FK_Reservations_PaymentMethods_PaymentMethodsID",
                         column: x => x.PaymentMethodsID,
                         principalTable: "PaymentMethods",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Reservations_Properties_PropertiesID",
                         column: x => x.PropertiesID,
                         principalTable: "Properties",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Reservations_User_UserID",
                         column: x => x.UserID,
                         principalTable: "User",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -262,14 +306,12 @@ namespace eReservation.Migrations
                         name: "FK_Reviews_Properties_PropertiesID",
                         column: x => x.PropertiesID,
                         principalTable: "Properties",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Reviews_User_UserID",
                         column: x => x.UserID,
                         principalTable: "User",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -287,14 +329,12 @@ namespace eReservation.Migrations
                         name: "FK_Wishlist_Properties_PropertiesID",
                         column: x => x.PropertiesID,
                         principalTable: "Properties",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Wishlist_User_UserID",
                         column: x => x.UserID,
                         principalTable: "User",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -315,15 +355,18 @@ namespace eReservation.Migrations
                         name: "FK_CommentsOnReviews_Reviews_ReviewID",
                         column: x => x.ReviewID,
                         principalTable: "Reviews",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_CommentsOnReviews_User_UserID",
                         column: x => x.UserID,
                         principalTable: "User",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "ID");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AutentifikacijaToken_KorisnickiNalogId",
+                table: "AutentifikacijaToken",
+                column: "KorisnickiNalogId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CalendarAvailability_PropertiesID",
@@ -405,6 +448,12 @@ namespace eReservation.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Admin");
+
+            migrationBuilder.DropTable(
+                name: "AutentifikacijaToken");
+
+            migrationBuilder.DropTable(
                 name: "CalendarAvailability");
 
             migrationBuilder.DropTable(
@@ -445,6 +494,9 @@ namespace eReservation.Migrations
 
             migrationBuilder.DropTable(
                 name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "KorisnickiNalog");
         }
     }
 }

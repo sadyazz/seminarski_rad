@@ -63,7 +63,7 @@ namespace eReservation.Controllers
             existingUser.Password = updatedUser.Password;
             existingUser.Phone = updatedUser.Phone;
             existingUser.DateOfRegistraion = updatedUser.DateOfRegistraion;
-            existingUser.UserType = updatedUser.UserType;
+            //existingUser.UserType = updatedUser.UserType;
             existingUser.DateBirth = updatedUser.DateBirth;
 
             _db.SaveChanges();

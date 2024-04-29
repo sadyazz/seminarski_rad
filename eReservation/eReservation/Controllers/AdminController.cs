@@ -46,8 +46,8 @@ namespace eReservation.Controllers
             {
                 return NotFound();
             }
-            existingAdmin.Username = updatedAdmin.Username;
-            existingAdmin.Password = updatedAdmin.Password;
+            existingAdmin.Name = updatedAdmin.Name;
+            existingAdmin.Surname = updatedAdmin.Surname;
 
             _db.SaveChanges();
 

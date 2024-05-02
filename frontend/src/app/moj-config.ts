@@ -1,4 +1,4 @@
 export class MojConfig{
-  static adresa_servera = "http://localhost:4200"
+  static adresa_servera = "https://localhost:44336"
 
 }

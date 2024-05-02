@@ -47,13 +47,90 @@
         <img src="./assets/nav.png">
         <img style="width: 50px" src="./assets/profile-pic.png"></div>
       <div  class="sidebar">
-        <a routerLink="/login">Log in</a>
-        <a href="#">Sign up</a>
+        <a routerLink="/login" *ngIf="!myAuthService.jelLogiran()">Log in</a>
+        <a *ngIf="myAuthService.jelLogiran()">My profile</a>
+        <a routerLink="/login" *ngIf="myAuthService.jelLogiran()" (click)="logOut()" style="font-weight: bold">Log out</a>
       </div>
 
     </div>
   </div>
 </div>
-<div class="">
+<div class="content" style="margin-top: 5vh;">
 
+  <div class="row row-cols-3 g-4">
+    <div class="col">
+      <div class="card">
+        <img src="" class="card-img-top" alt="Hollywood Sign on The Hill">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            This is a longer card with supporting text below as a natural lead-in to
+            additional content. This content is a little bit longer.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="" class="card-img-top" alt="Palm Springs Road">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            This is a longer card with supporting text below as a natural lead-in to
+            additional content. This content is a little bit longer.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="" class="card-img-top" alt="Los Angeles Skyscrapers">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+            additional content. This content is a little bit longer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="" class="card-img-top" alt="Skyscrapers">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            This is a longer card with supporting text below as a natural lead-in to
+            additional content. This content is a little bit longer.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="" class="card-img-top" alt="Skyscrapers">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            This is a longer card with supporting text below as a natural lead-in to
+            additional content. This content is a little bit longer.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="" class="card-img-top" alt="Skyscrapers">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            This is a longer card with supporting text below as a natural lead-in to
+            additional content. This content is a little bit longer.
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div>
 </div>

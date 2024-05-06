@@ -1,6 +1,7 @@
 ﻿using eReservation.Data;
 using eReservation.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace eReservation.Controllers
 {
@@ -18,7 +19,11 @@ namespace eReservation.Controllers
         [HttpGet]
         public ActionResult<List<Properties>> GetAll()
         {
-            var properties = _db.Properties.ToList();
+            var properties = _db.Properties
+       .Include(p => p.City).ThenInclude(c => c.Country)
+       .Include(p => p.PropertyType)
+       .ToList();
+
             if (properties.Any())
             {
                 return Ok(properties);

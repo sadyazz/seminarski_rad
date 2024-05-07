@@ -94,5 +94,9 @@ getSmjestaj() {
   })*/
 
 }
+
+  goToProfile(){
+    this.router.navigate(["/profile"])
+  }
 }
 

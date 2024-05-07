@@ -48,7 +48,8 @@
         <img style="width: 50px" src="./assets/profile-pic.png"></div>
       <div  class="sidebar">
         <a routerLink="/login" *ngIf="!myAuthService.jelLogiran()">Log in</a>
-        <a *ngIf="myAuthService.jelLogiran()">My profile</a>
+        <a *ngIf="myAuthService.jelLogiran()" (click)="goToProfile()"
+        style="cursor: pointer;">My profile</a>
         <a routerLink="/login" *ngIf="myAuthService.jelLogiran()" (click)="logOut()" style="font-weight: bold">Log out</a>
       </div>
 

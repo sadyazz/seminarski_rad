@@ -4,6 +4,7 @@ import {MojConfig} from "../moj-config";
 import {HttpClient} from "@angular/common/http";
 import {AuthLoginResponse} from "./authLoginResponse";
 import {Router} from "@angular/router";
+import {MyAuthService} from "../services/MyAuthService";
 
 @Component({
   selector: 'login',
@@ -16,7 +17,11 @@ export class LoginComponent implements OnInit{
     lozinka : "",
     korisnickoIme:""
   };
-  constructor(public httpClient:HttpClient, private router: Router) {
+  constructor(
+    public httpClient: HttpClient,
+    private router: Router,
+    private myAuthService: MyAuthService
+    ) {
   }
 
   ngOnInit(){
@@ -29,8 +34,7 @@ export class LoginComponent implements OnInit{
       if(!x.isLogiran){
         alert("pogresan username / password")
       }else{
-        let token=x.autentifikacijaToken.vrijednost;
-        window.localStorage.setItem("my-auth-token", token);
+        this.myAuthService.setLogiraniKorisnik(x.autentifikacijaToken);
         this.router.navigate(["/home"])
       }
     })

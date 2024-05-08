@@ -66,8 +66,8 @@
     <div class="card-body" >
       <h5 class="card-title">{{ property.name }}</h5>
       <p class="card-text">
-        <strong>{{ property.city?.name }}, {{ property.city?.country?.name }}</strong><br>
-        Property Type: {{ property.propertyType?.name|| 'N/A' }}<br>
+        <strong>{{ property.city.name }}, {{ property.city?.country?.name }}</strong><br>
+        Property Type: {{ property.propertyType.name|| 'N/A' }}<br>
         Address: {{ property.adress }}<br>
         Price Per Night: {{ property.pricePerNight }}<br>
 

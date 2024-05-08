@@ -43,8 +43,6 @@ export class HomeComponent implements OnInit{
   }
 
   logOut() {
-    /*window.localStorage.setItem("my-auth-token","");
-    this.router.navigate(["/login"]);*/
 
     let token = window.localStorage.getItem("my-auth-token")??"";
     window.localStorage.setItem("my-auth-token","");

@@ -19,7 +19,7 @@ namespace eReservation.Models
         [JsonIgnore]
         public Admin? Administrator => this as Admin;
 
-        public bool isAdministrator => Administrator != null;
-        public bool isKorisnik => Korisnik != null;
+        public bool isAdmin => Administrator != null;
+        public bool isUser => Korisnik != null;
     }
 }

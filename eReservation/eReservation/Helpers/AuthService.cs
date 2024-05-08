@@ -15,10 +15,20 @@ namespace eReservation.Helpers
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
         }
-        //samo zapoceto
+        
         public bool JelLogiran()
         {
             return GetAuthInfo().isLogiran;
+        }
+
+        public bool isAdmin()
+        {
+            return GetAuthInfo().korisnickiNalog?.isAdmin ?? false;
+        }
+
+        public bool isKorisnik()
+        {
+            return GetAuthInfo().korisnickiNalog?.isUser ?? false;
         }
 
         public MyAuthInfo GetAuthInfo()

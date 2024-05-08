@@ -1,4 +1,5 @@
 ﻿using eReservation.Data;
+using eReservation.Helpers;
 using eReservation.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace eReservation.Controllers
     public class UserController : Controller
     {
         private readonly DataContext _db;
+        private readonly AuthService _authService;
 
-        public UserController(DataContext db)
+        public UserController(DataContext db, AuthService authService)
         {
             _db = db;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -52,6 +55,11 @@ namespace eReservation.Controllers
         [HttpPut("{id}")]
         public ActionResult<User> Edit(int id, [FromBody] User updatedUser)
         {
+            if (_authService.JelLogiran())
+            {
+                throw new Exception("nije logiran");
+            }
+
             var existingUser = _db.User.FirstOrDefault(u => u.ID == id);
             if (existingUser == null)
             {

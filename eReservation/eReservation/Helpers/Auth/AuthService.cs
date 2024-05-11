@@ -3,7 +3,7 @@ using eReservation.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace eReservation.Helpers
+namespace eReservation.Helpers.Auth
 {
     public class AuthService
     {
@@ -15,7 +15,7 @@ namespace eReservation.Helpers
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
         }
-        
+
         public bool JelLogiran()
         {
             return GetAuthInfo().isLogiran;

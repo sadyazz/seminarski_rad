@@ -1,5 +1,5 @@
 using eReservation.Data;
-using eReservation.Helpers;
+using eReservation.Helpers.Auth;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

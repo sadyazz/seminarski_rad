@@ -4,6 +4,7 @@ using eReservation.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using eReservation.Data;
 using eReservation.Models;
+using eReservation.Helpers.Auth;
 
 namespace eReservation.Controllers.AuthEndpoints.Logout
 {

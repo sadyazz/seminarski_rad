@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using eReservation.Data;
 using eReservation.Helpers;
+using eReservation.Helpers.Auth;
 using eReservation.Models;
 
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿using eReservation.Data;
-using eReservation.Helpers;
 using eReservation.Models;
+using eReservation.Helpers.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eReservation.Controllers

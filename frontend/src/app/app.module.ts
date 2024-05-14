@@ -12,13 +12,15 @@ import { HomeComponent } from './home/home.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import {AuthInterceptor} from "../helpers/auth/auth-interceptor.service";
 import {AutorizacijaGuard} from "../helpers/auth/autorizacija-guard.service";
+import { PropertyComponent } from './property/property.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    PropertyComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,8 @@ import {AutorizacijaGuard} from "../helpers/auth/autorizacija-guard.service";
     RouterModule.forRoot([{ path: '', component: HomeComponent },
       {path: 'login', component: LoginComponent},
       {path: 'home', component: HomeComponent},
-      {path: 'profile', component: UserProfileComponent, canActivate:[AutorizacijaGuard]}
+      {path: 'profile', component: UserProfileComponent, canActivate:[AutorizacijaGuard]},
+      {path: 'property', component: PropertyComponent}
     ]),
     AppRoutingModule
   ],

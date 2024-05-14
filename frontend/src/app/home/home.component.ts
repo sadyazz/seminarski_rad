@@ -96,5 +96,9 @@ getSmjestaj() {
   goToProfile(){
     this.router.navigate(["/profile"])
   }
+
+  goToProperty() {
+    this.router.navigate(["/property"])
+  }
 }
 

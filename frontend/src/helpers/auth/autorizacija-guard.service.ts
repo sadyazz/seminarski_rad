@@ -17,11 +17,13 @@ export class AutorizacijaGuard implements CanActivate {
 
       if (isUser)
       {
-        this.router.navigate(['/login']);
-        return false;
+       /* this.router.navigate(['/login']);
+        return false;*/
+        return true;
       }
 
-      return true;
+      this.router.navigate(['/login']);
+      return false;
     }
 
 

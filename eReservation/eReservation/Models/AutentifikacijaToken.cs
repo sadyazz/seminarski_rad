@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace eReservation.Models
 {
@@ -13,5 +14,8 @@ namespace eReservation.Models
         public KorisnickiNalog korisnickiNalog { get; set; }
         public DateTime vrijemeEvidentiranja { get; set; }
         public string? ipAdresa { get; set; }
+        [JsonIgnore]
+        public string? TwoFKey { get; set; }
+        public bool Is2FOtkljucano { get; set; }
     }
 }

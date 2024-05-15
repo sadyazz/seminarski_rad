@@ -21,5 +21,7 @@ namespace eReservation.Models
 
         public bool isAdmin => Administrator != null;
         public bool isUser => Korisnik != null;
+
+        public bool Is2FActive { get; set; }
     }
 }

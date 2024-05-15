@@ -29,6 +29,7 @@ namespace eReservation.Data
 
         public DbSet<AutentifikacijaToken> AutentifikacijaToken { get; set; }
         public DbSet<KorisnickiNalog> KorisnickiNalog { get; set; }
+        public DbSet<LogKretanjePoSistemu> LogKretanjePoSistemu { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

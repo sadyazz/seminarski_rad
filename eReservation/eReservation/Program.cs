@@ -17,6 +17,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 builder.Services.AddTransient<AuthService>();
 builder.Services.AddTransient<ActionLogService>();
+builder.Services.AddTransient<EmailSenderService>();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();

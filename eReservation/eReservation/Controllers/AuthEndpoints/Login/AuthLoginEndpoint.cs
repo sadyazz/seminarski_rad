@@ -13,10 +13,13 @@ namespace eReservation.Controllers.AuthEndpoints.Login
     public class AuthLoginEndpoint : BaseEndpoint<AuthLoginRequest, MyAuthInfo>
     {
         private readonly DataContext _applicationDbContext;
+        private readonly EmailSenderService _emailSenderService;
 
-        public AuthLoginEndpoint(DataContext applicationDbContext)
+        public AuthLoginEndpoint(DataContext applicationDbContext, EmailSenderService emailSenderService)
         {
             _applicationDbContext = applicationDbContext;
+            _emailSenderService = emailSenderService;
+
         }
 
         [HttpPost("login")]
@@ -33,6 +36,14 @@ namespace eReservation.Controllers.AuthEndpoints.Login
                 return new MyAuthInfo(null);
             }
 
+            string? twoFKey = null;
+
+            if (logiraniKorisnik.Is2FActive)
+            {
+                twoFKey = TokenGenerator.Generate(4);
+                _emailSenderService.Posalji("rivobep187@huleos.com", "2f", $"Vas 2f kljuc je {twoFKey}", false);
+            }
+
             //2- generisati random string
             string randomString = TokenGenerator.Generate(10);
 
@@ -42,7 +53,8 @@ namespace eReservation.Controllers.AuthEndpoints.Login
                 ipAdresa = Request.HttpContext.Connection.RemoteIpAddress?.ToString(),
                 vrijednost = randomString,
                 korisnickiNalog = logiraniKorisnik,
-                vrijemeEvidentiranja = DateTime.Now
+                vrijemeEvidentiranja = DateTime.Now,
+                TwoFKey = twoFKey
             };
 
             _applicationDbContext.Add(noviToken);

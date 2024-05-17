@@ -13,6 +13,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import {AuthInterceptor} from "../helpers/auth/auth-interceptor.service";
 import {AutorizacijaGuard} from "../helpers/auth/autorizacija-guard.service";
 import { PropertyComponent } from './property/property.component';
+import { TwofaPageComponent } from './twofa-page/twofa-page.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PropertyComponent } from './property/property.component';
     LoginComponent,
     HomeComponent,
     UserProfileComponent,
-    PropertyComponent
+    PropertyComponent,
+    TwofaPageComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,8 @@ import { PropertyComponent } from './property/property.component';
       {path: 'login', component: LoginComponent},
       {path: 'home', component: HomeComponent},
       {path: 'profile', component: UserProfileComponent, canActivate:[AutorizacijaGuard]},
-      {path: 'property', component: PropertyComponent}
+      {path: 'property', component: PropertyComponent},
+      {path: 'twofaPage', component: TwofaPageComponent}
     ]),
     AppRoutingModule
   ],

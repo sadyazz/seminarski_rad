@@ -1,4 +1,5 @@
 ﻿using eReservation.Data;
+using eReservation.Helpers.Auth;
 using eReservation.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,13 +7,16 @@ namespace eReservation.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorization]
     public class CountryController : Controller
     {
         private readonly DataContext _db;
+        private readonly AuthService _authService;
 
-        public CountryController(DataContext db)
+        public CountryController(DataContext db, AuthService authService)
         {
             _db = db;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -28,6 +32,14 @@ namespace eReservation.Controllers
         [HttpPost]
         public ActionResult<Country> Add([FromBody] Country country)
         {
+
+            KorisnickiNalog k = _authService.GetAuthInfo().korisnickiNalog!;
+
+            if (!(k.isAdmin))
+            {
+                throw new Exception("nema pravo pristupa");
+            }
+
             if (country == null)
             {
                 return BadRequest();

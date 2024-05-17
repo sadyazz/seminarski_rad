@@ -4,5 +4,5 @@ export interface KorisnickiNalog {
   slikaKorisnika: string
   isUser: boolean
   isAdmin: boolean
-  //is2FActive: booleans
+  is2FActive: boolean
 }

@@ -46,6 +46,10 @@ export class MyAuthService{
     return this.getAuthorizationToken()?.korisnickiNalog.is2FActive ?? false
   }
 
+  returnId() {
+    return this.getAuthorizationToken()?.korisnickiNalog.id;
+  }
+
   setLogiraniKorisnik(x: AutentifikacijaToken | null) {
     if(x == null){
       //window.localStorage.setItem("my-auth-token", '');

@@ -5,6 +5,8 @@ import {HttpClient} from "@angular/common/http";
 import {AuthLoginResponse} from "./authLoginResponse";
 import {Router} from "@angular/router";
 import {MyAuthService} from "../services/MyAuthService";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {TwofaPageComponent} from "../twofa-page/twofa-page.component";
 
 @Component({
   selector: 'login',
@@ -20,12 +22,17 @@ export class LoginComponent implements OnInit{
   constructor(
     public httpClient: HttpClient,
     private router: Router,
-    private myAuthService: MyAuthService
+    private myAuthService: MyAuthService,
+    public dialog:MatDialog
     ) {
   }
 
   ngOnInit(){
 
+  }
+
+  open2Fa(){
+    const dialogRef = this.dialog.open(TwofaPageComponent,{width:'20rem',height:'15rem'});
   }
 
   signIn(){
@@ -35,7 +42,15 @@ export class LoginComponent implements OnInit{
         alert("pogresan username / password")
       }else{
         this.myAuthService.setLogiraniKorisnik(x.autentifikacijaToken);
-        this.router.navigate(["/home"])
+
+        if(this.myAuthService.is2FActive()){
+          //this.router.navigate(["/twofaPage"])
+          this.open2Fa();
+        }else {
+          this.router.navigate(["/home"])
+        }
+
+
       }
     })
   }

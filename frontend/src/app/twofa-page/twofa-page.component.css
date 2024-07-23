@@ -1,0 +1,51 @@
+
+body {
+  overflow: hidden;
+  background-color: rgb(33,37,41);
+}
+
+#2flogin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.custom-card {
+  max-width: 20rem;
+  padding: 0;
+  border: 1px solid #343a40;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.custom-card .card-header {
+  background-color: #343a40;
+  color: #fff;
+  padding: 10px;
+}
+
+.custom-card .form-control {
+  border-radius: 5px;
+}
+
+.custom-card .btn {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.alert {
+  text-align: center;
+  margin-top: 10px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

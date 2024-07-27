@@ -11,8 +11,15 @@
        <!-- <input [(ngModel)]="pretraga" id="search" type="text" placeholder="Where are you going">-->
       </div>
       <div class="when">
-        <p class="pp">When</p>
-        <input class="dateInput" type="date" placeholder="When are you going">
+        <mat-form-field class="rounded-form-field">
+          <mat-label>Check in - Check out</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Start date">
+            <input matEndDate placeholder="End date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
       </div>
       <div class="who" >
         <p class="pp">Who</p>
@@ -56,27 +63,40 @@
     </div>
   </div>
 </div>
-<div class="content" style="margin-top: 5vh;display: flex;flex-wrap: wrap;
-  justify-content: center; width: 80%;margin-left: auto; margin-right: auto;">
 
+<mat-toolbar class="custom-toolbar">
+  <mat-toolbar-row style="display: flex; justify-content: space-between;">
+    <span class="divider">|</span>
+    <button mat-button (click)="showAllProperties()"><mat-icon>reorder</mat-icon>All</button>
+    <span class="divider">|</span>
+    <button mat-button (click)="filterProperties('Houses')"><mat-icon>home</mat-icon>Houses</button>
+    <span class="divider">|</span>
+    <button mat-button (click)="filterProperties('Hotels')"><mat-icon>hotel</mat-icon>Hotels</button>
+    <span class="divider">|</span>
+    <button mat-button (click)="filterProperties('Countryside')"><mat-icon>terrain</mat-icon>Countryside</button>
+    <span class="divider">|</span>
+    <button mat-button (click)="filterProperties('Trending')"><mat-icon>local_fire_department</mat-icon>Trending</button>
+    <span class="divider">|</span>
+    <button mat-button (click)="filterProperties('Cabins')"><mat-icon>cabin</mat-icon>Cabins</button>
+    <span class="divider">|</span>
+    <button mat-button (click)="filterProperties('Lake')"><mat-icon>water</mat-icon>Lake</button>
+    <span class="divider">|</span>
+    <button mat-button (click)="filterProperties('Villas')"><mat-icon>villa</mat-icon>Villas</button>
+    <span class="divider">|</span>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-
-  <div *ngFor="let property of getProperties()" class="card" style="flex: 1 1 calc(25% - 20px); max-width: 25%; margin: 10px;  cursor:pointer;"  (click)="goToProperty()">
-    <img src="" class="card-img-top" alt="{{ property.name }}" style="width: 100%;height: 200px;">
-    <div class="card-body" >
-      <h5 class="card-title">{{ property.name }}</h5>
-      <p class="card-text">
-        <strong>{{ property.city.name }}, {{ property.city?.country?.name }}</strong><br>
-        Property Type: {{ property.propertyType.name|| 'N/A' }}<br>
+<div class="content" style="margin-top: 5vh; display: flex; flex-wrap: wrap; justify-content: center; width: 80%; margin-left: auto; margin-right: auto;">
+  <mat-card *ngFor="let property of getProperties()" class="property-card" (click)="goToProperty(property.id)">
+    <img mat-card-image src="https://placehold.co/600x600" alt="{{ property.name }}" class="card-img">
+    <mat-card-content>
+      <h4 mat-card-title class="card-title">{{ property.name }}</h4>
+      <p class="footer-info">
+        <strong>{{ property.city.name }}, {{ property.city.country.name }}</strong><br>
+        Property Type: {{ property.propertyType.name || 'N/A' }}<br>
         Address: {{ property.adress }}<br>
-        Price Per Night: {{ property.pricePerNight }}<br>
-
+        <strong>Price Per Night: {{ property.pricePerNight }} KM</strong><br>
       </p>
-    </div>
-  </div>
-
-
-
-
-
+    </mat-card-content>
+  </mat-card>
 </div>

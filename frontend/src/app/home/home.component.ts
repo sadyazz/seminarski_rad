@@ -6,13 +6,14 @@ import {MyAuthService} from "../services/MyAuthService";
 import {PropertiesGetAllResponse} from "./properties-getall-response";
 
 
-
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit{
+
+
 
   constructor(public router: Router, private httpClient: HttpClient, public myAuthService: MyAuthService) {
   }
@@ -61,35 +62,29 @@ export class HomeComponent implements OnInit{
 
   pretraga="";
 
-  getProperties(){
+  getProperties() {
     if (!this.pretraga.trim()) {
-      return this.properties;
+      return this.filteredProperties;
     }
-    return this.properties.filter(x => x.city?.name.toLowerCase().includes(this.pretraga.toLowerCase()) || x.city?.country.name.toLowerCase().includes(this.pretraga.toLowerCase()));
+    return this.filteredProperties.filter(x => x.city?.name.toLowerCase().includes(this.pretraga.toLowerCase()) || x.city?.country.name.toLowerCase().includes(this.pretraga.toLowerCase()));
   }
 
 properties:PropertiesGetAllResponse[] = [];
+filteredProperties: PropertiesGetAllResponse[] = [];
 getSmjestaj() {
-    let url = MojConfig.adresa_servera + '/api/Properties/GetAll';
- /*   fetch(url)
-      .then(response=>{
-        if(response.status != 200){
-          alert("greska " + response.statusText);
-          return;
-        }
-        response.json().then(d=>{
-          this.properties = d;
-        })
-      })*/
+  let url = MojConfig.adresa_servera + '/api/Properties/GetAll';
+  console.log('Fetching properties from URL:', url);
 
-  this.httpClient.get<PropertiesGetAllResponse[]>(url).subscribe((x:PropertiesGetAllResponse[])=>{
-    this.properties = x;
-  })
-
-  /*
-  this.propertiesGetAllResponse.Handle().subscribe((x:PropertiesGetAll)=>{
-    this.properties = x.properties;
-  })*/
+  this.httpClient.get<PropertiesGetAllResponse[]>(url).subscribe(
+    (x: PropertiesGetAllResponse[]) => {
+      this.properties = x;
+      this.filteredProperties=x;
+      console.log('Properties fetched successfully:', this.properties);
+    },
+    error => {
+      console.error('Error fetching properties', error);
+    }
+  );
 
 }
 
@@ -97,8 +92,16 @@ getSmjestaj() {
     this.router.navigate(["/profile"])
   }
 
-  goToProperty() {
-    this.router.navigate(["/property"])
+  goToProperty(propertyId:number) {
+    this.router.navigate(["/property",propertyId])
   }
-}
 
+  filterProperties(category: string) {
+    this.filteredProperties = this.properties.filter(property => property.propertyType.name === category);
+  }
+
+  showAllProperties() {
+    this.filteredProperties = this.properties;
+  }
+
+}

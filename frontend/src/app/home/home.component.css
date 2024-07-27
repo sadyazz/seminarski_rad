@@ -7,7 +7,7 @@
   top: 0;
   z-index: 1000;
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -76,7 +76,7 @@ img{
 .search-container{
   background-color: white;
   width: 50%;
-  height: 70px;
+  height: 80px;
   border-radius: 50px;
   display: flex;
   justify-content: space-between;
@@ -100,9 +100,13 @@ img{
   border-radius: inherit;
 }
 
+.rounded-form-field{
+  margin-right: 20px;
+}
+
 .search-container input{
-  height: 70%;
-  width: 80%;
+  height: 95%;
+  width: 100%;
   border: 0;
   border-radius: 50px;
 }
@@ -127,13 +131,14 @@ p.pp{
   display: block;
 }
 
+
 .who{
   cursor: pointer;
 }
 
 div .dropdown{
   display:none;
-  width: 200px;
+  width: 290px;
   height: 250px;
   /*margin: 15px 0 0 0;*/
   border-radius: 15px;
@@ -154,7 +159,9 @@ div .dropdown{
   display: flex;
 }
 
-button{
+
+
+.dugmici button{
   width: 20px;
   height: 20px;
   border-radius: 10px;
@@ -162,11 +169,29 @@ button{
   background: lightgray;
 }
 
+.dugmici button:hover{
+  background: rgb(185, 185, 185);
+}
+
 div .dugmici{
   display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  padding: 5px;
+  margin-left: 25px;
+}
+
+.dugmici button {
+  margin: 0 20px;
+}
+
+
+.numberOfAdults, .numberOfChildren {
+  width: 30px;
+  text-align: center;
+  margin-top: 13px;
+  font-size: 15px;
 }
 
 /*
@@ -190,10 +215,56 @@ nav ul li a {
   text-decoration: none;
 }*/
 
-nav ul li a:hover {
-  text-decoration: underline;
+.custom-toolbar{
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  margin: 15px auto;
 }
 
-.card-body{
-  width: 250px;
+.divider{
+  margin: 0 5px 0 5px;
+  font-size: 25px;
+}
+
+
+.content {
+  margin-top: 5vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.property-card {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.card-img {
+  width: 100%;
+  height: 60%;
+  object-fit: cover;
+}
+
+mat-card-content {
+  flex: 1;
+  padding: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+  margin-top: 5px;
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+.footer-info{
+  margin-top: 30px;
 }

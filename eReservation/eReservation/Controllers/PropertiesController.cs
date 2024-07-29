@@ -31,10 +31,18 @@ namespace eReservation.Controllers
             return NoContent();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("/GetPropertyById")]
         public ActionResult<Properties> Get(int id)
         {
-            var property = _db.Properties.Find(id);
+            //var property = _db.Properties.Find(id);
+
+            var property = _db.Properties
+       .Include(p => p.City) // Uključuje grad
+           .ThenInclude(c => c.Country) // Uključuje zemlju povezanu sa gradom
+       .Include(p => p.PropertyType) // Uključuje tip nekretnine
+       .FirstOrDefault(p => p.ID == id);
+
             if (property == null)
             {
                 return NotFound();

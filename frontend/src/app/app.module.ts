@@ -14,6 +14,7 @@ import {AuthInterceptor} from "../helpers/auth/auth-interceptor.service";
 import {AutorizacijaGuard} from "../helpers/auth/autorizacija-guard.service";
 import { PropertyComponent } from './property/property.component';
 import { TwofaPageComponent } from './twofa-page/twofa-page.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +24,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
+import {MatDivider} from "@angular/material/divider";
+import {MatIcon} from "@angular/material/icon";
+import {MatCard, MatCardContent} from "@angular/material/card";
+
 
 @NgModule({
   declarations: [
@@ -37,11 +43,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot([{ path: '', component: HomeComponent },
+    RouterModule.forRoot([{path: '', component: HomeComponent},
       {path: 'login', component: LoginComponent},
       {path: 'home', component: HomeComponent},
-      {path: 'profile', component: UserProfileComponent, canActivate:[AutorizacijaGuard]},
-      {path: 'property', component: PropertyComponent},
+      {path: 'profile', component: UserProfileComponent, canActivate: [AutorizacijaGuard]},
+      {path: 'property/:id', component: PropertyComponent},
       {path: 'twofaPage', component: TwofaPageComponent}
     ]),
     AppRoutingModule,
@@ -53,6 +59,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
+    MatDivider,
+    MatIcon,
+    MatCardContent,
+    MatCard
   ],
   providers: [
     //provideClientHydration()

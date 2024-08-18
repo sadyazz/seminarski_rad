@@ -2,177 +2,166 @@
 
 <div class="container-fluid">
   <div class="row flex-nowrap">
-    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-      <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-          <span class="fs-5 d-none d-sm-inline">Menu</span>
-        </a>
-        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-          <li class="nav-item">
-            <a href="#" class="nav-link align-middle px-0">
-              <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
-            </a>
-          </li>
-          <li>
-            <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-              <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">My reservations</span> </a>
-            <!-- <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-             <li class="w-100">
-               <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1 </a>
-             </li>
-             <li>
-               <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2 </a>
-             </li>
-           </ul> -->
-         </li>
-         <li>
-           <a href="#" class="nav-link px-0 align-middle">
-             <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Wishlist</span></a>
-         </li>
+    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark-subtle sidebar-custom" style="width: 300px;">
+      <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-5 text-white min-vh-100">
+        <div class="top">
+          <button mat-button (click)="nazad()">
+            <div class="navigation">
+              <mat-icon>arrow_back</mat-icon>
+              <span>Back to home page</span>
+            </div>
+          </button>
+        </div>
 
-          <!-- <li>
-             <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-               <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Products</span> </a>
-             <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
-               <li class="w-100">
-                 <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 1</a>
-               </li>
-               <li>
-                 <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>
-               </li>
-               <li>
-                 <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 3</a>
-               </li>
-               <li>
-                 <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 4</a>
-               </li>
-             </ul>
-           </li>-->
-           <li>
-             <a href="#" class="nav-link px-0 align-middle">
-               <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">???</span> </a>
-           </li>
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" style="padding:10px;" id="menu">
+
+          <li class="nav-element">
+            <button mat-button>
+                <span>My reservations</span>
+            </button>
+         </li>
+          <li class="nav-element">
+            <button mat-button>
+              <span>My wishlist</span>
+            </button>
+          </li>
+          <li class="nav-element">
+            <button mat-button (click)="toggleEditMode()">
+              <span>Edit profile</span>
+            </button>
+          </li>
+          <li class="nav-element">
+            <button mat-button   *ngIf="myAuthService.jelLogiran()" (click)="logOut()">
+              <span>Log out</span>
+            </button>
+          </li>
          </ul>
          <hr>
-         <div class="dropdown pb-4">
+        <!-- <div class="dropdown pb-4">
            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-             <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-             <span class="d-none d-sm-inline mx-1">IME KORISNIKA</span>
+             <img src="https://placehold.co/30x30/orange/white" alt="hugenerd"  class="rounded-circle">
+             <span class="d-none d-sm-inline" style="margin-left: 15px">{{user?.username}}</span>
            </a>
-           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-             <li><a class="dropdown-item" href="#">Settings</a></li>
+           <ul class="dropdown-menu dropdown-menu-dark  shadow">
+             <li style="cursor:pointer;"><a class="dropdown-item" (click)="toggleEditMode()">Edit profile</a></li>
              <li>
                <hr class="dropdown-divider">
              </li>
-             <li><a  class="dropdown-item" routerLink="/login" *ngIf="myAuthService.jelLogiran()" (click)="logOut()">Sign out</a></li>
+             <li style="cursor:pointer;"><a  class="dropdown-item pointer"  *ngIf="myAuthService.jelLogiran()" (click)="logOut()">Sign out</a></li>
            </ul>
-         </div>
+         </div>-->
        </div>
      </div>
-     <div class="col py-3">
+     <div class="col p-0">
+       <section id="korisnik" style="background-color: #eee; height:100%">
+         <div class="container py-5">
+           <div class="row1">
+             <div class="col-lg-4">
+               <div class="card mb-4">
+                 <div class="card-body text-center" style="display: flex;flex-direction: row; align-items: center; justify-content: flex-start;">
+                   <div style="margin: 0 20px 0 5px">
+                     <img mat-card-image src="https://placehold.co/80x80/orange/white" alt="user image" class="card-img">
+                   </div>
+                   <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                     <h4 class="my-3">{{user?.name}} {{user?.surname}}</h4>
+                     <p class="text-muted mb-1">{{user?.username}}</p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div class="col-lg-8">
+               <div class="card mb-4">
+                 <div class="card-body">
+                   <!-- Full name -->
+                   <div class="row">
+                     <div class="col-sm-3">
+                       <p class="mb-0">Full name</p>
+                     </div>
+                     <div class="col-sm-9">
+                       <ng-container *ngIf="isEditing; else viewFullName">
+                         <input type="text" [(ngModel)]="user.name" class="form-control">
+                         <input type="text" [(ngModel)]="user.surname" class="form-control">
+                       </ng-container>
+                       <ng-template #viewFullName>
+                         <p class="text-muted mb-0">{{ user?.name }} {{ user?.surname }}</p>
+                       </ng-template>
+                     </div>
+                   </div>
+                   <hr>
+                   <!-- Phone number -->
+                   <div class="row">
+                     <div class="col-sm-3">
+                       <p class="mb-0">Phone number</p>
+                     </div>
+                     <div class="col-sm-9">
+                       <ng-container *ngIf="isEditing; else viewPhoneNumber">
+                         <input type="text" [(ngModel)]="user.phone" class="form-control">
+                       </ng-container>
+                       <ng-template #viewPhoneNumber>
+                         <p class="text-muted mb-0">{{ user?.phone }}</p>
+                       </ng-template>
+                     </div>
+                   </div>
+                   <hr>
+                   <!-- Email -->
+                   <div class="row">
+                     <div class="col-sm-3">
+                       <p class="mb-0">Email</p>
+                     </div>
+                     <div class="col-sm-9">
+                       <ng-container *ngIf="isEditing; else viewEmail">
+                         <input type="email" [(ngModel)]="user.email" class="form-control">
+                       </ng-container>
+                       <ng-template #viewEmail>
+                         <p class="text-muted mb-0">{{ user?.email }}</p>
+                       </ng-template>
+                     </div>
+                   </div>
+                   <hr>
+                   <!-- Birthday -->
+                   <div class="row">
+                     <div class="col-sm-3">
+                       <p class="mb-0">Birthday</p>
+                     </div>
+                     <div class="col-sm-9">
+                       <ng-container *ngIf="isEditing; else viewBirthday">
+                         <input type="date" [(ngModel)]="user.dateBirth" class="form-control">
+                       </ng-container>
+                       <ng-template #viewBirthday>
+                         <p class="text-muted mb-0">{{ user?.dateBirth | date:'dd/MM/yyyy' }}</p>
+                       </ng-template>
+                     </div>
+                   </div>
+                   <hr>
+                   <!-- Registration date -->
+                   <div class="row">
+                     <div class="col-sm-3">
+                       <p class="mb-0">Registration date</p>
+                     </div>
+                     <div class="col-sm-9">
+                       <ng-container *ngIf="isEditing; else viewRegistrationDate">
+                         <input type="date" [(ngModel)]="user.dateOfRegistraion" class="form-control">
+                       </ng-container>
+                       <ng-template #viewRegistrationDate>
+                         <p class="text-muted mb-0">{{ user?.dateOfRegistraion | date:'dd/MM/yyyy' }}</p>
+                       </ng-template>
+                     </div>
+                   </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <section id="korisnik" style="background-color: #eee;">
-   <div class="container py-5">
-
-
-     <div class="row1">
-       <div class="col-lg-4">
-         <div class="card mb-4">
-           <div class="card-body text-center">
-             <img src="" alt="avatar"
-                  class="rounded-circle img-fluid" style="width: 180px;">
-             <h4 class="my-3">ime odabraniKorisnik</h4>
-             <p class="text-muted mb-1">username</p>
-
+                   <!-- Save Changes Button -->
+                   <ng-container *ngIf="isEditing">
+                     <hr>
+                     <div  style="display: flex;  justify-content: space-around;">
+                     <button class="btn btn-success" (click)="saveChanges()">Save Changes</button>
+                     <button  class="btn btn-outline-secondary" (click)="toggleEditMode()">Cancel</button>
+                     </div>
+                   </ng-container>
+                 </div>
+               </div>
+             </div>
            </div>
          </div>
-
-
-       </div>
-       <div class="col-lg-8">
-         <div class="card mb-4">
-           <div class="card-body">
-             <div class="row">
-               <div class="col-sm-3">
-                 <p class="mb-0">Full name</p>
-               </div>
-               <div class="col-sm-9">
-                 <p class="text-muted mb-0">ime prezime</p>
-               </div>
-             </div>
-             <hr>
-             <div class="row">
-               <div class="col-sm-3">
-                 <p class="mb-0">Phone number</p>
-               </div>
-               <div class="col-sm-9">
-                 <p class="text-muted mb-0">brojTelefona</p>
-               </div>
-             </div>
-             <hr>
-             <div class="row">
-               <div class="col-sm-3">
-                 <p class="mb-0">Email</p>
-               </div>
-               <div class="col-sm-9">
-                 <p class="text-muted mb-0">email</p>
-               </div>
-             </div>
-             <hr>
-             <div class="row">
-               <div class="col-sm-3">
-                 <p class="mb-0">Birthday</p>
-               </div>
-               <div class="col-sm-9">
-                 <p class="text-muted mb-0">birthdate</p>
-               </div>
-             </div>
-             <hr>
-             <div class="row">
-               <div class="col-sm-3">
-                 <p class="mb-0">date of registration</p>
-               </div>
-               <div class="col-sm-9">
-                 <p class="text-muted mb-0">date of registration</p>
-               </div>
-             </div>
-
-           </div>
-         </div>
-       </div>
-
-
-
-
-
-
-
-
-
-
+       </section>
      </div>
-   </div>
-  </section>
-
-
-
-
-
-
-     </div>
-   </div>
   </div>
+</div>

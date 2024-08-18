@@ -3,3 +3,25 @@
   flex-direction: column;
   align-items: center;
 }
+
+.navigation{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: larger;
+  color:#3A3A3A;
+}
+
+.top{
+  margin-bottom:25px;
+}
+
+.nav-element span{
+  color: #333333;
+  font-size: large;
+}
+.nav-element{
+  padding-bottom: 30px;
+}

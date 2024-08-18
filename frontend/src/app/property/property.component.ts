@@ -18,20 +18,34 @@ export class PropertyComponent implements OnInit{
     numberOfRooms: 0,
     numberOfBathrooms: 0,
     pricePerNight: 0,
-    city: { name: '' }, // Dodajte default vrednosti
+    city: { name: '' },
     propertyType: { name: '' },
-    // Dodajte i ostale propertije ako su prisutni
+    PropertyImages: [],
   };
 
-  checkinDate = '9/16/2024';
-  checkoutDate = '9/21/2024';
+  checkinDate = '';
+  checkoutDate = '';
   guests = 1;
-  pricePerNight = 528;
-  nights = 5;
-  serviceFee = 373;
+  pricePerNight = 0;
+  nights = 0;
 
   getTotalPrice() {
-    return (this.pricePerNight * this.nights) + this.serviceFee;
+    return (this.pricePerNight * this.nights* this.guests);
+  }
+
+  calculateNights() {
+    if (this.checkinDate && this.checkoutDate) {
+      const checkin = new Date(this.checkinDate);
+      const checkout = new Date(this.checkoutDate);
+      const timeDiff = checkout.getTime() - checkin.getTime();
+      this.nights = timeDiff / (1000 * 3600 * 24);
+    } else {
+      this.nights = 0;
+    }
+  }
+  onDateChange() {
+    this.calculateNights();
+    this.getTotalPrice();
   }
 
   constructor(public router: Router, private route: ActivatedRoute, private httpKlijent: HttpClient) {
@@ -41,17 +55,17 @@ export class PropertyComponent implements OnInit{
     })
   }
 
-  loadPropertyDetails(id: number): void {
+  loadPropertyDetails(id: number): void { console.log("Loading property details for ID:", id);
     const url = `${MojConfig.adresa_servera}/GetPropertyById?id=${id}`;
     this.httpKlijent.get<any>(url).subscribe(data => {
       this.property = data;
+      this.property.PropertyImages = data.PropertyImages || [];console.log("Property data loaded:", this.property);
     }, error => {
       console.error('Error fetching property data', error);
     });
   }
 
   bookNow(): void {
-    // Implement booking logic here
     alert('Booking feature is not yet implemented.');
   }
 

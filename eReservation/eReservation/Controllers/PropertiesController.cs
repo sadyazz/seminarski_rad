@@ -36,18 +36,26 @@ namespace eReservation.Controllers
         public ActionResult<Properties> Get(int id)
         {
             //var property = _db.Properties.Find(id);
-
-            var property = _db.Properties
-       .Include(p => p.City) // Uključuje grad
-           .ThenInclude(c => c.Country) // Uključuje zemlju povezanu sa gradom
-       .Include(p => p.PropertyType) // Uključuje tip nekretnine
-       .FirstOrDefault(p => p.ID == id);
-
-            if (property == null)
+            try
             {
-                return NotFound();
+                var property = _db.Properties
+                    .Include(p => p.City)
+                    .ThenInclude(c => c.Country)
+                    .Include(p => p.PropertyType)
+                    //.Include(p => p.PropertyImageUrls)
+                    .FirstOrDefault(p => p.ID == id);
+
+                if (property == null)
+                {
+                    return NotFound();
+                }
+                return Ok(property);
             }
-            return Ok(property);
+            catch (Exception ex)
+            {
+                // Log exception here
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost]

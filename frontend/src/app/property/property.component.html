@@ -1,16 +1,13 @@
 <div class="property-container">
   <div class="top">
-    <button mat-button (click)="nazad()">
-      <div class="navigation">
-        <mat-icon>arrow_back</mat-icon>
-        <span>Back</span>
-      </div>
+    <button mat-button (click)="nazad()" style="font-size: 20px;">
+      <mat-icon>arrow_back</mat-icon> Nazad
     </button>
   </div>
   <!-- Property Name -->
-  <div class="property-header col-md-4 text-center mb-4">
-    <div class="col-md-4 property-name">
-      <h1>{{ property.name }}</h1>
+  <div class="property-header text-center">
+    <div class="property-name">
+      <h1>{{ property?.name }}</h1>
     </div>
   </div>
 
@@ -35,39 +32,32 @@
     </div>
   </div>
 
-   <!-- Property Details -->
-  <div class="mb-5">
-    <p class="mb-0 fs-5 fw-semibold">{{ property.address }}</p>
-    <p class="mb-0 fs-5 fw-semibold">{{ property.city.name }}, {{ property.city.country.name }}</p>
-  </div>
-  <hr>
-  <div class="d-flex justify-content-around mt-5 mb-5"style="padding-bottom:50px;">
-  <div class="property-details">
-
-    <div class="info-row">
-     <!-- <div class="col-md-6 mb-3">
-        <h2>Address</h2>
-        <p>{{ property.address }}</p>
+  <!-- Property Details -->
+  <div *ngIf="property" class="property-details">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <h5 style="font-size: 18px; font-weight:600;">Address</h5>
+        <p style="font-size: 15px;">{{ property.adress }}</p>
       </div>
       <div class="col-md-6 mb-3">
-        <h2>City</h2>
-        <p>{{ property.city.name }}, {{ property.city.country.name }}</p>
-      </div>-->
-      <div class=" mb-3">
-        <h4>Number of Rooms</h4>
-        <p>{{ property.numberOfRooms }}</p>
+        <h5 style="font-size: 18px; font-weight:600;">City</h5>
+        <p style="font-size: 15px;">{{ property.city?.name }}, {{ property.city?.country?.name }}</p>
       </div>
-      <div class=" mb-3">
-        <h4>Number of Bathrooms</h4>
-        <p>{{ property.numberOfBathrooms }}</p>
+      <div class="col-md-6 mb-3">
+        <h5 style="font-size: 18px; font-weight:600;">Number of Rooms</h5>
+        <p style="font-size: 15px;">{{ property.numberOfRooms }}</p>
       </div>
-      <div class=" mb-3">
-        <h4>Price Per Night</h4>
-        <p>{{ property.pricePerNight }} KM</p>
+      <div class="col-md-6 mb-3">
+        <h5 style="font-size: 18px; font-weight:600;">Number of Bathrooms</h5>
+        <p style="font-size: 15px;">{{ property.numberOfBathrooms }}</p>
       </div>
-      <div class=" mb-3">
-        <h4>Property Type</h4>
-        <p>{{ property.propertyType.name }}</p>
+      <div class="col-md-6 mb-3">
+        <h5 style="font-size: 18px; font-weight:600;">Price Per Night</h5>
+        <p style="font-size: 15px;">{{ property.pricePerNight }} KM</p>
+      </div>
+      <div class="col-md-6 mb-3">
+        <h5 style="font-size: 18px; font-weight:600;">Property Type</h5>
+        <p style="font-size: 15px;">{{ property.propertyType.name }}</p>
       </div>
     </div>
   </div>
@@ -79,33 +69,43 @@
       <div class="col-md-8 "  style="width: 110%;">
         <div class="card">
           <div class="card-header">
-            <h1>{{ property.pricePerNight }} KM </h1>
-            <span>   night</span>
+            <h1 style="margin: 10px 0 0 15px;">{{ property.pricePerNight }} KM </h1>
+            <span style="margin: 10px 0 0 15px; font-size: 16px;">per night</span>
           </div>
           <div class="card-body">
             <div class="row">
               <mat-form-field class="rounded-form-field">
                 <mat-label>Check in - Check out</mat-label>
-                <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate placeholder="Start date" [(ngModel)]="checkinDate" (ngModelChange)="onDateChange()">
-                  <input matEndDate placeholder="End date" [(ngModel)]="checkoutDate" (ngModelChange)="onDateChange()">
+                <mat-date-range-input [rangePicker]="picker" (dateRangeChange)="calculateNightsAndTotalPrice()">
+                  <input matStartDate [(ngModel)]="checkinDate" placeholder="Start date" (ngModelChange)="calculateNightsAndTotalPrice()">
+                  <input matEndDate [(ngModel)]="checkoutDate" placeholder="End date" (ngModelChange)="calculateNightsAndTotalPrice()">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
             </div>
             <div class="form-group">
-              <label for="guests">GUESTS</label>
-              <select class="form-control"  id="guests" [(ngModel)]="guests" (change)="getTotalPrice()">
+              <label style="font-size: 16px; float: left;" for="guests">Guests</label>
+              <select class="form-control" id="guests" [(ngModel)]="guests">
                 <option value="1">1 guest</option>
                 <option value="2">2 guests</option>
                 <option value="3">3 guests</option>
               </select>
             </div>
-            <button class="btn btn-primary btn-block">Reserve</button>
+            <div class="form-group">
+              <label style="font-size: 16px; float: left;" for="paymentMethods">Payment methods</label>
+              <select class="form-control" id="paymentMethods" [(ngModel)]="paymentMethods">
+                <option value="1">Credit Card</option>
+                <option value="2">Cash</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-block"  (click)="reserve()">Reserve</button>
             <div class="row mt-3">
-              <div class="col-md-6">
-                KM {{property.pricePerNight}} x {{ nights }} nights
+              <div class="col-md-6" style="font-size: 16px;">
+                KM {{pricePerNight}} x {{ nights }} nights
+              </div>
+              <div class="col-md-6 text-right" style="font-size: 16px;">
+                {{ (pricePerNight * nights) | number }} KM
               </div>
             <!--  <div class="col-md-6 text-right">
                 KM{{ (property.pricePerNight * nights* guests) | number }}
@@ -113,22 +113,19 @@
             </div>
             <hr>
             <div class="row">
-              <div class="col-md-6">
-                Total
+              <div class="col-md-6" style="font-size: 16px;">
+                Total price:
               </div>
-              <div class="col-md-6 text-right">
-                <!--  KM{{ getTotalPrice() | number }}-->
-                 KM  {{ (property.pricePerNight * nights* guests) | number }}
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
+              <div class="col-md-6 text-right" style="font-weight: 600; font-size: 16px;"> {{ totalPrice | number }} KM
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-   </div>
 
- </div>
 
 
 

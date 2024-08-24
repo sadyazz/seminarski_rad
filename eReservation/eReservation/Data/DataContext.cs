@@ -56,6 +56,10 @@ namespace eReservation.Data
                 .HasOne(w => w.Properties)
                 .WithMany(wl => wl.Wishlist)
                 .HasForeignKey(w => w.PropertiesID);
+
+            modelBuilder.Entity<Reservations>()
+                .Property(r => r.TotalPrice)
+                .HasColumnType("decimal(18,2)");
         }
     }
 }

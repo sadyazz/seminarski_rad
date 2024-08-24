@@ -3,6 +3,8 @@ import { MatIconModule } from '@angular/material/icon';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from '@angular/router';
 import {MojConfig} from "../moj-config";
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MyAuthService } from '../services/MyAuthService';
 
 @Component({
   selector: 'property',
@@ -23,11 +25,13 @@ export class PropertyComponent implements OnInit{
     PropertyImages: [],
   };
 
-  checkinDate = '';
-  checkoutDate = '';
+  checkinDate: Date | null = null;
+  checkoutDate: Date | null = null;
   guests = 1;
-  pricePerNight = 0;
+  paymentMethods=1;
   nights = 0;
+  totalPrice = 0;
+  pricePerNight = 0;
 
   getTotalPrice() {
     return (this.pricePerNight * this.nights* this.guests);
@@ -48,11 +52,13 @@ export class PropertyComponent implements OnInit{
     this.getTotalPrice();
   }
 
-  constructor(public router: Router, private route: ActivatedRoute, private httpKlijent: HttpClient) {
-    this.route.params.subscribe(x=>{
-      this.propertyId=<number>x['id']
+
+
+  constructor(public router: Router, private route: ActivatedRoute, private httpKlijent: HttpClient, private snackBar: MatSnackBar, private myAuthService: MyAuthService) {
+    this.route.params.subscribe(x => {
+      this.propertyId = <number>x['id']
       this.loadPropertyDetails(this.propertyId);
-    })
+    });
   }
 
   loadPropertyDetails(id: number): void { console.log("Loading property details for ID:", id);
@@ -60,14 +66,52 @@ export class PropertyComponent implements OnInit{
     this.httpKlijent.get<any>(url).subscribe(data => {
       this.property = data;
       this.property.PropertyImages = data.PropertyImages || [];console.log("Property data loaded:", this.property);
+      this.pricePerNight=data.pricePerNight;
     }, error => {
       console.error('Error fetching property data', error);
     });
   }
 
-  bookNow(): void {
-    alert('Booking feature is not yet implemented.');
+  calculateNightsAndTotalPrice(): void {
+    if (this.checkinDate && this.checkoutDate) {
+      const timeDiff = Math.abs(this.checkoutDate.getTime() - this.checkinDate.getTime());
+      this.nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      this.totalPrice = this.pricePerNight * this.nights;
+    } else {
+      this.nights = 0;
+      this.totalPrice = 0;
+    }
   }
+
+  reserve(): void {
+    const userId = this.myAuthService.returnId();
+
+    if (!userId) {
+      this.snackBar.open('You need to be logged in to make a reservation.', 'Close', { duration: 3000 });
+      this.router.navigate(["/login"]);
+      return;
+    }
+
+    const reservation = {
+      dateOfArrival: this.checkinDate,
+      dateOfDeparture: this.checkoutDate,
+      status: "Pending", 
+      totalPrice: this.totalPrice,
+      userId: userId,
+      paymentMethodsId: this.paymentMethods,
+      propertiesId: this.propertyId
+    };
+
+    const url = `${MojConfig.adresa_servera}/api/Reservations/Add`;
+    this.httpKlijent.post(url, reservation).subscribe(response => {
+      this.snackBar.open('Reservation successful!', 'Close', { duration: 3000 });
+      this.router.navigate(["/home"]); 
+    }, error => {
+      console.error('Error making reservation', error);
+      this.snackBar.open('Reservation failed. Please try again.', 'Close', { duration: 3000 });
+    });
+  }
+
 
   ngOnInit(): void {
    // this.route.paramMap.subscribe(params => {
@@ -79,5 +123,8 @@ export class PropertyComponent implements OnInit{
   nazad(){
     this.router.navigate(["/home"]);
   }
+
+
+
 
 }

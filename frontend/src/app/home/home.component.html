@@ -2,7 +2,7 @@
   <div class="header">
     <div class="logo">
 
-      <img src="./assets/logo.png" alt="Airbnb logo">
+      <img src="../assets/img/logo.png" alt="Airbnb logo">
     </div>
 
     <div class="search-container">
@@ -51,8 +51,8 @@
 
     <div class="profile-menu">
       <div class="cont">
-        <img src="./assets/nav.png">
-        <img style="width: 50px" src="./assets/profile-pic.png"></div>
+        <img src="../assets/img/nav.png">
+        <img style="width: 50px" src="../assets/img/profile-pic.png"></div>
       <div  class="sidebar">
         <a routerLink="/login" *ngIf="!myAuthService.jelLogiran()">Log in</a>
         <a *ngIf="myAuthService.jelLogiran()" (click)="goToProfile()"
@@ -74,8 +74,6 @@
     <button mat-button (click)="filterProperties('Hotels')"><mat-icon>hotel</mat-icon>Hotels</button>
     <span class="divider">|</span>
     <button mat-button (click)="filterProperties('Countryside')"><mat-icon>terrain</mat-icon>Countryside</button>
-    <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Trending')"><mat-icon>local_fire_department</mat-icon>Trending</button>
     <span class="divider">|</span>
     <button mat-button (click)="filterProperties('Cabins')"><mat-icon>cabin</mat-icon>Cabins</button>
     <span class="divider">|</span>

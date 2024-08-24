@@ -2,7 +2,7 @@
 
 <div class="container-fluid">
   <div class="row flex-nowrap">
-    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark-subtle sidebar-custom" style="width: 300px;">
+    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark-subtle sidebar-custom" style="width: 300px; position: fixed; top: 0;left: 0; height: 100%;overflow-y: auto;">
       <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-5 text-white min-vh-100">
         <div class="top">
           <button mat-button (click)="nazad()">
@@ -13,16 +13,16 @@
           </button>
         </div>
 
-        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" style="padding:10px;" id="menu">
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" style="padding:10px; " id="menu">
 
           <li class="nav-element">
-            <button mat-button>
+            <button mat-button (click)="scroll(reservations)">
                 <span>{{'myReservations'|transloco}}</span>
             </button>
          </li>
           <li class="nav-element">
-            <button mat-button>
-              <span>{{'myWishlist'|transloco}}</span>
+            <button mat-button (click)="scroll(myReviews)">
+              <span>{{'myReviews'|transloco}}</span>
             </button>
           </li>
           <li class="nav-element">
@@ -52,21 +52,24 @@
          </div>-->
        </div>
      </div>
-     <div class="col p-0">
-       <section id="korisnik" style="background-color: #eee; height:100%">
+     <div class="col p-0 content">
+       <section id="korisnik" style="background-color: #eee; height:100vh">
          <div class="container py-5">
            <div class="row1">
              <div class="col-lg-4">
                <div class="card mb-4">
                  <div class="card-body text-center" style="display: flex;flex-direction: row; align-items: center; justify-content: flex-start;">
-                   <div style="margin: 0 20px 0 5px">
+                   <div style="">
                      <img mat-card-image src="https://placehold.co/80x80/orange/white" alt="user image" class="card-img">
+                     <!--<p class="text-muted mb-0 mt-2" *ngIf="isEditing" style="cursor: pointer;" >Change profile picture</p>-->
                    </div>
                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
                      <h4 class="my-3">{{user?.name}} {{user?.surname}}</h4>
                      <p class="text-muted mb-1">{{user?.username}}</p>
                    </div>
                  </div>
+
+                 <input type="file" style="width:200px; margin: 0 0 20px 25px" *ngIf="isEditing" (change)="onFileSelected($event)">
                </div>
              </div>
              <div class="col-lg-8">
@@ -162,6 +165,45 @@
            </div>
          </div>
        </section>
+
+
+       <div #reservations class="reservations-container">
+         <h2 class="reservations-title">{{'myReservations' | transloco}}</h2>
+
+         <div class="reservations-list">
+           <!--<mat-card *ngFor="let reservation of getReservations()" class="reservation-card">
+             <img mat-card-image src="https://placehold.co/80x80" alt="{{ reservation.name }}" class="reservation-image">
+             <mat-card-content>
+               <h4 mat-card-title class="reservation-title">{{ reservation.name }}</h4>
+               <p class="reservation-info">
+                 <strong>{{ reservation.city.name }}, {{ reservation.city.country.name }}</strong><br>
+                 {{'address' | transloco}}: {{ reservation.address }}<br>
+                 <strong>{{'price' | transloco}}: {{ reservation.price }} KM</strong><br>
+               </p>
+             </mat-card-content>
+           </mat-card>-->
+         </div>
+       </div>
+
+       <div #myReviews class="reservations-container">
+         <h2 class="reviews-title">{{ 'myReviews' | transloco }}</h2>
+
+         <div class="reservations-list">
+           <mat-card *ngFor="let review of reviews" class="reviews-card">
+             <mat-card-content>
+               <h4 mat-card-title style="font-size: 25px">{{ review.properties.name }}</h4>
+               <p class="reservation-info">
+                 {{ 'rating' | transloco }}: {{ review.review }}
+                 <br>
+                  {{ review.comment }}<br>
+                  {{ review.dateReview | date:'short' }}<br>
+               </p>
+             </mat-card-content>
+           </mat-card>
+         </div>
+       </div>
+
+
      </div>
   </div>
 </div>

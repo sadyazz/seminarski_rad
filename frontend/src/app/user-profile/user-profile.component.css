@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top:100px;
+}
+
+.container-fluid {
+  height: 100%;
 }
 
 .navigation{
@@ -25,3 +30,70 @@
 .nav-element{
   padding-bottom: 30px;
 }
+.card-img{
+  max-height:80px;
+  margin: 0 20px 0 0px;
+}
+.content {
+  margin-left: 300px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.reservations-container {
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #eee;
+}
+
+.reservations-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.reservations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.reservation-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.reviews-card{
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.reservation-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.reservation-title {
+  font-size: 18px;
+  margin: 0;
+}
+
+.reviews-title{
+  font-size: 25px;
+  margin: 10px;
+}
+
+.reservation-info {
+  font-size: 14px;
+  color: #555;
+}
+

@@ -12,10 +12,10 @@ export class SelectLanguageComponent implements OnInit {
   @Input() side:any;
 
   languages = [
-    { name: 'Bosnian', code: 'ba', flag: '../../assets/img/ba.png' },
+    { name: 'Bosanski', code: 'ba', flag: '../../assets/img/ba.png' },
     { name: 'English', code: 'en', flag: '../../assets/img/en.png' },
-    { name: 'German', code: 'de', flag: '../../assets/img/de.png' },
-    {name:'French', code:'fr', flag:'../../assets/img/fr.png'}
+    { name: 'Deutsch', code: 'de', flag: '../../assets/img/de.png' },
+    {name:'Français', code:'fr', flag:'../../assets/img/fr.png'}
   ];
 
   constructor(private translocoService: TranslocoService) {

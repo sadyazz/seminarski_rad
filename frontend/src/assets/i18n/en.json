@@ -23,7 +23,7 @@
   "night": "Night",
   "backToHome": "Back to home page",
   "myReservations": "My reservations",
-  "myWishlist": "My wishlist",
+  "myReviews": "My reviews",
   "editProfile": "Edit profile",
   "logOut": "Log out",
   "fullName": "Full name",
@@ -49,5 +49,6 @@
   "cash": "Cash",
   "nights": "nights",
   "totalPrice": "Total price",
-  "reserve": "Reserve"
+  "reserve": "Reserve",
+  "rating": "Rating"
 }

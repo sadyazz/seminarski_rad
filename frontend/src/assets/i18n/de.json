@@ -23,7 +23,7 @@
   "night": "Nacht",
   "backToHome": "Zurück zur Startseite",
   "myReservations": "Meine Reservierungen",
-  "myWishlist": "Meine Wunschliste",
+  "myReviews": "Meine Bewertungen",
   "editProfile": "Profil bearbeiten",
   "logOut": "Abmelden",
   "fullName": "Vollständiger Name",
@@ -49,5 +49,6 @@
   "cash": "Barzahlung",
   "nights": "Nächte",
   "totalPrice": "Gesamtpreis",
-  "reserve": "Reservieren"
+  "reserve": "Reservieren",
+  "rating": "Bewertung"
 }

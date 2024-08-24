@@ -23,7 +23,7 @@
   "night": "Noć",
   "backToHome": "Povratak na početnu stranicu",
   "myReservations": "Moje rezervacije",
-  "myWishlist": "Moja lista želja",
+  "myReviews": "Moje recenzije",
   "editProfile": "Uredi profil",
   "logOut": "Odjava",
   "fullName": "Puno ime",
@@ -49,5 +49,6 @@
   "cash": "Gotovina",
   "nights": "noći",
   "totalPrice": "Ukupna cijena",
-  "reserve": "Rezerviši"
+  "reserve": "Rezerviši",
+  "rating": "Ocjena"
 }

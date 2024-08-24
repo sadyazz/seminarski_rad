@@ -42,6 +42,10 @@
   font-size: 2.5rem;
   color: #333;
 }
+.property-name{
+  display:flex;
+  align-items: flex-start;
+}
 
 .property-container {
   max-width: 1200px;

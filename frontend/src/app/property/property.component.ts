@@ -95,7 +95,7 @@ export class PropertyComponent implements OnInit{
     const reservation = {
       dateOfArrival: this.checkinDate,
       dateOfDeparture: this.checkoutDate,
-      status: "Pending", 
+      status: "Pending",
       totalPrice: this.totalPrice,
       userId: userId,
       paymentMethodsId: this.paymentMethods,
@@ -105,7 +105,7 @@ export class PropertyComponent implements OnInit{
     const url = `${MojConfig.adresa_servera}/api/Reservations/Add`;
     this.httpKlijent.post(url, reservation).subscribe(response => {
       this.snackBar.open('Reservation successful!', 'Close', { duration: 3000 });
-      this.router.navigate(["/home"]); 
+      this.router.navigate(["/home"]);
     }, error => {
       console.error('Error making reservation', error);
       this.snackBar.open('Reservation failed. Please try again.', 'Close', { duration: 3000 });

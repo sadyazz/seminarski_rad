@@ -4,8 +4,9 @@
     <img *ngIf="!side"[src]="selectedLanguage?.flag" class="flag" style="height: 1.5rem; width: 1.5rem;" (click)="toggleDropdown()" />
     <div class="dropdown-menu">
       <div class="dropdown-item" *ngFor="let language of languages" (click)="changeLanguage(language)">
-        <img  *ngIf="side"[src]="language.flag" class="flag" style="height: 2.5rem; width: 2.5rem;"/>
-        <img *ngIf="!side" [src]="language.flag" class="flag" style="height: 1.5rem; width: 1.5rem;"/>
+        <img  *ngIf="side"[src]="language.flag" class="flag" style="height: 2.5rem; width: 2.5rem; margin-right: 10px;"/>
+        <img *ngIf="!side" [src]="language.flag" class="flag" style="height: 1.5rem; width: 1.5rem; margin: 0 10px 0 5px;"/>
+        <span>{{language.name}}</span>
       </div>
     </div>
   </div>

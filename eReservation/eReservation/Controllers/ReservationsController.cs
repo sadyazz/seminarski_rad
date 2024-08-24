@@ -1,6 +1,8 @@
-﻿using eReservation.Data;
+﻿using Azure.Core;
+using eReservation.Data;
 using eReservation.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace eReservation.Controllers
 {
@@ -49,12 +51,36 @@ namespace eReservation.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Reservations> Add([FromBody] Reservations reservation)
+        public ActionResult<Reservations> Add([FromBody] Rezervacija request)
         {
-            if (reservation == null)
+            if (request == null)
             {
-                return BadRequest();
+                return BadRequest("Reservation data is null.");
             }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.SelectMany(x => x.Value.Errors).Select(x => x.ErrorMessage);
+                return BadRequest(new { Errors = errors });
+            }
+
+            if (request.PropertiesId <= 0 || request.UserId  <= 0 || request.PaymentMethodsId <= 0)
+            {
+                return BadRequest("Invalid input data.");
+            }
+
+            var reservation = new Reservations
+            {
+                UserID = request.UserId,
+                PaymentMethodsID = request.PaymentMethodsId,
+                PropertiesID = request.PropertiesId,
+                DateOfArrival = request.DateOfArrival,
+                DateOfDeparture = request.DateOfDeparture,
+                Status = request.Status,
+                TotalPrice = request.TotalPrice
+            };
+
+
             _db.Reservations.Add(reservation);
             _db.SaveChanges();
             return Ok(reservation);

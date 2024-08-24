@@ -19,6 +19,7 @@ namespace eReservation.Models
         public DateTime DateOfArrival { get; set; }
         public DateTime DateOfDeparture { get; set; }
         public string Status { get; set; }
+        public decimal TotalPrice { get; set; }
 
         public int PaymentMethodsID { get; set; }
         [ForeignKey(nameof(PaymentMethodsID))]

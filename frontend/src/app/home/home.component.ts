@@ -79,7 +79,7 @@ getSmjestaj() {
     (x: PropertiesGetAllResponse[]) => {
       this.properties = x;
       this.filteredProperties=x;
-      console.log('Properties fetched successfully:', this.properties);
+    //  console.log('Properties fetched successfully:', this.properties);
     },
     error => {
       console.error('Error fetching properties', error);

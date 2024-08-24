@@ -28,6 +28,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {MatDivider} from "@angular/material/divider";
 import {MatIcon} from "@angular/material/icon";
 import {MatCard, MatCardContent} from "@angular/material/card";
+import { SelectLanguageComponent } from './components/select-language/select-language.component';
+import { TranslocoRootModule } from './transloco-root.module';
+import {translate} from '@ngneat/transloco'
 
 
 @NgModule({
@@ -37,7 +40,8 @@ import {MatCard, MatCardContent} from "@angular/material/card";
     HomeComponent,
     UserProfileComponent,
     PropertyComponent,
-    TwofaPageComponent
+    TwofaPageComponent,
+    SelectLanguageComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +66,8 @@ import {MatCard, MatCardContent} from "@angular/material/card";
     MatDivider,
     MatIcon,
     MatCardContent,
-    MatCard
+    MatCard,
+    TranslocoRootModule
   ],
   providers: [
     //provideClientHydration()

@@ -4,7 +4,7 @@ body {
   background-color: rgb(33,37,41);
 }
 
-#2flogin {
+#flogin {
   display: flex;
   justify-content: center;
   align-items: center;

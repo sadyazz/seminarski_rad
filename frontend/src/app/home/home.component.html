@@ -7,12 +7,12 @@
 
     <div class="search-container">
       <div class="where">
-        <p class="pp">Where</p>
-       <input [(ngModel)]="pretraga" id="search" type="text" placeholder="Where are you going">
+        <p class="pp">{{'where' | transloco}}</p>
+       <input [(ngModel)]="pretraga" id="search" type="text" [placeholder]="'whereAreYouGoing' | transloco">
       </div>
       <div class="when">
         <mat-form-field class="rounded-form-field">
-          <mat-label>Check in - Check out</mat-label>
+          <mat-label>{{'checkInCheckOut'| transloco}}</mat-label>
           <mat-date-range-input [rangePicker]="picker">
             <input matStartDate placeholder="Start date">
             <input matEndDate placeholder="End date">
@@ -22,8 +22,8 @@
         </mat-form-field>
       </div>
       <div class="who" >
-        <p class="pp">Who</p>
-        <p>Add guests</p>
+        <p class="pp">{{'who'|transloco}}</p>
+        <p>{{'addGuests'| transloco}}</p>
         <section class="dropdown">
 
         <span class="menuitem">
@@ -48,16 +48,16 @@
         </section>
       </div>
     </div>
-
+<select-language></select-language>
     <div class="profile-menu">
       <div class="cont">
         <img src="../assets/img/nav.png">
         <img style="width: 50px" src="../assets/img/profile-pic.png"></div>
       <div  class="sidebar">
-        <a routerLink="/login" *ngIf="!myAuthService.jelLogiran()">Log in</a>
+        <a routerLink="/login" *ngIf="!myAuthService.jelLogiran()">{{'login'|transloco}}</a>
         <a *ngIf="myAuthService.jelLogiran()" (click)="goToProfile()"
-        style="cursor: pointer;">My profile</a>
-        <a routerLink="/login" *ngIf="myAuthService.jelLogiran()" (click)="logOut()" style="font-weight: bold">Log out</a>
+        style="cursor: pointer;">{{'myProfile'|transloco}}</a>
+        <a routerLink="/login" *ngIf="myAuthService.jelLogiran()" (click)="logOut()" style="font-weight: bold">{{'logOut'|transloco}}</a>
       </div>
 
     </div>
@@ -67,19 +67,19 @@
 <mat-toolbar class="custom-toolbar">
   <mat-toolbar-row style="display: flex; justify-content: space-between;">
     <span class="divider">|</span>
-    <button mat-button (click)="showAllProperties()"><mat-icon>reorder</mat-icon>All</button>
+    <button mat-button (click)="showAllProperties()"><mat-icon>reorder</mat-icon>{{'all'|transloco}}</button>
     <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Houses')"><mat-icon>home</mat-icon>Houses</button>
+    <button mat-button (click)="filterProperties('Houses')"><mat-icon>home</mat-icon>{{'houses'|transloco}}</button>
     <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Hotels')"><mat-icon>hotel</mat-icon>Hotels</button>
+    <button mat-button (click)="filterProperties('Hotels')"><mat-icon>hotel</mat-icon>{{'hotels'|transloco}}</button>
     <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Countryside')"><mat-icon>terrain</mat-icon>Countryside</button>
+    <button mat-button (click)="filterProperties('Countryside')"><mat-icon>terrain</mat-icon>{{'countryside'|transloco}}</button>
     <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Cabins')"><mat-icon>cabin</mat-icon>Cabins</button>
+    <button mat-button (click)="filterProperties('Cabins')"><mat-icon>cabin</mat-icon>{{'cabins'|transloco}}</button>
     <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Lake')"><mat-icon>water</mat-icon>Lake</button>
+    <button mat-button (click)="filterProperties('Lake')"><mat-icon>water</mat-icon>{{'lake'|transloco}}</button>
     <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Villas')"><mat-icon>villa</mat-icon>Villas</button>
+    <button mat-button (click)="filterProperties('Villas')"><mat-icon>villa</mat-icon>{{'villas'|transloco}}</button>
     <span class="divider">|</span>
   </mat-toolbar-row>
 </mat-toolbar>
@@ -91,9 +91,9 @@
       <h4 mat-card-title class="card-title">{{ property.name }}</h4>
       <p class="footer-info">
         <strong>{{ property.city.name }}, {{ property.city.country.name }}</strong><br>
-        Property Type: {{ property.propertyType.name || 'N/A' }}<br>
-        Address: {{ property.adress }}<br>
-        <strong>Price Per Night: {{ property.pricePerNight }} KM</strong><br>
+        {{'propertyType'|transloco}}: {{ property.propertyType.name || 'N/A' }}<br>
+        {{'address'|transloco}}: {{ property.adress }}<br>
+        <strong>{{'pricePerNight'|transloco}}: {{ property.pricePerNight }} KM</strong><br>
       </p>
     </mat-card-content>
   </mat-card>

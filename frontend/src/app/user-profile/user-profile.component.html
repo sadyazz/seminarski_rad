@@ -8,7 +8,7 @@
           <button mat-button (click)="nazad()">
             <div class="navigation">
               <mat-icon>arrow_back</mat-icon>
-              <span>Back to home page</span>
+              <span>{{'backToHome'|transloco}}</span>
             </div>
           </button>
         </div>
@@ -17,22 +17,22 @@
 
           <li class="nav-element">
             <button mat-button>
-                <span>My reservations</span>
+                <span>{{'myReservations'|transloco}}</span>
             </button>
          </li>
           <li class="nav-element">
             <button mat-button>
-              <span>My wishlist</span>
+              <span>{{'myWishlist'|transloco}}</span>
             </button>
           </li>
           <li class="nav-element">
             <button mat-button (click)="toggleEditMode()">
-              <span>Edit profile</span>
+              <span>{{'editProfile'|transloco}}</span>
             </button>
           </li>
           <li class="nav-element">
             <button mat-button   *ngIf="myAuthService.jelLogiran()" (click)="logOut()">
-              <span>Log out</span>
+              <span>{{'logOut'|transloco}}</span>
             </button>
           </li>
          </ul>
@@ -75,7 +75,7 @@
                    <!-- Full name -->
                    <div class="row">
                      <div class="col-sm-3">
-                       <p class="mb-0">Full name</p>
+                       <p class="mb-0">{{'fullName'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewFullName">
@@ -91,7 +91,7 @@
                    <!-- Phone number -->
                    <div class="row">
                      <div class="col-sm-3">
-                       <p class="mb-0">Phone number</p>
+                       <p class="mb-0">{{'phone'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewPhoneNumber">
@@ -106,7 +106,7 @@
                    <!-- Email -->
                    <div class="row">
                      <div class="col-sm-3">
-                       <p class="mb-0">Email</p>
+                       <p class="mb-0">{{'email'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewEmail">
@@ -121,7 +121,7 @@
                    <!-- Birthday -->
                    <div class="row">
                      <div class="col-sm-3">
-                       <p class="mb-0">Birthday</p>
+                       <p class="mb-0">{{'birthday'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewBirthday">
@@ -136,7 +136,7 @@
                    <!-- Registration date -->
                    <div class="row">
                      <div class="col-sm-3">
-                       <p class="mb-0">Registration date</p>
+                       <p class="mb-0">{{'registrationDate'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewRegistrationDate">
@@ -152,8 +152,8 @@
                    <ng-container *ngIf="isEditing">
                      <hr>
                      <div  style="display: flex;  justify-content: space-around;">
-                     <button class="btn btn-success" (click)="saveChanges()">Save Changes</button>
-                     <button  class="btn btn-outline-secondary" (click)="toggleEditMode()">Cancel</button>
+                     <button class="btn btn-success" (click)="saveChanges()">{{'saveChanges'|transloco}}</button>
+                     <button  class="btn btn-outline-secondary" (click)="toggleEditMode()">{{'cancel'|transloco}}</button>
                      </div>
                    </ng-container>
                  </div>

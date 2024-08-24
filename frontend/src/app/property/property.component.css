@@ -8,12 +8,24 @@
 
 .inner-wrapper {
   width: 90%;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
-.top{
-  margin-top: 2%;
+.property-container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
+
+.property-container .top {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 2%;
+  text-align: left;
+  width: 100%;
+}
+
+
+
 
 .d-inline-block{
   margin:5% 0 5% 0;
@@ -21,7 +33,7 @@
 
 .property-header {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   margin-top: 5%;
   margin-bottom: 20px;
 }
@@ -36,10 +48,10 @@
   margin: 0 auto;
   text-align: center;
 }
-
-.top {
+.property-details{
   display: flex;
-  justify-content: center; /* Centers the button horizontally */
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .property-header h1 {
@@ -49,7 +61,7 @@
 
 .property-gallery {
   display: flex;
-  justify-content: center; /* Centers the gallery horizontally */
+  justify-content: center;
   margin-bottom: 4rem;
 }
 
@@ -61,14 +73,15 @@
 
 .property-details {
   display: flex;
-  justify-content: center; /* Centers the property details horizontally */
+  justify-content: center;
+  align-items:center;
   margin-top: 2rem;
 }
 
 .card {
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 2rem auto; /* Centers the card horizontally */
+  margin: 2rem auto;
 }
 
 .card-header {
@@ -92,3 +105,7 @@
   margin-bottom: 20px;
 }
 
+.cont{
+  display: flex;
+  flex-direction: row;
+}

@@ -1,0 +1,12 @@
+<div class="language-selector">
+  <div class="dropdown" style="cursor:pointer;" [class.open]="showDropdown">
+    <img *ngIf="side" [src]="selectedLanguage?.flag" class="flag" style="height: 2.5rem; width: 2.5rem;" (click)="toggleDropdown()" />
+    <img *ngIf="!side"[src]="selectedLanguage?.flag" class="flag" style="height: 1.5rem; width: 1.5rem;" (click)="toggleDropdown()" />
+    <div class="dropdown-menu">
+      <div class="dropdown-item" *ngFor="let language of languages" (click)="changeLanguage(language)">
+        <img  *ngIf="side"[src]="language.flag" class="flag" style="height: 2.5rem; width: 2.5rem;"/>
+        <img *ngIf="!side" [src]="language.flag" class="flag" style="height: 1.5rem; width: 1.5rem;"/>
+      </div>
+    </div>
+  </div>
+</div>

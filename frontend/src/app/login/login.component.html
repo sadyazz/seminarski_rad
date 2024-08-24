@@ -4,13 +4,13 @@
   <!-- Email input -->
   <div data-mdb-input-init class="form-outline mb-4">
     <input type="text" id="form2Example1" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="loginRequest.korisnickoIme"/>
-    <label class="form-label" for="form2Example1" >Username</label>
+    <label class="form-label" for="form2Example1" >{{'username'|transloco}}</label>
   </div>
 
   <!-- Password input -->
   <div data-mdb-input-init class="form-outline mb-4">
     <input type="password" id="form2Example2" class="form-control"  [ngModelOptions]="{standalone: true}" [(ngModel)]="loginRequest.lozinka"/>
-    <label class="form-label" for="form2Example2">Password</label>
+    <label class="form-label" for="form2Example2">{{'password'|transloco}}</label>
   </div>
 
   <!-- 2 column grid layout for inline styling -->
@@ -19,13 +19,9 @@
 
     </div>
 
-    <div style="margin:auto;">
-      <!-- Simple link -->
-      <a href="#!">Forgot password?</a>
-    </div>
   </div>
 
   <!-- Submit button -->
-  <button (click)="signIn()" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Sign in</button>
+  <button (click)="signIn()" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">{{'signIn'|transloco}}</button>
 
 </form>

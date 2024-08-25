@@ -16,6 +16,36 @@ namespace eReservation.Controllers
             _db = db;
         }
 
+        public class ReviewDto
+        {
+            public int ID { get; set; }
+            public int UserID { get; set; }
+            public string UserName { get; set; }
+            public string UserFullName { get; set; }
+            public int PropertiesID { get; set; }
+            public string PropertyName { get; set; }
+            public int Review { get; set; }
+            public string Comment { get; set; }
+            public DateTime DateReview { get; set; }
+        }
+
+        public class PropertyDto
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public string Address { get; set; }
+            public int NumberOfRooms { get; set; }
+            public int NumberOfBathrooms { get; set; }
+            public int PricePerNight { get; set; }
+            public int CityID { get; set; }
+            public string CityName { get; set; }
+            public string CountryName { get; set; }
+            public int PropertyTypeID { get; set; }
+            public string PropertyTypeName { get; set; }
+            public List<ReviewDto> Reviews { get; set; }
+            public decimal AverageRating { get; set; }
+        }
+
         [HttpGet]
         public ActionResult<List<Properties>> GetAll()
         {
@@ -31,25 +61,84 @@ namespace eReservation.Controllers
             return NoContent();
         }
 
+        //[HttpGet]
+        //[Route("/GetPropertyById")]
+        //public ActionResult<Properties> Get(int id)
+        //{
+        //    //var property = _db.Properties.Find(id);
+        //    try
+        //    {
+        //        var property = _db.Properties
+        //            .Include(p => p.City)
+        //            .ThenInclude(c => c.Country)
+        //            .Include(p => p.PropertyType)
+        //            //.Include(p => p.Reviews)
+        //            //.Include(p => p.PropertyImageUrls)
+        //            .FirstOrDefault(p => p.ID == id);
+
+        //        if (property == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        return Ok(property);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log exception here
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
+
         [HttpGet]
         [Route("/GetPropertyById")]
-        public ActionResult<Properties> Get(int id)
+        public ActionResult<PropertyDto> Get(int id)
         {
-            //var property = _db.Properties.Find(id);
             try
             {
                 var property = _db.Properties
                     .Include(p => p.City)
                     .ThenInclude(c => c.Country)
                     .Include(p => p.PropertyType)
-                    //.Include(p => p.PropertyImageUrls)
+                    .Include(p => p.Reviews)
+                    .ThenInclude(r => r.User)
                     .FirstOrDefault(p => p.ID == id);
 
                 if (property == null)
                 {
                     return NotFound();
                 }
-                return Ok(property);
+
+                var averageRating = property.Reviews.Any() ? property.Reviews.Average(r => r.Review) : 0;
+                var averageRatingDecimal = (decimal)averageRating;
+
+                var propertyDto = new PropertyDto
+                {
+                    ID = property.ID,
+                    Name = property.Name,
+                    Address = property.Adress,
+                    NumberOfRooms = property.NumberOfRooms,
+                    NumberOfBathrooms = property.NumberOfBathrooms,
+                    PricePerNight = property.PricePerNight,
+                    CityID = property.CityID,
+                    CityName = property.City != null ? property.City.Name : "Unknown",
+                    CountryName = property.City != null && property.City.Country != null ? property.City.Country.Name : "Unknown",
+                    PropertyTypeID = property.PropertyTypeID,
+                    PropertyTypeName = property.PropertyType != null ? property.PropertyType.Name : "Unknown",
+                    Reviews = property.Reviews.Select(r => new ReviewDto
+                    {
+                        ID = r.ID,
+                        UserID = r.UserID,
+                        UserName = r.User != null ? r.User.Username : "Unknown",
+                        UserFullName = r.User != null ? $"{r.User.Name} {r.User.Surname}" : "Unknown",
+                        PropertiesID = r.PropertiesID,
+                        Review = r.Review,
+                        Comment = r.Comment,
+                        DateReview = r.DateReview
+                    }).ToList(),
+                    AverageRating = averageRatingDecimal
+                };
+
+                return Ok(propertyDto);
             }
             catch (Exception ex)
             {

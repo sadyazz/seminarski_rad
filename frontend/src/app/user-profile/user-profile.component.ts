@@ -26,7 +26,8 @@ export class UserProfileComponent implements OnInit{
       this.selectedFile = event.target.files[0];
   }
 
-  toggleEditMode() {
+  toggleEditMode(el: HTMLElement) {
+    el.scrollIntoView({behavior: 'smooth'});
     this.isEditing = !this.isEditing;
   }
   ngOnInit(): void {

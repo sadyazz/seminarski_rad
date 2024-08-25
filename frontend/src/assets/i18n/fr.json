@@ -50,5 +50,7 @@
   "nights": "nuits",
   "totalPrice": "Prix total",
   "reserve": "Réserver",
-  "rating": "Note"
+  "rating": "Note",
+  "reviews": "Avis",
+  "averageRating": "Note moyenne"
 }

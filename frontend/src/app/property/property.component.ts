@@ -23,6 +23,7 @@ export class PropertyComponent implements OnInit{
     city: { name: '' },
     propertyType: { name: '' },
     PropertyImages: [],
+    reviews: []
   };
 
   checkinDate: Date | null = null;
@@ -67,6 +68,7 @@ export class PropertyComponent implements OnInit{
       this.property = data;
       this.property.PropertyImages = data.PropertyImages || [];console.log("Property data loaded:", this.property);
       this.pricePerNight=data.pricePerNight;
+      this.property.reviews = data.reviews || [];
     }, error => {
       console.error('Error fetching property data', error);
     });

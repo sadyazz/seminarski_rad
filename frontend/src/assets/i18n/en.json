@@ -50,5 +50,7 @@
   "nights": "nights",
   "totalPrice": "Total price",
   "reserve": "Reserve",
-  "rating": "Rating"
+  "rating": "Rating",
+  "reviews" : "Reviews",
+  "averageRating": "Average rating"
 }

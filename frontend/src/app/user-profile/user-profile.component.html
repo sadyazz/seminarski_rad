@@ -21,12 +21,12 @@
             </button>
          </li>
           <li class="nav-element">
-            <button mat-button (click)="scroll(myReviews)">
+            <button mat-button (click)="scroll(revs)">
               <span>{{'myReviews'|transloco}}</span>
             </button>
           </li>
           <li class="nav-element">
-            <button mat-button (click)="toggleEditMode()">
+            <button mat-button (click)="toggleEditMode(userScroll)">
               <span>{{'editProfile'|transloco}}</span>
             </button>
           </li>
@@ -53,7 +53,7 @@
        </div>
      </div>
      <div class="col p-0 content">
-       <section id="korisnik" style="background-color: #eee; height:100vh">
+       <section id="korisnik" #userScroll style="background-color: #eee; height:100vh">
          <div class="container py-5">
            <div class="row1">
              <div class="col-lg-4">
@@ -156,7 +156,7 @@
                      <hr>
                      <div  style="display: flex;  justify-content: space-around;">
                      <button class="btn btn-success" (click)="saveChanges()">{{'saveChanges'|transloco}}</button>
-                     <button  class="btn btn-outline-secondary" (click)="toggleEditMode()">{{'cancel'|transloco}}</button>
+                     <button  class="btn btn-outline-secondary" (click)="toggleEditMode(userScroll)">{{'cancel'|transloco}}</button>
                      </div>
                    </ng-container>
                  </div>
@@ -185,18 +185,18 @@
          </div>
        </div>
 
-       <div #myReviews class="reservations-container">
+       <div #revs class="reservations-container">
          <h2 class="reviews-title">{{ 'myReviews' | transloco }}</h2>
 
          <div class="reservations-list">
            <mat-card *ngFor="let review of reviews" class="reviews-card">
              <mat-card-content>
-               <h4 mat-card-title style="font-size: 25px">{{ review.properties.name }}</h4>
+               <h4 mat-card-title style="font-size: 25px; margin-bottom:5px;">{{ review.propertyName }}</h4>
                <p class="reservation-info">
                  {{ 'rating' | transloco }}: {{ review.review }}
                  <br>
                   {{ review.comment }}<br>
-                  {{ review.dateReview | date:'short' }}<br>
+                  {{ review.dateReview  | date:'short' }}<br>
                </p>
              </mat-card-content>
            </mat-card>

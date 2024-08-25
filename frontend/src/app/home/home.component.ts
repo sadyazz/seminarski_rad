@@ -93,7 +93,9 @@ getSmjestaj() {
   }
 
   goToProperty(propertyId:number) {
-    this.router.navigate(["/property",propertyId])
+    this.router.navigate(["/property",propertyId]).then(() => {
+      window.scrollTo(0, 0);
+    });
   }
 
   filterProperties(category: string) {

@@ -8,6 +8,10 @@
   <div class="property-header text-center">
     <div class="property-name">
       <h1>{{ property?.name }}</h1>
+      <div *ngIf="property?.averageRating !== undefined" class="average-rating">
+        <span class="rating-label">{{ 'averageRating' | transloco }}: </span>
+        <span class="rating-value">{{ property?.averageRating | number:'1.1-1' }}</span>
+      </div>
     </div>
   </div>
 
@@ -37,11 +41,11 @@
     <div class="row">
       <div class="col-md-6 mb-3">
         <h5 style="font-size: 18px; font-weight:600;">{{'address'|transloco}}</h5>
-        <p style="font-size: 15px;">{{ property.adress }}</p>
+        <p style="font-size: 15px;">{{ property.address }}</p>
       </div>
       <div class="col-md-6 mb-3">
         <h5 style="font-size: 18px; font-weight:600;">{{'city'|transloco}}</h5>
-        <p style="font-size: 15px;">{{ property.city?.name }}, {{ property.city?.country?.name }}</p>
+        <p style="font-size: 15px;">{{ property.cityName }}, {{ property.countryName }}</p>
       </div>
       <div class="col-md-6 mb-3">
         <h5 style="font-size: 18px; font-weight:600;">{{'numberOfRooms'|transloco}}</h5>
@@ -57,7 +61,7 @@
       </div>
       <div class="col-md-6 mb-3">
         <h5 style="font-size: 18px; font-weight:600;">{{'propertyType'|transloco}}</h5>
-        <p style="font-size: 15px;">{{ property.propertyType.name }}</p>
+        <p style="font-size: 15px;">{{ property.propertyTypeName }}</p>
       </div>
     </div>
   </div>
@@ -127,6 +131,32 @@
   </div>
   </div>
 
+<div>
+
+  <div class="review-container">
+    <h2 class="reviews-title">{{ 'reviews' | transloco }}</h2>
+
+    <div class="reviews-list">
+      <mat-card *ngFor="let review of property.reviews" class="reviews-card">
+        <mat-card-content>
+          <div class="review-header">
+            <span class="user-fullname">{{ review.userFullName }}</span>
+            <span class="user-username">&commat;{{ review.userName }}</span>
+          </div>
+          <p class="review-info">
+            <span class="review-rating">{{ 'rating' | transloco }}: {{ review.review }}</span>
+            <br>
+            <span class="review-comment">{{ review.comment }}</span>
+            <br>
+            <span class="review-date">{{ review.dateReview | date:'short' }}</span>
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+
+</div>
 
 
 

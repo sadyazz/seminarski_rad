@@ -50,5 +50,7 @@
   "nights": "noći",
   "totalPrice": "Ukupna cijena",
   "reserve": "Rezerviši",
-  "rating": "Ocjena"
+  "rating": "Ocjena",
+  "reviews" : "Recenzije",
+  "averageRating": "Prosječna ocjena"
 }

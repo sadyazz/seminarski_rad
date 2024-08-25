@@ -24,9 +24,6 @@
   width: 100%;
 }
 
-
-
-
 .d-inline-block{
   margin:5% 0 5% 0;
 }
@@ -93,7 +90,7 @@
   border-bottom: 1px solid #ddd;
   padding: 15px;
   display: flex;
-  justify-content: center; /* Centers the content within the card header */
+  justify-content: center;
   align-items: center;
 }
 
@@ -112,4 +109,89 @@
 .cont{
   display: flex;
   flex-direction: row;
+}
+
+.review-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reviews-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.reviews-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+  /*padding: 15px;*/
+}
+
+.review-header {
+  margin-bottom: 10px;
+}
+
+.review-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.review-info {
+  font-size: 14px;
+  color: #555;
+}
+
+.review-rating,
+.review-comment,
+.review-date {
+  display: block;
+}
+
+.review-comment{
+  font-size:25px;
+}
+
+.review-date {
+  font-style: italic;
+  color: #888;
+}
+
+.user-fullname {
+  font-weight: bold;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.user-username {
+  font-weight: normal;
+  font-size: 20px;
+}
+
+.average-rating{
+  margin: 10px;
+}
+
+.property-header .average-rating {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.average-rating .rating-label {
+  font-weight: normal;
+}
+
+.average-rating .rating-value {
+  font-weight: bold;
+  color: #ffb400;
 }

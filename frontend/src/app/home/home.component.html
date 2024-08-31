@@ -86,7 +86,8 @@
 
 <div class="content" style="margin-top: 5vh; display: flex; flex-wrap: wrap; justify-content: center; width: 80%; margin-left: auto; margin-right: auto;">
   <mat-card *ngFor="let property of getProperties()" class="property-card" (click)="goToProperty(property.id)">
-    <img mat-card-image src="https://placehold.co/600x600" alt="{{ property.name }}" class="card-img">
+    <!--<img mat-card-image src="https://placehold.co/600x600" alt="{{ property.name }}" class="card-img">-->
+    <img mat-card-image [src]="getImageSrc(property.images)" alt="{{ property.name }}" class="card-img">
     <mat-card-content>
       <h4 mat-card-title class="card-title">{{ property.name }}</h4>
       <p class="footer-info">

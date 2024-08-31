@@ -54,114 +54,36 @@ namespace eReservation.Controllers
             public string Path { get; set; }
         }
 
-        //[HttpGet]
-        //public ActionResult<List<Properties>> GetAll()
-        //{
-        //    var properties = _db.Properties
-        //        .Include(p => p.City).ThenInclude(c => c.Country)
-        //        .Include(p => p.PropertyType)
-        //        .Include(p => p.Images)
-        //        //.Include(p => p.Reviews)
-        //        .ToList();
+        [HttpGet]
+        public ActionResult<List<Properties>> GetAll()
+        {
+            var properties = _db.Properties
+                .Include(p => p.City).ThenInclude(c => c.Country)
+                .Include(p => p.PropertyType)
+                .Select(p => new Properties
+                {
+                    ID = p.ID,
+                    Name = p.Name,
+                    Adress = p.Adress,
+                    NumberOfRooms = p.NumberOfRooms,
+                    NumberOfBathrooms = p.NumberOfBathrooms,
+                    PricePerNight = p.PricePerNight,
+                    City = p.City,
+                    PropertyType = p.PropertyType,
+                    Images = p.Images
+                        .OrderBy(img => img.ID) 
+                        .Take(1)
+                        .ToList(),
+                })
+                .ToList();
 
-        //    if (properties.Any())
-        //    {
-        //        return Ok(properties);
-        //    }
+            if (properties.Any())
+            {
+                return Ok(properties);
+            }
 
-
-
-        //   return NoContent();
-        //}
-
-       
-
-        //[HttpGet]
-        //public ActionResult<List<PropertyDto>> GetAll()
-        //{
-        //    try
-        //    {
-        //        var properties = _db.Properties
-        //            .Include(p => p.City)
-        //            .ThenInclude(c => c.Country)
-        //            .Include(p => p.PropertyType)
-        //            .Include(p => p.Images)
-        //            .Include(p => p.Reviews)
-        //            .ThenInclude(r => r.User)
-        //            .ToList();
-
-        //        if (properties == null || !properties.Any())
-        //        {
-        //            return NoContent();
-        //        }
-
-        //        var propertyDtos = properties.Select(p => new PropertyDto
-        //        {
-        //            ID = p.ID,
-        //            Name = p.Name,
-        //            Address = p.Adress,
-        //            NumberOfRooms = p.NumberOfRooms,
-        //            NumberOfBathrooms = p.NumberOfBathrooms,
-        //            PricePerNight = p.PricePerNight,
-        //            CityID = p.CityID,
-        //            //CityName = p.City?.Name ?? "Unknown",
-        //            //CountryName = p.City?.Country?.Name ?? "Unknown",
-        //            PropertyTypeID = p.PropertyTypeID,
-        //            //PropertyTypeName = p.PropertyType?.Name ?? "Unknown",
-        //            //Reviews = p.Reviews?.Select(r => new ReviewDto
-        //            //{
-        //            //    ID = r.ID,
-        //            //    UserID = r.UserID,
-        //            //    UserName = r.User?.Username ?? "Unknown",
-        //            //    UserFullName = r.User != null ? $"{r.User.Name} {r.User.Surname}" : "Unknown",
-        //            //    PropertiesID = r.PropertiesID,
-        //            //    Review = r.Review,
-        //            //    Comment = r.Comment,
-        //            //    DateReview = r.DateReview
-        //            //}).ToList() ?? new List<ReviewDto>(),
-        //            AverageRating = p.Reviews?.Any() == true ? (decimal)p.Reviews.Average(r => r.Review) : 0m,
-        //            Images = p.Images?.Select(img => new ImageDto
-        //            {
-        //                ID = img.ID,
-        //                Path = img.Path
-        //            }).ToList() ?? new List<ImageDto>()
-        //        }).ToList();
-
-        //        return Ok(propertyDtos);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
-
-        //[HttpGet]
-        //[Route("/GetPropertyById")]
-        //public ActionResult<Properties> Get(int id)
-        //{
-        //    //var property = _db.Properties.Find(id);
-        //    try
-        //    {
-        //        var property = _db.Properties
-        //            .Include(p => p.City)
-        //            .ThenInclude(c => c.Country)
-        //            .Include(p => p.PropertyType)
-        //            //.Include(p => p.Reviews)
-        //            //.Include(p => p.PropertyImageUrls)
-        //            .FirstOrDefault(p => p.ID == id);
-
-        //        if (property == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return Ok(property);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log exception here
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+            return NoContent();
+        }
 
         [HttpGet]
         [Route("/GetPropertyById")]

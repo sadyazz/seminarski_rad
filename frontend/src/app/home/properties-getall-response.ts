@@ -1,3 +1,5 @@
+
+
 export interface PropertiesGetAllResponse {
   id: number
   userID: number
@@ -13,6 +15,12 @@ export interface PropertiesGetAllResponse {
   propertyType: PropertyType
   propertiesAmenities: PropertiesAmenity[]
   wishlist: Wishlist[]
+  images: PropertyImage[];
+}
+
+export interface PropertyImage {
+  id: number;
+  path: string;
 }
 
 export interface User {

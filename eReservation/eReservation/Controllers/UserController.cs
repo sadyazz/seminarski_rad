@@ -57,20 +57,18 @@ namespace eReservation.Controllers
         [Route("/EditUser")]
         public ActionResult<User> Edit([FromQuery]int id, [FromBody] User updatedUser)
         {
-            // Proveri da li je korisnik prijavljen
+            
             if (!_authService.JelLogiran())
             {
                 return Unauthorized("Korisnik nije prijavljen.");
             }
 
-            // Pronađi postojećeg korisnika po ID-u
             var existingUser = _db.User.FirstOrDefault(u => u.ID == id);
             if (existingUser == null)
             {
                 return NotFound("Korisnik nije pronađen.");
             }
 
-            // Ažuriraj samo one podatke koji su dozvoljeni za ažuriranje
             existingUser.Name = updatedUser.Name;
             existingUser.Surname = updatedUser.Surname;
             existingUser.Email = updatedUser.Email;
@@ -78,11 +76,8 @@ namespace eReservation.Controllers
             existingUser.DateOfRegistraion = updatedUser.DateOfRegistraion;
             existingUser.DateBirth = updatedUser.DateBirth;
 
-            // Napravi validaciju za Wishlist ili Password ako je potrebno
-            // Ako ne želiš da ažuriraš ove vrednosti preko ovog endpointa,
-            // možeš ih izostaviti iz kopiranja ili validirati ih na neki drugi način
+            
 
-            // Spasi promene u bazi
             try
             {
                 _db.SaveChanges();
@@ -92,7 +87,6 @@ namespace eReservation.Controllers
                 return StatusCode(500, "Greška prilikom ažuriranja korisnika: " + ex.Message);
             }
 
-            // Vrati ažuriranog korisnika
             return Ok(existingUser);
         }
 

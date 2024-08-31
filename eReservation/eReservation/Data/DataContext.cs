@@ -60,6 +60,12 @@ namespace eReservation.Data
             modelBuilder.Entity<Reservations>()
                 .Property(r => r.TotalPrice)
                 .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Images>()
+                .HasOne(s => s.Property)
+                .WithMany(p => p.Images)
+                .HasForeignKey(s => s.PropertyId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

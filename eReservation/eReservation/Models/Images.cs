@@ -7,9 +7,10 @@ namespace eReservation.Models
     {
         [Key]
         public int ID { get; set; }
-        public int PropertiesID {  get; set; }
-        [ForeignKey(nameof(PropertiesID))]
-        public Properties Properties { get; set; }
+        public string Path { get; set; }
+        public int PropertyId {  get; set; }
+        [ForeignKey(nameof(PropertyId))]
+        public Properties Property { get; set; }
 
     }
 }

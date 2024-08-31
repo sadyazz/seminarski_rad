@@ -52,5 +52,6 @@
   "reserve": "Rezerviši",
   "rating": "Ocjena",
   "reviews" : "Recenzije",
-  "averageRating": "Prosječna ocjena"
+  "averageRating": "Prosječna ocjena",
+  "numberOfReviews": "Broj recenzija"
 }

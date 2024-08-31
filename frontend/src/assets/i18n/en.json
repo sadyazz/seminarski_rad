@@ -52,5 +52,6 @@
   "reserve": "Reserve",
   "rating": "Rating",
   "reviews" : "Reviews",
-  "averageRating": "Average rating"
+  "averageRating": "Average rating",
+  "numberOfReviews": "Number of reviews"
 }

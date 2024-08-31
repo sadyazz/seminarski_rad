@@ -16,26 +16,92 @@
   </div>
 
   <!-- Gallery -->
+  <!--
   <div class="property-gallery mb-4">
     <div id="carouselExampleIndicators" class="carousel slide">
       <div class="carousel-inner">
-        <div *ngFor="let image of property.PropertyImages; let i = index"
-             [class.carousel-item]="true"
-             [class.active]="i === 0">
-          <img [src]="image.ImageUrl" class="d-block w-100" alt="Property Image">
-        </div>
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+        <div *ngFor="let image of property.images; let i = index"
+          [class.carousel-item]="true"
+          [class.active]="i === 0">
+       <img [src]="property.images.path" class="d-block w-100" alt="Property Image">
+     </div>
+   </div>
+   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+     <span class="sr-only">Previous</span>
+   </a>
+   <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+     <span class="carousel-control-next-icon" aria-hidden="true"></span>
+     <span class="sr-only">Next</span>
+   </a>
+ </div>
+</div>
+<div class="cont">-->
+  <!-- Carousel wrapper -->
+  <div
+    id="carouselBasicExample"
+    data-mdb-carousel-init class="carousel slide carousel-fade"
+    data-mdb-ride="carousel"
+  >
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-mdb-target="#carouselBasicExample"
+        data-mdb-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-mdb-target="#carouselBasicExample"
+        data-mdb-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-mdb-target="#carouselBasicExample"
+        data-mdb-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
     </div>
+
+    <!-- Inner -->
+    <div class="carousel-inner">
+      <div *ngFor="let image of property.images; let i = index"
+           class="carousel-item"
+           [class.active]="i === 0">
+        <img [src]="image.path"
+             class="d-block w-100"
+             alt="Property Image"/>
+
+      </div>
+    </div>
+    <!-- Inner -->
+
+    <!-- Controls -->
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-mdb-target="#carouselBasicExample"
+      data-mdb-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-mdb-target="#carouselBasicExample"
+      data-mdb-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
-<div class="cont">
+  <!-- Carousel wrapper -->
+
   <!-- Property Details -->
   <div *ngIf="property" class="property-details">
     <div class="row">
@@ -69,7 +135,7 @@
 
 
 
-    <div class="con"  style="width: 400px;">
+    <div class="con"  style="width: 400px; margin:auto;s">
       <div class="col-md-8 "  style="width: 110%;">
         <div class="card">
           <div class="card-header">
@@ -129,13 +195,13 @@
     </div>
 
   </div>
-  </div>
+
 
 <div>
 
   <div class="review-container">
     <h2 class="reviews-title">{{ 'reviews' | transloco }}</h2>
-
+    <span> {{'numberOfReviews' | transloco}} {{ numberOfReviews }}</span>
     <div class="reviews-list">
       <mat-card *ngFor="let review of property.reviews" class="reviews-card">
         <mat-card-content>

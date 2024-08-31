@@ -33,7 +33,7 @@ namespace eReservation.Models
         public List<PropertiesAmenities> PropertiesAmenities { get; set; }
         public List<Wishlist> Wishlist { get; set; }
 
-        //public List<PropertyImage> PropertyImages { get; set; }
+        public ICollection<Images> Images { get; set; } = new List<Images>();
         public List<Reviews> Reviews { get; set; }
 
     }

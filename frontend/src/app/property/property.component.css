@@ -121,6 +121,7 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  display: inline;
 }
 
 .reviews-list {
@@ -133,6 +134,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   background-color: #ffffff;
+  margin-top: 20px;
   /*padding: 15px;*/
 }
 
@@ -195,3 +197,20 @@
   font-weight: bold;
   color: #ffb400;
 }
+.carousel-item img {
+  width: auto;
+  height: 650px;
+  max-width: 100%;
+  object-fit: cover;
+  margin: auto;
+}
+
+span.carousel-control-next-icon:after{
+  display:none;
+}
+span.carousel-control-prev-icon:after{
+  display:none;
+}
+
+
+

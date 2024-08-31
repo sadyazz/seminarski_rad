@@ -12,7 +12,9 @@ import { MyAuthService } from '../services/MyAuthService';
   styleUrl: './property.component.css'
 })
 export class PropertyComponent implements OnInit{
-
+  Images = {
+    path:''
+  }
   propertyId!: number;
   property: any = {
     name: '',
@@ -22,9 +24,11 @@ export class PropertyComponent implements OnInit{
     pricePerNight: 0,
     city: { name: '' },
     propertyType: { name: '' },
-    PropertyImages: [],
+    images: [],
     reviews: []
   };
+
+
 
   checkinDate: Date | null = null;
   checkoutDate: Date | null = null;
@@ -33,6 +37,7 @@ export class PropertyComponent implements OnInit{
   nights = 0;
   totalPrice = 0;
   pricePerNight = 0;
+  numberOfReviews: number = 0;
 
   getTotalPrice() {
     return (this.pricePerNight * this.nights* this.guests);
@@ -62,13 +67,14 @@ export class PropertyComponent implements OnInit{
     });
   }
 
-  loadPropertyDetails(id: number): void { console.log("Loading property details for ID:", id);
+  loadPropertyDetails(id: number): void {
     const url = `${MojConfig.adresa_servera}/GetPropertyById?id=${id}`;
     this.httpKlijent.get<any>(url).subscribe(data => {
       this.property = data;
-      this.property.PropertyImages = data.PropertyImages || [];console.log("Property data loaded:", this.property);
+      this.property.images = data.images || [];console.log("Property data loaded:", this.property);
       this.pricePerNight=data.pricePerNight;
       this.property.reviews = data.reviews || [];
+      this.numberOfReviews = this.property.reviews.length;
     }, error => {
       console.error('Error fetching property data', error);
     });

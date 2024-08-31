@@ -52,5 +52,6 @@
   "reserve": "Réserver",
   "rating": "Note",
   "reviews": "Avis",
-  "averageRating": "Note moyenne"
+  "averageRating": "Note moyenne",
+  "numberOfReviews": "Nombre d'avis"
 }

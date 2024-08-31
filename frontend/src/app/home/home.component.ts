@@ -77,6 +77,7 @@ getSmjestaj() {
 
   this.httpClient.get<PropertiesGetAllResponse[]>(url).subscribe(
     (x: PropertiesGetAllResponse[]) => {
+      console.log('Properties fetched successfully:', x);
       this.properties = x;
       this.filteredProperties=x;
     //  console.log('Properties fetched successfully:', this.properties);
@@ -104,6 +105,13 @@ getSmjestaj() {
 
   showAllProperties() {
     this.filteredProperties = this.properties;
+  }
+
+  getImageSrc(images: { id: number, path: string }[]): string {
+    if (images && images.length > 0) {
+      return images[0].path;
+    }
+    return 'https://placehold.co/600x600'; // Placeholder image
   }
 
 }

@@ -31,7 +31,7 @@ namespace eReservation.Models
         public PropertyType PropertyType { get; set; }
 
         public List<PropertiesAmenities> PropertiesAmenities { get; set; }
-        public List<Wishlist> Wishlist { get; set; }
+        //public List<Wishlist> Wishlist { get; set; }
 
         public ICollection<Images> Images { get; set; } = new List<Images>();
         public List<Reviews> Reviews { get; set; }

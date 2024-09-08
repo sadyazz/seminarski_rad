@@ -18,6 +18,18 @@ namespace eReservation.Controllers
             _authService = authService;
         }
 
+        public class UserUpdateDto
+        {
+            public string? Name { get; set; }
+            public string? Surname { get; set; }
+            public string? Email { get; set; }
+            public string? Phone { get; set; }
+            public DateTime DateBirth { get; set; }
+            //public string? ProfileImage { get; set; }  
+            public string? NewPassword { get; set; }  
+            public string? Username { get; set; }
+        }
+
         [HttpGet]
         public ActionResult<List<User>> GetAll()
         {
@@ -53,11 +65,47 @@ namespace eReservation.Controllers
             return Ok(user);
         }
 
+        //[HttpPut]
+        //[Route("/EditUser")]
+        //public ActionResult<User> Edit([FromQuery]int id, [FromBody] User updatedUser)
+        //{
+
+        //    if (!_authService.JelLogiran())
+        //    {
+        //        return Unauthorized("Korisnik nije prijavljen.");
+        //    }
+
+        //    var existingUser = _db.User.FirstOrDefault(u => u.ID == id);
+        //    if (existingUser == null)
+        //    {
+        //        return NotFound("Korisnik nije pronađen.");
+        //    }
+
+        //    existingUser.Name = updatedUser.Name;
+        //    existingUser.Surname = updatedUser.Surname;
+        //    existingUser.Email = updatedUser.Email;
+        //    existingUser.Phone = updatedUser.Phone;
+        //    existingUser.DateOfRegistraion = updatedUser.DateOfRegistraion;
+        //    existingUser.DateBirth = updatedUser.DateBirth;
+
+
+
+        //    try
+        //    {
+        //        _db.SaveChanges();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, "Greška prilikom ažuriranja korisnika: " + ex.Message);
+        //    }
+
+        //    return Ok(existingUser);
+        //}
+
         [HttpPut]
         [Route("/EditUser")]
-        public ActionResult<User> Edit([FromQuery]int id, [FromBody] User updatedUser)
+        public ActionResult<User> Edit([FromQuery] int id, [FromBody] UserUpdateDto updatedUser)
         {
-            
             if (!_authService.JelLogiran())
             {
                 return Unauthorized("Korisnik nije prijavljen.");
@@ -69,14 +117,32 @@ namespace eReservation.Controllers
                 return NotFound("Korisnik nije pronađen.");
             }
 
-            existingUser.Name = updatedUser.Name;
-            existingUser.Surname = updatedUser.Surname;
-            existingUser.Email = updatedUser.Email;
-            existingUser.Phone = updatedUser.Phone;
-            existingUser.DateOfRegistraion = updatedUser.DateOfRegistraion;
-            existingUser.DateBirth = updatedUser.DateBirth;
+            // Update only provided fields
+            if (!string.IsNullOrEmpty(updatedUser.Name))
+                existingUser.Name = updatedUser.Name;
 
-            
+            if (!string.IsNullOrEmpty(updatedUser.Surname))
+                existingUser.Surname = updatedUser.Surname;
+
+            if (!string.IsNullOrEmpty(updatedUser.Email))
+                existingUser.Email = updatedUser.Email;
+
+            if (!string.IsNullOrEmpty(updatedUser.Phone))
+                existingUser.Phone = updatedUser.Phone;
+
+            if (updatedUser.DateBirth != default(DateTime))
+                existingUser.DateBirth = updatedUser.DateBirth;
+
+            //if (!string.IsNullOrEmpty(updatedUser.ProfileImage))
+            //    existingUser.ProfileImage = updatedUser.ProfileImage;
+
+            if (!string.IsNullOrEmpty(updatedUser.Username))
+                existingUser.Username = updatedUser.Username;
+
+            if (!string.IsNullOrEmpty(updatedUser.NewPassword))
+            {
+                existingUser.Password = updatedUser.NewPassword;
+            }
 
             try
             {

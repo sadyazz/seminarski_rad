@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {MojConfig} from "../moj-config";
 import {Observable} from "rxjs";
 import {PropertiesGetAllResponse} from "../home/properties-getall-response";
+import {User} from "./edit-user";
 
 @Component({
   selector: 'user-profile',
@@ -16,11 +17,17 @@ export class UserProfileComponent implements OnInit{
   constructor(public myAuthService: MyAuthService, public router :Router, private httpClient: HttpClient) {
   }
 
-  user: any;
+  user: User = {};
+  tempUser: User = {};
   isEditing: boolean = false;
   selectedFile = null;
   properties:PropertiesGetAllResponse[] = [];
   reviews:any;
+  showSuccessAlert = false;
+
+  hideAlert(): void {
+    this.showSuccessAlert = false;
+  }
 
   onFileSelected(event:any) {
       this.selectedFile = event.target.files[0];
@@ -44,8 +51,26 @@ export class UserProfileComponent implements OnInit{
       console.error('User ID not found');
     }
     this.getReviews();
-    }
 
+    this.user = {
+      name: '',
+      surname: '',
+      username:'',
+      phone: '',
+      email: '',
+      dateBirth: '',
+      dateOfRegistraion: '',
+      newPassword: '',
+      confirmPassword: ''
+    };
+    }
+  hidePassword1 = true;
+  hidePassword2 = true;
+  hideConfirmPassword = true;
+  password:any;
+  getErrorMessage() {
+    return "Check your input!";
+  }
   getReviews(): void {
     const userId = this.myAuthService.returnId();
     let url = MojConfig.adresa_servera+`/GetReviewByUserId?userId=${userId}`;
@@ -94,22 +119,46 @@ export class UserProfileComponent implements OnInit{
   nazad(){
     this.router.navigate(["/home"]);
   }
-  tempUser: any;
-  saveChanges() {
-    const userId = this.myAuthService.returnId();
-    console.log("USER ID: ", userId);
-    const url = MojConfig.adresa_servera + `/EditUser?id=${userId}`;
+  saveChanges(): void {
+    if (!this.user) return;
 
-    this.httpClient.put(url, this.user).subscribe(
+    if (this.user.newPassword && this.user.confirmPassword) {
+      if (this.user.newPassword !== this.user.confirmPassword) {
+        console.log('Passwords do not match');
+        return;
+      }
+    }
+
+    const userId = this.myAuthService.returnId();
+    if (!userId) {
+      console.error('User ID not found');
+      return;
+    }
+    const updatedUser = {
+      ...this.user,
+      newPassword: this.user.newPassword,
+    };
+
+    const url = `${MojConfig.adresa_servera}/EditUser?id=${userId}`;
+
+    this.httpClient.put(url, updatedUser).subscribe(
       (response: any) => {
         console.log('User updated successfully');
+        this.showSuccessAlert = true;
+        setTimeout(() => this.showSuccessAlert = false, 3000);
+        this.getUserData(userId).subscribe(data => {
+          this.user = data;
+          this.tempUser = { ...data };
+          this.isEditing = false;
+        }, error => {
+          console.error('Error fetching updated user data', error);
+        });
       },
       (error) => {
         console.error('Error updating user data', error);
       }
     );
   }
-
   getReservations() {
     let url = MojConfig.adresa_servera + '/api/Properties/GetAll';
     console.log('Fetching properties from URL:', url);

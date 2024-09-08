@@ -53,5 +53,8 @@
   "rating": "Note",
   "reviews": "Avis",
   "averageRating": "Note moyenne",
-  "numberOfReviews": "Nombre d'avis"
+  "numberOfReviews": "Nombre d'avis",
+  "newPassword": "Nouveau mot de passe",
+  "confirmPassword": "Confirmer le mot de passe",
+  "changesSuccessful": "Modifications enregistrées avec succès"
 }

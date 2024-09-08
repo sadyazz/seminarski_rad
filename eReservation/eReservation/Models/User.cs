@@ -14,7 +14,7 @@ namespace eReservation.Models
         public string Phone { get; set; }
         public DateTime DateOfRegistraion { get; set; }
         public DateTime DateBirth { get; set; }
-        public List<Wishlist> Wishlist { get; set; }
-
+        //public List<Wishlist> Wishlist { get; set; }
+        //public string ProfileImage { get; set; }
     }
 }

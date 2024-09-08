@@ -52,6 +52,12 @@
          </div>-->
        </div>
      </div>
+    <div id="alert" *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+      <span>Changes saved successfully </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideAlert()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
      <div class="col p-0 content">
        <section id="korisnik" #userScroll style="background-color: #eee; height:100vh">
          <div class="container py-5">
@@ -64,8 +70,16 @@
                      <!--<p class="text-muted mb-0 mt-2" *ngIf="isEditing" style="cursor: pointer;" >Change profile picture</p>-->
                    </div>
                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                     <h4 class="my-3">{{user?.name}} {{user?.surname}}</h4>
-                     <p class="text-muted mb-1">{{user?.username}}</p>
+                     <h4 class="my-3">{{tempUser?.name}} {{tempUser?.surname}}</h4>
+                     <!--<p class="text-muted mb-1">{{tempUser?.username}}</p>-->
+                     <div class="col-sm-9">
+                       <ng-container *ngIf="isEditing; else viewUsername">
+                         <input type="text" [(ngModel)]="user.username" class="form-control" placeholder="Enter new username">
+                       </ng-container>
+                       <ng-template #viewUsername>
+                         <p class="text-muted mb-0 text-start">{{ user?.username }}</p>
+                       </ng-template>
+                     </div>
                    </div>
                  </div>
 
@@ -75,38 +89,38 @@
              <div class="col-lg-8">
                <div class="card mb-4">
                  <div class="card-body">
-                   <!-- Full name -->
+
                    <div class="row">
                      <div class="col-sm-3">
                        <p class="mb-0">{{'fullName'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewFullName">
-                         <input type="text" [(ngModel)]="user.name" class="form-control">
-                         <input type="text" [(ngModel)]="user.surname" class="form-control">
-                       </ng-container>
-                       <ng-template #viewFullName>
-                         <p class="text-muted mb-0">{{ user?.name }} {{ user?.surname }}</p>
-                       </ng-template>
-                     </div>
-                   </div>
-                   <hr>
-                   <!-- Phone number -->
+                         <input type="text" [(ngModel)]="user.name" class="form-control"  style="margin-bottom: 10px;">
+                          <input type="text" [(ngModel)]="user.surname" class="form-control">
+                        </ng-container>
+                        <ng-template #viewFullName>
+                          <p class="text-muted mb-0">{{ user?.name }} {{ user?.surname }}</p>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <hr>
+
                    <div class="row">
                      <div class="col-sm-3">
                        <p class="mb-0">{{'phone'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewPhoneNumber">
-                         <input type="text" [(ngModel)]="user.phone" class="form-control">
-                       </ng-container>
-                       <ng-template #viewPhoneNumber>
-                         <p class="text-muted mb-0">{{ user?.phone }}</p>
-                       </ng-template>
-                     </div>
-                   </div>
-                   <hr>
-                   <!-- Email -->
+                             <input type="text" [(ngModel)]="user.phone" class="form-control">
+                           </ng-container>
+                           <ng-template #viewPhoneNumber>
+                             <p class="text-muted mb-0">{{ user?.phone }}</p>
+                           </ng-template>
+                         </div>
+                       </div>
+                       <hr>
+
                    <div class="row">
                      <div class="col-sm-3">
                        <p class="mb-0">{{'email'|transloco}}</p>
@@ -114,55 +128,86 @@
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewEmail">
                          <input type="email" [(ngModel)]="user.email" class="form-control">
-                       </ng-container>
-                       <ng-template #viewEmail>
-                         <p class="text-muted mb-0">{{ user?.email }}</p>
-                       </ng-template>
-                     </div>
-                   </div>
-                   <hr>
-                   <!-- Birthday -->
+                        </ng-container>
+                        <ng-template #viewEmail>
+                          <p class="text-muted mb-0">{{ user?.email }}</p>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <hr>
+
                    <div class="row">
                      <div class="col-sm-3">
                        <p class="mb-0">{{'birthday'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
                        <ng-container *ngIf="isEditing; else viewBirthday">
-                         <input type="date" [(ngModel)]="user.dateBirth" class="form-control">
-                       </ng-container>
-                       <ng-template #viewBirthday>
-                         <p class="text-muted mb-0">{{ user?.dateBirth | date:'dd/MM/yyyy' }}</p>
-                       </ng-template>
-                     </div>
-                   </div>
-                   <hr>
-                   <!-- Registration date -->
+                            <input type="date" [(ngModel)]="user.dateBirth" class="form-control">
+                          </ng-container>
+                          <ng-template #viewBirthday>
+                            <p class="text-muted mb-0">{{ user?.dateBirth | date:'dd/MM/yyyy' }}</p>
+                          </ng-template>
+                        </div>
+                      </div>
+                      <hr>
+                      <!-- Registration date -->
                    <div class="row">
                      <div class="col-sm-3">
                        <p class="mb-0">{{'registrationDate'|transloco}}</p>
                      </div>
                      <div class="col-sm-9">
-                       <ng-container *ngIf="isEditing; else viewRegistrationDate">
-                         <input type="date" [(ngModel)]="user.dateOfRegistraion" class="form-control">
-                       </ng-container>
-                       <ng-template #viewRegistrationDate>
-                         <p class="text-muted mb-0">{{ user?.dateOfRegistraion | date:'dd/MM/yyyy' }}</p>
-                       </ng-template>
+
+                          <p class="text-muted mb-0">{{ user?.dateOfRegistraion | date:'dd/MM/yyyy' }}</p>
+
+                      </div>
+                    </div>
+
+
+                 </div>
+               </div>
+             </div>
+
+
+
+             <div class="col-lg-8" *ngIf="isEditing">
+               <div class="card mb-4">
+                 <div class="card-body">
+                   <div class="row">
+                     <div class="col-sm-3">
+                       <p class="mb-0">{{'password'|transloco}}</p>
+                     </div>
+                     <div class="col-sm-9">
+                       <div class="password-container" style="margin-bottom: 10px;">
+                         <input matInput [type]="hidePassword1 ? 'password' : 'text'" [(ngModel)]="user.newPassword"  class="form-control"  [placeholder]="'newPassword' | transloco">
+                         <button mat-icon-button (click)="hidePassword1=!hidePassword1" class="password-toggle">
+                           <mat-icon>{{ hidePassword1 ? 'visibility_off' : 'visibility' }}</mat-icon>
+                         </button>
+                       </div>
+
+                       <div class="password-container">
+                         <input matInput [type]="hidePassword2 ? 'password' : 'text'"  class="form-control"   [placeholder]="'confirmPassword' | transloco">
+                         <button mat-icon-button (click)="hidePassword2=!hidePassword2" class="password-toggle">
+                           <mat-icon>{{ hidePassword2 ? 'visibility_off' : 'visibility' }}</mat-icon>
+                         </button>
+                       </div>
+                       <!-- <mat-error *ngIf="password.invalid">{{getErrorMessage()}}</mat-error>-->
+
+
+
                      </div>
                    </div>
-
-                   <!-- Save Changes Button -->
-                   <ng-container *ngIf="isEditing">
-                     <hr>
-                     <div  style="display: flex;  justify-content: space-around;">
-                     <button class="btn btn-success" (click)="saveChanges()">{{'saveChanges'|transloco}}</button>
-                     <button  class="btn btn-outline-secondary" (click)="toggleEditMode(userScroll)">{{'cancel'|transloco}}</button>
-                     </div>
-                   </ng-container>
                  </div>
                </div>
              </div>
            </div>
+
+         <ng-container *ngIf="isEditing">
+
+           <div  style="display: flex;  justify-content: space-around;">
+             <button class="btn btn-success" (click)="saveChanges()">{{'saveChanges'|transloco}}</button>
+             <button  class="btn btn-outline-secondary" (click)="toggleEditMode(userScroll)">{{'cancel'|transloco}}</button>
+           </div>
+         </ng-container>
          </div>
        </section>
 

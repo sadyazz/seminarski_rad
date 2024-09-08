@@ -38,10 +38,15 @@ namespace eReservation.Controllers.AuthEndpoints.Login
 
             string? twoFKey = null;
 
-            if (logiraniKorisnik.Is2FActive)
+            var user = logiraniKorisnik as User;
+            if (user != null)
             {
-                twoFKey = TokenGenerator.Generate(4);
-                _emailSenderService.Posalji("rivobep187@huleos.com", "2f", $"Vas 2f kljuc je {twoFKey}", false);
+
+                if (logiraniKorisnik.Is2FActive)
+                {
+                        twoFKey = TokenGenerator.Generate(4);
+                        _emailSenderService.Posalji(user.Email, "2f", $"Vas 2f kljuc je {twoFKey}", false);
+                }
             }
 
             //2- generisati random string

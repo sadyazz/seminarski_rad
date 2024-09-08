@@ -53,5 +53,8 @@
   "rating": "Rating",
   "reviews" : "Reviews",
   "averageRating": "Average rating",
-  "numberOfReviews": "Number of reviews"
+  "numberOfReviews": "Number of reviews",
+  "newPassword": "New password",
+  "confirmPassword": "Confirm password",
+  "changesSuccessful": "Changes saved successfully"
 }

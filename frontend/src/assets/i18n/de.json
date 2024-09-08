@@ -53,5 +53,8 @@
   "rating": "Bewertung",
   "reviews": "Bewertungen",
   "averageRating": "Durchschnittliche Bewertung",
-  "numberOfReviews": "Anzahl der Bewertungen"
+  "numberOfReviews": "Anzahl der Bewertungen",
+  "newPassword": "Neues Passwort",
+  "confirmPassword": "Passwort bestätigen",
+  "changesSuccessful": "Änderungen erfolgreich gespeichert"
 }

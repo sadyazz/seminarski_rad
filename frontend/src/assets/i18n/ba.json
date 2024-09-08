@@ -26,7 +26,7 @@
   "myReviews": "Moje recenzije",
   "editProfile": "Uredi profil",
   "logOut": "Odjava",
-  "fullName": "Puno ime",
+  "fullName": "Ime i prezime",
   "phone": "Broj telefona",
   "email": "Email",
   "birthday": "Datum rođenja",
@@ -53,5 +53,8 @@
   "rating": "Ocjena",
   "reviews" : "Recenzije",
   "averageRating": "Prosječna ocjena",
-  "numberOfReviews": "Broj recenzija"
+  "numberOfReviews": "Broj recenzija",
+  "newPassword": "Nova šifra",
+  "confirmPassword": "Potvrdite šifru",
+  "changesSuccessful": "Promjene su uspješno sačuvane"
 }

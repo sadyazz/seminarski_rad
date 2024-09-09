@@ -53,7 +53,7 @@
        </div>
      </div>
     <div id="alert" *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-      <span>Changes saved successfully </span>
+      <span>{{'changesSuccessful' | transloco}}</span>
       <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideAlert()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -185,9 +185,9 @@
                        </div>
 
                        <div class="password-container">
-                         <input matInput [type]="hidePassword2 ? 'password' : 'text'"  class="form-control"   [placeholder]="'confirmPassword' | transloco">
-                         <button mat-icon-button (click)="hidePassword2=!hidePassword2" class="password-toggle">
-                           <mat-icon>{{ hidePassword2 ? 'visibility_off' : 'visibility' }}</mat-icon>
+                         <input matInput [type]="hideConfirmPassword ? 'password' : 'text'"  class="form-control"   [placeholder]="'confirmPassword' | transloco">
+                         <button mat-icon-button (click)="hideConfirmPassword=!hideConfirmPassword" class="password-toggle">
+                           <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                          </button>
                        </div>
                        <!-- <mat-error *ngIf="password.invalid">{{getErrorMessage()}}</mat-error>-->

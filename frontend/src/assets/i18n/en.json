@@ -56,5 +56,6 @@
   "numberOfReviews": "Number of reviews",
   "newPassword": "New password",
   "confirmPassword": "Confirm password",
-  "changesSuccessful": "Changes saved successfully"
+  "changesSuccessful": "Changes saved successfully",
+  "registrationSuccessful": "Registration successful"
 }

@@ -65,12 +65,9 @@ export class UserProfileComponent implements OnInit{
     };
     }
   hidePassword1 = true;
-  hidePassword2 = true;
   hideConfirmPassword = true;
   password:any;
-  getErrorMessage() {
-    return "Check your input!";
-  }
+
   getReviews(): void {
     const userId = this.myAuthService.returnId();
     let url = MojConfig.adresa_servera+`/GetReviewByUserId?userId=${userId}`;

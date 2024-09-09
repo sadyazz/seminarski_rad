@@ -37,19 +37,32 @@ constructor(private httpClient: HttpClient,
   }
 
   private fetchTfas() {
-    this.TfagetAllEndpoint.Handle().subscribe((x: TfaGetAllResponse) => {
-      this.tfas = x.tfas;
-    });
+    console.log('Fetching TFAs from endpoint:', this.TfagetAllEndpoint.Handle()); // Log endpoint URL if possible
+    this.TfagetAllEndpoint.Handle().subscribe(
+      (x: TfaGetAllResponse) => {
+        this.tfas = x.tfas;
+      },
+      error => {
+        console.error('Error fetching TFAs:', error); // Log error details
+      }
+    );
   }
 
   provjeriKod() {
+    console.log('Verifikacijski kod:', this.verifikacijskiKod); // Log the verification code
     const provjeriKod = this.tfas.some(tfa => tfa.twoFKey === this.verifikacijskiKod);
 
     if (provjeriKod) {
       this.uspjesnaVerifikacija = true;
       this.kljuc.kljuc = this.verifikacijskiKod;
 
-      this.AutentifikacijaTwoFOtkljucajEndpoint.Handle(this.kljuc!).subscribe((x) => {});
+      console.log('Calling AutentifikacijaTwoFOtkljucajEndpoint with:', this.kljuc); // Log request details
+      this.AutentifikacijaTwoFOtkljucajEndpoint.Handle(this.kljuc!).subscribe(
+        (x) => {},
+        error => {
+          console.error('Error in authentication request:', error); // Log error details
+        }
+      );
 
       setTimeout(() => {
         this.dialogRef.close();
@@ -64,6 +77,7 @@ constructor(private httpClient: HttpClient,
       }, 1500);
     }
   }
+
   /* otkljucaj() {
      let config=MojConfig.http_opcije();
      this.httpClient.get<LoginInformacije>(MojConfig.adresa_servera+ "/api/Korisnik/Otkljucaj/" + this.code.value, config).subscribe((x:LoginInformacije)=>{

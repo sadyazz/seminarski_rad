@@ -1,19 +1,171 @@
 
 
-<form class="forma">
-  <!-- Email input -->
+<div class="forma">
+  <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="tab-login" data-bs-toggle="pill" href="#pills-login" role="tab"
+         aria-controls="pills-login" aria-selected="true" #tabLogin>Login</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="tab-register" data-bs-toggle="pill" href="#pills-register" role="tab"
+         aria-controls="pills-register" aria-selected="false" #tabRegister>Register</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+
+      <div id="alert"  *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span>{{'registrationSuccessful' | transloco}}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideAlert()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form>
+
+<div class="login-container">
+        <div class="login-input form-outline mb-4">
+          <input type="text" id="form2Example1" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="loginRequest.korisnickoIme"/>
+          <label class="form-label" for="form2Example1" >{{'username'|transloco}}</label>
+        </div>
+
+
+        <div class="login-input form-outline mb-4">
+          <input type="password" id="form2Example2" class="form-control"  [ngModelOptions]="{standalone: true}" [(ngModel)]="loginRequest.lozinka"/>
+          <label class="form-label" for="form2Example2">{{'password'|transloco}}</label>
+        </div>
+
+        <!-- 2 column grid layout
+        <div class="row mb-4">
+          <div class="col-md-6 d-flex justify-content-center">
+            <div class="form-check mb-3 mb-md-0">
+              <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
+              <label class="form-check-label" for="loginCheck"> Remember me </label>
+            </div>
+          </div>
+
+          <div class="col-md-6 d-flex justify-content-center">
+            <a href="#!">Forgot password?</a>
+          </div>
+        </div>-->
+
+
+        <button (click)="signIn()" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">{{'signIn'|transloco}}</button>
+</div>
+      </form>
+    </div>
+
+    <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+
+
+      <form class="register-form" (submit)="register()">
+
+       <div class="container">
+        <div>
+        <div class="form-outline mb-4">
+          <input type="text" id="registerName" [(ngModel)]="registerRequest.name" name="name" class="form-control" />
+          <label class="form-label" for="registerName">Name</label>
+        </div>
+
+        <div class="form-outline mb-4">
+          <input type="text" id="registerSurname" [(ngModel)]="registerRequest.surname" name="surname" class="form-control" />
+          <label class="form-label" for="registerSurname">Surname</label>
+        </div>
+
+        <div class="form-outline mb-4">
+          <input type="text" id="registerUsername" [(ngModel)]="registerRequest.username" name="korisnickoIme" class="form-control" />
+          <label class="form-label" for="registerUsername">Username</label>
+        </div>
+
+        <div class="form-outline mb-4">
+          <input type="email" id="registerEmail" [(ngModel)]="registerRequest.email" name="email" class="form-control" />
+          <label class="form-label" for="registerEmail">Email</label>
+        </div>
+        </div>
+
+
+        <div>
+        <div class="form-outline mb-4">
+          <input type="tel" id="registerPhone" [(ngModel)]="registerRequest.phone" name="phone" class="form-control" />
+          <label class="form-label" for="registerPhone">Phone</label>
+        </div>
+
+        <div class="form-outline mb-4">
+          <input type="date" id="registerDateOfBirth" [(ngModel)]="registerRequest.dateOfBirth" name="dateOfBirth" class="form-control" />
+          <label class="form-label" for="registerDateOfBirth">Date of Birth</label>
+        </div>
+
+      <!--  <div class="form-outline mb-4">
+          <input type="password" id="registerPassword" [(ngModel)]="registerRequest.lozinka" name="lozinka" class="form-control" />
+          <label class="form-label" for="registerPassword">Password</label>
+        </div>-->
+          <div class="form-outline mb-4 password-container">
+            <div class="password-input-wrapper">
+              <input id="registerPassword" matInput [type]="hidePassword1 ? 'password' : 'text'" [(ngModel)]="registerRequest.password" [ngModelOptions]="{standalone: true}" name="password" class="form-control password-input" />
+              <button mat-icon-button (click)="hidePassword1 = !hidePassword1" class="password-toggle">
+                <mat-icon>{{ hidePassword1 ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </div>
+            <label class="form-label" for="registerPassword">Password</label>
+          </div>
+
+          <div class="form-outline mb-4 password-container">
+            <div class="password-input-wrapper">
+              <input id="registerRepeatPassword" matInput [type]="hidePassword2 ? 'password' : 'text'" [(ngModel)]="registerRequest.ponoviLozinku" [ngModelOptions]="{standalone: true}" name="repeatPassword" class="form-control password-input" />
+              <button mat-icon-button (click)="hidePassword2 = !hidePassword2" class="password-toggle">
+                <mat-icon>{{ hidePassword2 ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </div>
+            <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+          </div>
+        <!--  <div class="form-outline mb-4">
+          <input type="password" id="registerRepeatPassword" [(ngModel)]="registerRequest.ponoviLozinku" name="ponoviLozinku" class="form-control" />
+          <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+        </div> -->
+        </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mb-3">Sign up</button>
+      </form>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Email input
   <div data-mdb-input-init class="form-outline mb-4">
     <input type="text" id="form2Example1" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="loginRequest.korisnickoIme"/>
     <label class="form-label" for="form2Example1" >{{'username'|transloco}}</label>
   </div>
 
-  <!-- Password input -->
+
   <div data-mdb-input-init class="form-outline mb-4">
     <input type="password" id="form2Example2" class="form-control"  [ngModelOptions]="{standalone: true}" [(ngModel)]="loginRequest.lozinka"/>
     <label class="form-label" for="form2Example2">{{'password'|transloco}}</label>
   </div>
 
-  <!-- 2 column grid layout for inline styling -->
+
   <div class="row mb-4">
     <div class="col d-flex justify-content-center">
 
@@ -21,7 +173,6 @@
 
   </div>
 
-  <!-- Submit button -->
-  <button (click)="signIn()" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">{{'signIn'|transloco}}</button>
+  <button (click)="signIn()" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">{{'signIn'|transloco}}</button>-->
 
-</form>
+</div>

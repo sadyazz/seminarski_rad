@@ -56,5 +56,6 @@
   "numberOfReviews": "Nombre d'avis",
   "newPassword": "Nouveau mot de passe",
   "confirmPassword": "Confirmer le mot de passe",
-  "changesSuccessful": "Modifications enregistrées avec succès"
+  "changesSuccessful": "Modifications enregistrées avec succès",
+  "registrationSuccessful": "Inscription réussie"
 }

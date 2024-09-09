@@ -33,7 +33,7 @@
   "registrationDate": "Registrierungsdatum",
   "saveChanges": "Änderungen speichern",
   "cancel": "Abbrechen",
-  "username": "Benutzername",
+  "username": "Username",
   "password": "Passwort",
   "signIn": "Anmelden",
   "2fa": "Zwei-Faktor-Authentifizierung",
@@ -56,5 +56,6 @@
   "numberOfReviews": "Anzahl der Bewertungen",
   "newPassword": "Neues Passwort",
   "confirmPassword": "Passwort bestätigen",
-  "changesSuccessful": "Änderungen erfolgreich gespeichert"
+  "changesSuccessful": "Änderungen erfolgreich gespeichert",
+  "registrationSuccessful": "Registrierung erfolgreich"
 }

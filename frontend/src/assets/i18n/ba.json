@@ -56,5 +56,6 @@
   "numberOfReviews": "Broj recenzija",
   "newPassword": "Nova šifra",
   "confirmPassword": "Potvrdite šifru",
-  "changesSuccessful": "Promjene su uspješno sačuvane"
+  "changesSuccessful": "Promjene su uspješno sačuvane",
+  "registrationSuccessful": "Registracija uspješna"
 }

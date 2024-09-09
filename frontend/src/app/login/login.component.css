@@ -1,5 +1,82 @@
 .forma{
-  width: 50vh;
+  width: 70vh;
   margin: auto;
   margin-top: 20vh;
+}
+
+.container{
+  display: flex;
+  justify-content: space-between;
+}
+
+.container div{
+  width: 50%;
+}
+
+.container div div{
+  width: 95%;
+}
+
+form div.login-input{
+  width: 70%;
+}
+
+form div.login-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.register-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-outline {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.password-container {
+  width: 100%;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  width: 300px;
+  padding-right: 40px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.form-label {
+  margin-top: 0.5rem;
+  display: block;
+}
+
+#alert {
+  width: 300px;
+  height: 50px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1050;
 }

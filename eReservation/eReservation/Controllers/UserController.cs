@@ -2,6 +2,7 @@
 using eReservation.Models;
 using eReservation.Helpers.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace eReservation.Controllers
 {

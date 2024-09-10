@@ -26,14 +26,9 @@ export class SelectLanguageComponent implements OnInit {
 
   ngOnInit() {
     const savedLang = localStorage.getItem('selectedLang');
-    if (savedLang) {
-      this.selectedLanguage = this.languages.find(language => language.code === savedLang);
-      this.translocoService.setActiveLang(savedLang);
-    } else {
-      const defaultLang = this.translocoService.getActiveLang();
-      this.selectedLanguage = this.languages.find(language => language.code === defaultLang);
-      this.translocoService.setActiveLang(defaultLang);
-    }
+    this.selectedLanguage = savedLang
+      ? this.languages.find(language => language.code === savedLang)
+      : this.languages.find(language => language.code === this.translocoService.getActiveLang());
   }
 
 

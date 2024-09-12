@@ -57,5 +57,7 @@
   "newPassword": "Neues Passwort",
   "confirmPassword": "Passwort bestätigen",
   "changesSuccessful": "Änderungen erfolgreich gespeichert",
-  "registrationSuccessful": "Registrierung erfolgreich"
+  "registrationSuccessful": "Registrierung erfolgreich",
+  "noReviews": "Sie haben keine Bewertungen",
+  "noReservations": "Sie haben keine Reservierungen"
 }

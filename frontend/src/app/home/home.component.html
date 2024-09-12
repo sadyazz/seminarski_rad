@@ -21,72 +21,72 @@
           <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
       </div>
-      <div class="who" >
-        <p class="pp">{{'who'|transloco}}</p>
-        <p>{{'addGuests'| transloco}}</p>
-        <section class="dropdown">
+      <!--  <div class="who" >
+          <p class="pp">{{'who'|transloco}}</p>
+          <p>{{'addGuests'| transloco}}</p>
+          <section class="dropdown">
 
-        <span class="menuitem">
-          <div>Adults
-        <p class="pg">Ages 13 or above</p></div>
-<div class="dugmici">
-            <button (click)="smanjiA()">-</button>
-          <p class="numberOfAdults"> {{brojacA}}</p>
-            <button (click)="uvecajA()">+</button>
-</div>
-</span>
           <span class="menuitem">
-          <div>Children
-<p class="pg">Ages 12 or below</p></div>
-            <div class="dugmici">
-             <button  tabindex="-1" aria-label="decreace value" (click)="smanjiC()">-</button>
-          <p class="numberOfChildren">{{brojacC}}</p>
-            <button (click)="uvecajC()">+</button>
-</div>
-        </span>
+            <div>Adults
+          <p class="pg">Ages 13 or above</p></div>
+  <div class="dugmici">
+              <button (click)="smanjiA()">-</button>
+            <p class="numberOfAdults"> {{brojacA}}</p>
+              <button (click)="uvecajA()">+</button>
+  </div>
+  </span>
+            <span class="menuitem">
+            <div>Children
+  <p class="pg">Ages 12 or below</p></div>
+              <div class="dugmici">
+               <button  tabindex="-1" aria-label="decreace value" (click)="smanjiC()">-</button>
+            <p class="numberOfChildren">{{brojacC}}</p>
+              <button (click)="uvecajC()">+</button>
+  </div>
+          </span>
 
-        </section>
+          </section>
+        </div>-->
       </div>
-    </div>
-<select-language></select-language>
-    <div class="profile-menu">
-      <div class="cont">
-        <img src="../assets/img/nav.png">
-        <img style="width: 50px" src="../assets/img/profile-pic.png"></div>
-      <div  class="sidebar">
-        <a routerLink="/login" *ngIf="!myAuthService.jelLogiran()">{{'login'|transloco}}</a>
-        <a *ngIf="myAuthService.jelLogiran()" (click)="goToProfile()"
-        style="cursor: pointer;">{{'myProfile'|transloco}}</a>
-        <a routerLink="/login" *ngIf="myAuthService.jelLogiran()" (click)="logOut()" style="font-weight: bold">{{'logOut'|transloco}}</a>
-      </div>
+  <select-language></select-language>
+      <div class="profile-menu">
+        <div class="cont">
+          <img src="../assets/img/nav.png">
+          <img style="width: 50px" [src]="profileImageSrc" class="profile-image"></div>
+        <div  class="sidebar">
+          <a routerLink="/login" *ngIf="!myAuthService.jelLogiran()">{{'login'|transloco}}</a>
+          <a *ngIf="myAuthService.jelLogiran()" (click)="goToProfile()"
+          style="cursor: pointer;">{{'myProfile'|transloco}}</a>
+          <a routerLink="/login" *ngIf="myAuthService.jelLogiran()" (click)="logOut()" style="font-weight: bold">{{'logOut'|transloco}}</a>
+        </div>
 
+      </div>
     </div>
   </div>
-</div>
 
-<mat-toolbar class="custom-toolbar">
-  <mat-toolbar-row style="display: flex; justify-content: space-between;">
-    <span class="divider">|</span>
-    <button mat-button (click)="showAllProperties()"><mat-icon>reorder</mat-icon>{{'all'|transloco}}</button>
-    <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Houses')"><mat-icon>home</mat-icon>{{'houses'|transloco}}</button>
-    <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Hotels')"><mat-icon>hotel</mat-icon>{{'hotels'|transloco}}</button>
-    <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Countryside')"><mat-icon>terrain</mat-icon>{{'countryside'|transloco}}</button>
-    <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Cabins')"><mat-icon>cabin</mat-icon>{{'cabins'|transloco}}</button>
-    <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Lake')"><mat-icon>water</mat-icon>{{'lake'|transloco}}</button>
-    <span class="divider">|</span>
-    <button mat-button (click)="filterProperties('Villas')"><mat-icon>villa</mat-icon>{{'villas'|transloco}}</button>
-    <span class="divider">|</span>
-  </mat-toolbar-row>
-</mat-toolbar>
+  <mat-toolbar class="custom-toolbar">
+    <mat-toolbar-row style="display: flex; justify-content: space-between;">
+      <span class="divider">|</span>
+      <button mat-button (click)="showAllProperties()"><mat-icon>reorder</mat-icon>{{'all'|transloco}}</button>
+      <span class="divider">|</span>
+      <button mat-button (click)="filterProperties('Houses')"><mat-icon>home</mat-icon>{{'houses'|transloco}}</button>
+      <span class="divider">|</span>
+      <button mat-button (click)="filterProperties('Hotels')"><mat-icon>hotel</mat-icon>{{'hotels'|transloco}}</button>
+      <span class="divider">|</span>
+      <button mat-button (click)="filterProperties('Countryside')"><mat-icon>terrain</mat-icon>{{'countryside'|transloco}}</button>
+      <span class="divider">|</span>
+      <button mat-button (click)="filterProperties('Cabins')"><mat-icon>cabin</mat-icon>{{'cabins'|transloco}}</button>
+      <span class="divider">|</span>
+      <button mat-button (click)="filterProperties('Lake')"><mat-icon>water</mat-icon>{{'lake'|transloco}}</button>
+      <span class="divider">|</span>
+      <button mat-button (click)="filterProperties('Villas')"><mat-icon>villa</mat-icon>{{'villas'|transloco}}</button>
+      <span class="divider">|</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-<div class="content" style="margin-top: 5vh; display: flex; flex-wrap: wrap; justify-content: center; width: 80%; margin-left: auto; margin-right: auto;">
-  <mat-card *ngFor="let property of getProperties()" class="property-card" (click)="goToProperty(property.id)">
-    <!--<img mat-card-image src="https://placehold.co/600x600" alt="{{ property.name }}" class="card-img">-->
+  <div class="content" style="margin-top: 5vh; display: flex; flex-wrap: wrap; justify-content: center; width: 80%; margin-left: auto; margin-right: auto;">
+    <mat-card *ngFor="let property of getProperties()" class="property-card" (click)="goToProperty(property.id)">
+      <!--<img mat-card-image src="https://placehold.co/600x600" alt="{{ property.name }}" class="card-img">-->
     <img mat-card-image [src]="getImageSrc(property.images)" alt="{{ property.name }}" class="card-img">
     <mat-card-content>
       <h4 mat-card-title class="card-title">{{ property.name }}</h4>

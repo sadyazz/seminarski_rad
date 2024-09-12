@@ -57,5 +57,7 @@
   "newPassword": "Nova šifra",
   "confirmPassword": "Potvrdite šifru",
   "changesSuccessful": "Promjene su uspješno sačuvane",
-  "registrationSuccessful": "Registracija uspješna"
+  "registrationSuccessful": "Registracija uspješna",
+  "noReviews": "Nemate recenzija",
+  "noReservations": "Nemate rezervacija"
 }

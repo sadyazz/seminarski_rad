@@ -17,9 +17,10 @@ export class HomeComponent implements OnInit{
 
   constructor(public router: Router, private httpClient: HttpClient, public myAuthService: MyAuthService) {
   }
-
+  profileImageSrc: string = '../assets/img/profile-pic.png';
   ngOnInit(): void {
     this.getSmjestaj();
+    this.getProfileImageSrc();
   }
 
 
@@ -77,7 +78,7 @@ getSmjestaj() {
 
   this.httpClient.get<PropertiesGetAllResponse[]>(url).subscribe(
     (x: PropertiesGetAllResponse[]) => {
-      console.log('Properties fetched successfully:', x);
+      //console.log('Properties fetched successfully:', x);
       this.properties = x;
       this.filteredProperties=x;
     //  console.log('Properties fetched successfully:', this.properties);
@@ -112,6 +113,30 @@ getSmjestaj() {
       return images[0].path;
     }
     return 'https://placehold.co/600x600'; // Placeholder image
+  }
+
+  getProfileImageSrc(): void {
+    const userId = this.myAuthService.returnId();
+    if (!userId) {
+      this.profileImageSrc = '../assets/img/profile-pic.png';
+      return;
+    }
+
+    const url = `${MojConfig.adresa_servera}/GetProfileImage?id=${userId}`;
+
+    this.httpClient.get(url, { responseType: 'text' }).subscribe(
+      response => {
+        if (response) {
+          this.profileImageSrc = `data:image/jpeg;base64,${response}`;
+        } else {
+          this.profileImageSrc = '../assets/img/profile-pic.png';
+        }
+      },
+      error => {
+        console.error('Error fetching profile image:', error);
+        this.profileImageSrc = '../assets/img/profile-pic.png';
+      }
+    );
   }
 
 }

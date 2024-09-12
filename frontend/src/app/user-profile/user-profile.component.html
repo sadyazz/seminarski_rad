@@ -66,10 +66,16 @@
                <div class="card mb-4">
                  <div class="card-body text-center" style="display: flex;flex-direction: row; align-items: center; justify-content: flex-start;">
                    <div style="">
-                     <img mat-card-image src="https://placehold.co/80x80/orange/white" alt="user image" class="card-img">
+                   <!--  <img mat-card-image src="https://placehold.co/80x80/orange/white" alt="user image" class="card-img"> -->
+                     <img *ngIf="user.imagePath; else noImage" [src]="user.imagePath" alt="Profile Image" class="card-img">
+
+                     <ng-template #noImage>
+                       <img src="https://placehold.co/80x80/orange/white" alt="Default Profile Image" class="card-img">
+                     </ng-template>
+
                      <!--<p class="text-muted mb-0 mt-2" *ngIf="isEditing" style="cursor: pointer;" >Change profile picture</p>-->
                    </div>
-                   <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                   <div style="display: flex; flex-direction: column; align-items: flex-start; ">
                      <h4 class="my-3">{{tempUser?.name}} {{tempUser?.surname}}</h4>
                      <!--<p class="text-muted mb-1">{{tempUser?.username}}</p>-->
                      <div class="col-sm-9">
@@ -83,7 +89,7 @@
                    </div>
                  </div>
 
-                 <input type="file" style="width:200px; margin: 0 0 20px 25px" *ngIf="isEditing" (change)="onFileSelected($event)">
+                 <input type="file" style="width:200px; margin: 0 0 20px 25px" *ngIf="isEditing" (change)="onFileSelected($event); uploadProfileImage()" accept="image/*">
                </div>
              </div>
              <div class="col-lg-8">
@@ -215,6 +221,8 @@
        <div #reservations class="reservations-container">
          <h2 class="reservations-title">{{'myReservations' | transloco}}</h2>
 
+<div *ngIf="noReservations" class="text-center">{{'noReservations'|transloco}}</div>
+
          <div class="reservations-list">
            <!--<mat-card *ngFor="let reservation of getReservations()" class="reservation-card">
              <img mat-card-image src="https://placehold.co/80x80" alt="{{ reservation.name }}" class="reservation-image">
@@ -232,7 +240,7 @@
 
        <div #revs class="reservations-container">
          <h2 class="reviews-title">{{ 'myReviews' | transloco }}</h2>
-
+<div *ngIf="noReviews" class="text-center">{{'noReviews' |transloco}}</div>
          <div class="reservations-list">
            <mat-card *ngFor="let review of reviews" class="reviews-card">
              <mat-card-content>

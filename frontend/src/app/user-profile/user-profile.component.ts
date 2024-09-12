@@ -16,11 +16,10 @@ export class UserProfileComponent implements OnInit{
 
   constructor(public myAuthService: MyAuthService, public router :Router, private httpClient: HttpClient) {
   }
-
+  selectedFile: File | null = null;
   user: User = {};
   tempUser: User = {};
   isEditing: boolean = false;
-  selectedFile = null;
   properties:PropertiesGetAllResponse[] = [];
   reviews:any;
   showSuccessAlert = false;
@@ -29,10 +28,54 @@ export class UserProfileComponent implements OnInit{
     this.showSuccessAlert = false;
   }
 
-  onFileSelected(event:any) {
-      this.selectedFile = event.target.files[0];
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+  uploadProfileImage(): void {
+    const formData = new FormData();
+    formData.append('image', this.selectedFile as Blob);
+
+    const userId = this.myAuthService.returnId();
+    if (!userId) {
+      console.error('User ID not found');
+      return;
+    }
+
+    const url = `${MojConfig.adresa_servera}/UploadProfileImage?id=${userId}`;
+
+    this.httpClient.post(url, formData).subscribe(
+      response => {
+        console.log('Profile image uploaded successfully', response);
+        this.getUserData(userId).subscribe(data => {
+          this.user = data;
+          this.tempUser = { ...data };
+        });
+      },
+      error => {
+        console.error('Error uploading profile image', error);
+      }
+    );
   }
 
+  getProfileImage(userId: number | undefined): void {
+    const url = `${MojConfig.adresa_servera}/GetProfileImage?id=${userId}`;
+
+    this.httpClient.get(url, { responseType: 'text' }).subscribe(
+      (data: string) => {
+        if (data) {
+          this.user.imagePath = `data:image/jpeg;base64,${data}`;
+        } else {
+          console.log('No image found');
+        }
+      },
+      (error) => {
+        console.error('Error fetching profile image:', error);
+      }
+    );
+  }
   toggleEditMode(el: HTMLElement) {
     el.scrollIntoView({behavior: 'smooth'});
     this.isEditing = !this.isEditing;
@@ -43,6 +86,8 @@ export class UserProfileComponent implements OnInit{
       this.getUserData(userId).subscribe(data => {
         this.user = data;
         this.tempUser = { ...data };
+        this.getProfileImage(userId);
+        this.getReviews();
         //console.log(this.user);
       }, error => {
         console.error('Error fetching user data', error);
@@ -50,7 +95,8 @@ export class UserProfileComponent implements OnInit{
     } else {
       console.error('User ID not found');
     }
-    this.getReviews();
+
+
 
     this.user = {
       name: '',
@@ -60,6 +106,7 @@ export class UserProfileComponent implements OnInit{
       email: '',
       dateBirth: '',
       dateOfRegistraion: '',
+      imagePath: '',
       newPassword: '',
       confirmPassword: ''
     };
@@ -67,14 +114,21 @@ export class UserProfileComponent implements OnInit{
   hidePassword1 = true;
   hideConfirmPassword = true;
   password:any;
+  noReviews= true;
+  noReservations = true;
 
   getReviews(): void {
     const userId = this.myAuthService.returnId();
     let url = MojConfig.adresa_servera+`/GetReviewByUserId?userId=${userId}`;
+    console.log("Request URL:", url);
     this.httpClient.get<any[]>(url).subscribe(
       (data) => {
-        this.reviews = data;
-        console.log("reviews -> ", data);
+        if (data === null) {
+          this.noReviews = true;
+        } else {
+          this.reviews = data;
+          this.noReviews = false;
+        }
       },
       (error) => {
         console.error('Error fetching reviews:', error);

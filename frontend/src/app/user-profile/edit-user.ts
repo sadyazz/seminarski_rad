@@ -16,6 +16,7 @@ export interface User {
   phone?: string;
   dateBirth?: string;
   dateOfRegistraion?: string;
+  imagePath?: string;
  newPassword?: string;
   confirmPassword?: string;
 }

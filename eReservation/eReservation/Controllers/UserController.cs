@@ -26,7 +26,7 @@ namespace eReservation.Controllers
             public string? Email { get; set; }
             public string? Phone { get; set; }
             public DateTime DateBirth { get; set; }
-            //public string? ProfileImage { get; set; }  
+            public string? ProfileImage { get; set; }  
             public string? NewPassword { get; set; }  
             public string? Username { get; set; }
         }
@@ -156,6 +156,55 @@ namespace eReservation.Controllers
 
             return Ok(existingUser);
         }
+
+        [HttpPost]
+        [Route("/UploadProfileImage")]
+        public async Task<ActionResult> UploadProfileImage([FromQuery] int id, [FromForm] IFormFile image)
+        {
+            if (!_authService.JelLogiran())
+            {
+                return Unauthorized("Korisnik nije prijavljen.");
+            }
+
+            var user = _db.User.FirstOrDefault(u => u.ID == id);
+            if (user == null)
+            {
+                return NotFound("Korisnik nije pronađen.");
+            }
+
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest("Slika nije validna.");
+            }
+
+            // Konvertuj sliku u base64 string
+            using (var memoryStream = new MemoryStream())
+            {
+                await image.CopyToAsync(memoryStream);
+                var imageBytes = memoryStream.ToArray();
+                var base64Image = Convert.ToBase64String(imageBytes);
+
+                // Spremi base64 string u bazu
+                user.ProfileImage = base64Image;
+                _db.SaveChanges();
+            }
+
+            return Ok(new { message = "Slika uspješno uploadovana." });
+        }
+
+        [HttpGet]
+        [Route("/GetProfileImage")]
+        public ActionResult<string> GetProfileImage([FromQuery] int id)
+        {
+            var user = _db.User.FirstOrDefault(u => u.ID == id);
+            if (user == null || string.IsNullOrEmpty(user.ProfileImage))
+            {
+                return NotFound("Korisnik nema profilnu sliku.");
+            }
+
+            return Ok(user.ProfileImage);
+        }
+
 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)

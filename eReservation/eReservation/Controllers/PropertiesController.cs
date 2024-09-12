@@ -181,6 +181,87 @@ namespace eReservation.Controllers
 
             return Ok(existingProperty);
         }
+        [HttpPost]
+        [Route("/UploadPropertyImage")]
+        public async Task<ActionResult> UploadPropertyImage([FromQuery] int id, [FromForm] IFormFile image)
+        {
+            //if (!_authService.JelLogiran())
+            //{
+            //    return Unauthorized("Korisnik nije prijavljen.");
+            //}
+
+            var property = _db.Properties.Include(p => p.Images).FirstOrDefault(p => p.ID == id);
+            if (property == null)
+            {
+                return NotFound("Nekretnina nije pronađena.");
+            }
+
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest("Slika nije validna.");
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await image.CopyToAsync(memoryStream);
+                var imageBytes = memoryStream.ToArray();
+                var base64Image = Convert.ToBase64String(imageBytes);
+
+                property.Images.Add(new Images
+                {
+                    Path = base64Image,
+                    PropertyId = id
+                });
+                _db.SaveChanges();
+            }
+
+            return Ok(new { message = "Slika uspješno uploadovana." });
+        }
+
+        [HttpGet]
+        [Route("/GetPropertyImage")]
+        public ActionResult<string> GetPropertyImage([FromQuery] int id)
+        {
+            var property = _db.Properties
+                .Include(p => p.Images)
+                .FirstOrDefault(p => p.ID == id);
+
+            if (property == null || !property.Images.Any())
+            {
+                return NotFound("Nekretnina ili slika nisu pronađeni.");
+            }
+
+            var image = property.Images.FirstOrDefault();
+            if (image == null || string.IsNullOrEmpty(image.Path))
+            {
+                return NotFound("Slika nije pronađena.");
+            }
+
+            return Ok(image.Path);
+        }
+        [HttpGet]
+        [Route("/GetPropertyImages")]
+        public ActionResult<IEnumerable<string>> GetPropertyImages([FromQuery] int propertyId)
+        {
+            var property = _db.Properties
+                .Include(p => p.Images)
+                .FirstOrDefault(p => p.ID == propertyId);
+
+            if (property == null || !property.Images.Any())
+            {
+                return NotFound("Nekretnina ili slike nisu pronađene.");
+            }
+
+            var imagePaths = property.Images
+                .Where(image => !string.IsNullOrEmpty(image.Path))
+                .Select(image => image.Path)
+                .ToList();
+
+            return Ok(imagePaths);
+        }
+
+
+
 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)

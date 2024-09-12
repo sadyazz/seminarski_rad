@@ -81,7 +81,6 @@ getSmjestaj() {
       //console.log('Properties fetched successfully:', x);
       this.properties = x;
       this.filteredProperties=x;
-    //  console.log('Properties fetched successfully:', this.properties);
     },
     error => {
       console.error('Error fetching properties', error);
@@ -109,8 +108,8 @@ getSmjestaj() {
   }
 
   getImageSrc(images: { id: number, path: string }[]): string {
-    if (images && images.length > 0) {
-      return images[0].path;
+    if (images && images.length > 0 && images[0].path) {
+      return `data:image/jpeg;base64,${images[0].path}`;
     }
     return 'https://placehold.co/600x600'; // Placeholder image
   }

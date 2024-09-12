@@ -212,5 +212,9 @@ span.carousel-control-prev-icon:after{
   display:none;
 }
 
-
+.carousel-indicators {
+  list-style-type: none; /* Uklanja marker za sve liste unutar karusela */
+  padding: 0; /* Uklanja unutrašnje razmake */
+  margin: 0; /* Uklanja spoljne razmake */
+}
 

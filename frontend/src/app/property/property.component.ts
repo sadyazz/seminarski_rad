@@ -39,6 +39,13 @@ export class PropertyComponent implements OnInit{
   pricePerNight = 0;
   numberOfReviews: number = 0;
 
+
+  ngOnInit(): void {
+    this.route.params.subscribe(x => {
+      this.propertyId = <number>x['id']
+      this.loadPropertyDetails(this.propertyId);
+    });
+  }
   getTotalPrice() {
     return (this.pricePerNight * this.nights* this.guests);
   }
@@ -61,10 +68,7 @@ export class PropertyComponent implements OnInit{
 
 
   constructor(public router: Router, private route: ActivatedRoute, private httpKlijent: HttpClient, private snackBar: MatSnackBar, private myAuthService: MyAuthService) {
-    this.route.params.subscribe(x => {
-      this.propertyId = <number>x['id']
-      this.loadPropertyDetails(this.propertyId);
-    });
+
   }
 
   loadPropertyDetails(id: number): void {
@@ -75,10 +79,44 @@ export class PropertyComponent implements OnInit{
       this.pricePerNight=data.pricePerNight;
       this.property.reviews = data.reviews || [];
       this.numberOfReviews = this.property.reviews.length;
+      this.loadPropertyImages(id);
     }, error => {
       console.error('Error fetching property data', error);
     });
   }
+/*
+  loadPropertyImages(propertyId: number): void {
+    const url = `${MojConfig.adresa_servera}/GetPropertyImage?id=${propertyId}`;
+    this.httpKlijent.get(url, { responseType: 'text' }).subscribe(
+      data => {
+
+        this.property.images = [{
+          path: `data:image/jpeg;base64,${data}`
+        }];
+        console.log("property images: ", this.property.images);
+      },
+      error => {
+        console.error('Error fetching property images', error);
+      }
+    );
+  }
+*/
+  loadPropertyImages(propertyId: number): void {
+    const url = `${MojConfig.adresa_servera}/GetPropertyImages?propertyId=${propertyId}`;
+    this.httpKlijent.get<string[]>(url).subscribe(
+      data => {
+        this.property.images = data.map(imageBase64 => ({
+          path: `data:image/jpeg;base64,${imageBase64}`
+        }));
+        console.log("property images: ", this.property.images);
+      },
+      error => {
+        console.error('Error fetching property images', error);
+      }
+    );
+  }
+
+
 
   calculateNightsAndTotalPrice(): void {
     if (this.checkinDate && this.checkoutDate) {
@@ -121,12 +159,7 @@ export class PropertyComponent implements OnInit{
   }
 
 
-  ngOnInit(): void {
-   // this.route.paramMap.subscribe(params => {
-    //  this.propertyId = +params.get('id');
-    //  this.loadPropertyDetails(this.propertyId);
-   // });
-  }
+
 
   nazad(){
     this.router.navigate(["/home"]);

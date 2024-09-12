@@ -194,12 +194,13 @@ export class UserProfileComponent implements OnInit{
 
     this.httpClient.put(url, updatedUser).subscribe(
       (response: any) => {
-        console.log('User updated successfully');
+        //console.log('User updated successfully');
         this.showSuccessAlert = true;
         setTimeout(() => this.showSuccessAlert = false, 3000);
         this.getUserData(userId).subscribe(data => {
           this.user = data;
           this.tempUser = { ...data };
+          this.getProfileImage(userId);
           this.isEditing = false;
         }, error => {
           console.error('Error fetching updated user data', error);

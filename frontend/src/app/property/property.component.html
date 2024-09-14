@@ -101,7 +101,7 @@
 
 
 
-    <div class="con"  style="width: 400px; margin:auto;s">
+    <div class="con"  style="width: 400px; margin:auto;">
       <div class="col-md-8 "  style="width: 110%;">
         <div class="card">
           <div class="card-header">
@@ -137,10 +137,10 @@
             </div>
             <button class="btn btn-primary btn-block"  (click)="reserve()">{{'reserve'|transloco}}</button>
             <div class="row mt-3">
-              <div class="col-md-6" style="font-size: 16px;">
+              <div class="col-md-6  fs-6">
                 KM {{pricePerNight}} x {{ nights }} {{'nights'|transloco}}
               </div>
-              <div class="col-md-6 text-right" style="font-size: 16px;">
+              <div class="col-md-6 text-right fs-6">
                 {{ (pricePerNight * nights) | number }} KM
               </div>
             <!--  <div class="col-md-6 text-right">
@@ -149,10 +149,10 @@
             </div>
             <hr>
             <div class="row">
-              <div class="col-md-6" style="font-size: 16px;">
+              <div class="col-md-6 fs-6">
                 {{'totalPrice'|transloco}}:
               </div>
-              <div class="col-md-6 text-right" style="font-weight: 600; font-size: 16px;"> {{ totalPrice | number }} KM
+              <div class="col-md-6 text-right fs-6" style="font-weight: 600; "> {{ totalPrice | number }} KM
               </div>
             </div>
           </div>

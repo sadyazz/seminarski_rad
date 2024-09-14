@@ -52,7 +52,7 @@
       <div class="profile-menu">
         <div class="cont">
           <img src="../assets/img/nav.png">
-          <img style="width: 50px" [src]="profileImageSrc" class="profile-image"></div>
+          <img [src]="profileImageSrc" class="profile-image"></div>
         <div  class="sidebar">
           <a routerLink="/login" *ngIf="!myAuthService.jelLogiran()">{{'login'|transloco}}</a>
           <a *ngIf="myAuthService.jelLogiran()" (click)="goToProfile()"
@@ -84,7 +84,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div class="content" style="margin-top: 5vh; display: flex; flex-wrap: wrap; justify-content: center; width: 80%; margin-left: auto; margin-right: auto;">
+  <div class="content">
     <mat-card *ngFor="let property of getProperties()" class="property-card" (click)="goToProperty(property.id)">
       <img mat-card-image [src]="getImageSrc(property.images)" alt="{{ property.name }}" class="card-img">
       <mat-card-content>

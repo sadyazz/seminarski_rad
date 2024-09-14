@@ -87,25 +87,23 @@ console.log('register request -> ',this.registerRequest);
     const dialogRef = this.dialog.open(TwofaPageComponent,{width:'20rem',height:'15rem'});
   }
 
-  signIn(){
-   let url = MojConfig.adresa_servera + "/Autentifikacija/login";
-    this.httpClient.post<AuthLoginResponse>(url, this.loginRequest).subscribe((x)=>{
-      if(!x.isLogiran){
-        alert("pogresan username / password")
-      }else{
-        this.myAuthService.setLogiraniKorisnik(x.autentifikacijaToken);
+  signIn() {
+    const url = `${MojConfig.adresa_servera}/Autentifikacija/login`;
+    this.httpClient.post<AuthLoginResponse>(url, this.loginRequest).subscribe((response) => {
+      if (!response.isLogiran) {
+        alert("Incorrect username or password");
+      } else {
+        this.myAuthService.setLogiraniKorisnik(response.autentifikacijaToken);
 
-        if(this.myAuthService.is2FActive()){
-          //this.router.navigate(["/twofaPage"])
+        if (this.myAuthService.is2FActive() && !this.myAuthService.is2FACompleted()) {
           this.open2Fa();
-        }else {
-          this.router.navigate(["/home"])
+        } else {
+          this.router.navigate(['/home']);
         }
-
-
       }
-    })
+    });
   }
+
 
   hideAlert(): void {
     this.showSuccessAlert = false;

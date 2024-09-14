@@ -49,6 +49,21 @@
         </div>-->
       </div>
   <select-language></select-language>
+  <!--  <mat-sidenav-container class="sidenav-container" style="height: 40px;">
+      <mat-sidenav-content color="primary">
+        <mat-slide-toggle  (change)="toggleTheme()" [checked]="isDarkTheme"></mat-slide-toggle>
+      </mat-sidenav-content>
+    </mat-sidenav-container>-->
+    <div class="form-check form-switch">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="themeSwitch"
+        (change)="toggleTheme()"
+        [checked]="isDarkTheme">
+      <label class="form-check-label" for="themeSwitch">Dark Mode</label>
+    </div>
       <div class="profile-menu">
         <div class="cont">
           <img src="../assets/img/nav.png">

@@ -23,9 +23,11 @@ export class UserProfileComponent implements OnInit{
   properties:PropertiesGetAllResponse[] = [];
   reviews:any;
   showSuccessAlert = false;
+  showFailAlert = false;
 
   hideAlert(): void {
     this.showSuccessAlert = false;
+    this.showFailAlert = false;
   }
 
   onFileSelected(event: any) {
@@ -134,7 +136,6 @@ export class UserProfileComponent implements OnInit{
         "my-auth-token": token
       }
     }).subscribe(x=>{
-      console.log("logout uspjesan")
     })
 
     this.router.navigate(["/login"])
@@ -148,10 +149,10 @@ export class UserProfileComponent implements OnInit{
   }
   saveChanges(): void {
     if (!this.user) return;
-
     if (this.user.newPassword && this.user.confirmPassword) {
       if (this.user.newPassword !== this.user.confirmPassword) {
-        console.log('Passwords do not match');
+
+       this.showFailAlert = true;
         return;
       }
     }
@@ -170,7 +171,6 @@ export class UserProfileComponent implements OnInit{
 
     this.httpClient.put(url, updatedUser).subscribe(
       (response: any) => {
-        //console.log('User updated successfully');
         this.showSuccessAlert = true;
         setTimeout(() => this.showSuccessAlert = false, 3000);
         this.getUserData(userId).subscribe(data => {
@@ -189,7 +189,6 @@ export class UserProfileComponent implements OnInit{
   }
   getReservations() {
     let url = MojConfig.adresa_servera + '/api/Properties/GetAll';
-    console.log('Fetching properties from URL:', url);
 
     this.httpClient.get<PropertiesGetAllResponse[]>(url).subscribe(
       (x: PropertiesGetAllResponse[]) => {

@@ -85,15 +85,32 @@ namespace eReservation.Controllers
             return NoContent();
         }
 
-        [HttpGet("{propertiesId}")]
-        public ActionResult<List<Reviews>> GetByPropertiesId(int propertiesId)
+        [HttpGet]
+        [Route("/GetReviewsByPropertyId")]
+        public ActionResult<List<Reviews>> GetByPropertiesId([FromQuery] int propertyId)
         {
-            var propertyReviews = _db.Reviews.Where(r => r.PropertiesID == propertiesId).ToList();
+            var propertyReviews = _db.Reviews
+      .Include(r => r.User) // Uključi korisnika
+      .Where(r => r.PropertiesID == propertyId)
+      .ToList();
+
             if (propertyReviews.Any())
             {
-                return Ok(propertyReviews);
+                var reviewDtos = propertyReviews.Select(r => new ReviewDto
+                {
+                    ID = r.ID,
+                    UserID = r.UserID,
+                    UserName = r.User != null ? r.User.Username : "Unknown",
+                    UserFullName = r.User != null ? $"{r.User.Name} {r.User.Surname}" : "Unknown",
+                    PropertiesID = r.PropertiesID,
+                    Review = r.Review,
+                    Comment = r.Comment,
+                    DateReview = r.DateReview
+                }).ToList();
+
+                return Ok(reviewDtos);
             }
-            return NotFound();
+            return NoContent();
         }
 
         [HttpPost]

@@ -31,7 +31,8 @@ import {MatIcon} from "@angular/material/icon";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import { SelectLanguageComponent } from './components/select-language/select-language.component';
 import { TranslocoRootModule } from './transloco-root.module';
-import {translate} from '@ngneat/transloco'
+import {translate} from '@ngneat/transloco';
+import { ReviewComponentComponent } from './components/review-component/review-component.component'
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import {translate} from '@ngneat/transloco'
     UserProfileComponent,
     PropertyComponent,
     TwofaPageComponent,
-    SelectLanguageComponent
+    SelectLanguageComponent,
+    ReviewComponentComponent
   ],
   imports: [
     BrowserModule,

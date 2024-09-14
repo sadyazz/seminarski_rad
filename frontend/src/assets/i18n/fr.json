@@ -60,5 +60,6 @@
   "registrationSuccessful": "Inscription réussie",
   "noReviews": "Vous n'avez pas d'avis",
   "noReservations": "Vous n'avez pas de réservations",
-  "login": "Connecter"
+  "login": "Connecter",
+  "thereAreNoReviews": "Il n'y a pas d'avis"
 }

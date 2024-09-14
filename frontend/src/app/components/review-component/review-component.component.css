@@ -1,0 +1,68 @@
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reviews-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  display: inline;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.reviews-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+  margin-top: 20px;
+  /*padding: 15px;*/
+}
+
+.review-header {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.review-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.review-info {
+  font-size: 14px;
+  color: #555;
+}
+
+.review-rating,
+.review-comment,
+.review-date {
+  display: block;
+}
+
+.review-comment{
+  font-size:25px;
+}
+
+.review-date {
+  font-style: italic;
+  color: #888;
+}
+
+.user-fullname{
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.user-username{
+  margin-left: 5px;
+}

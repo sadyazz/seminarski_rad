@@ -60,5 +60,6 @@
   "registrationSuccessful": "Registrierung erfolgreich",
   "noReviews": "Sie haben keine Bewertungen",
   "noReservations": "Sie haben keine Reservierungen",
-  "login": "Anmeldung"
+  "login": "Anmeldung",
+  "thereAreNoReviews": "Es gibt keine Bewertungen"
 }

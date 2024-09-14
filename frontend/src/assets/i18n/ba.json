@@ -21,7 +21,7 @@
   "numberOfRooms": "Broj soba",
   "numberOfBathrooms": "Broj kupatila",
   "night": "Noć",
-  "backToHome": "Povratak na početnu stranicu",
+  "backToHome": "Nazad na početnu stranicu",
   "myReservations": "Moje rezervacije",
   "myReviews": "Moje recenzije",
   "editProfile": "Uredi profil",
@@ -60,5 +60,6 @@
   "registrationSuccessful": "Registracija uspješna",
   "noReviews": "Nemate recenzija",
   "noReservations": "Nemate rezervacija",
-  "login": "Prijavi se"
+  "login": "Prijavi se",
+  "thereAreNoReviews" : "Nema recenzija"
 }

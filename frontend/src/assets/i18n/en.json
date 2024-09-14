@@ -59,5 +59,6 @@
   "changesSuccessful": "Changes saved successfully",
   "registrationSuccessful": "Registration successful",
   "noReviews": "You have no reviews",
-  "noReservations": "You have no reservations"
+  "noReservations": "You have no reservations",
+  "thereAreNoReviews" : "There are no reviews"
 }

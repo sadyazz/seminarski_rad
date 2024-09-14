@@ -251,3 +251,23 @@ mat-card-content {
   display: flex;
   align-items: center;
 }
+
+body > app-root > home > div.home-content > div > div.search-container > div.when > mat-form-field > div.mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align{
+  display: none;
+}/*
+.sidenav-container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+mat-sidenav-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0;
+}
+
+mat-slide-toggle {
+  margin: 0;
+}*/

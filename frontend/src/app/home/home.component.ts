@@ -13,7 +13,7 @@ import {PropertiesGetAllResponse} from "./properties-getall-response";
 })
 export class HomeComponent implements OnInit{
 
-
+  isDarkTheme = false;
 
   constructor(public router: Router, private httpClient: HttpClient, public myAuthService: MyAuthService) {
   }
@@ -21,9 +21,23 @@ export class HomeComponent implements OnInit{
   ngOnInit(): void {
     this.getSmjestaj();
     this.getProfileImageSrc();
+    this.loadTheme();
   }
 
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    this.saveTheme();
+    document.body.classList.toggle('dark-theme', this.isDarkTheme);
+  }
 
+  loadTheme() {
+    this.isDarkTheme = localStorage.getItem('theme') === 'dark';
+    document.body.classList.toggle('dark-theme', this.isDarkTheme);
+  }
+
+  saveTheme() {
+    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light');
+  }
 
   brojacA =0;
   brojacC =0;

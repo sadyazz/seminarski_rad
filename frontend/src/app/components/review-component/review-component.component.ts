@@ -19,7 +19,6 @@ export class ReviewComponentComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log('ReviewComponent initialized with ID:', this.id);
     this.getReviews();
   }
 
@@ -38,7 +37,6 @@ export class ReviewComponentComponent implements OnInit{
 
     this.httpClient.get<any[]>(url).subscribe(
       (data) => {
-        console.log('Fetched reviews:', data);
         if (data === null || data.length === 0) {
           this.noReviews = true;
         } else {

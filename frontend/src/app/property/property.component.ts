@@ -76,7 +76,7 @@ export class PropertyComponent implements OnInit{
     const url = `${MojConfig.adresa_servera}/GetPropertyById?id=${id}`;
     this.httpKlijent.get<any>(url).subscribe(data => {
       this.property = data;
-      this.property.images = data.images || [];console.log("Property data loaded:", this.property);
+      this.property.images = data.images || [];
       this.pricePerNight=data.pricePerNight;
       this.property.reviews = data.reviews || [];
       this.numberOfReviews = this.property.reviews.length;
@@ -98,7 +98,6 @@ export class PropertyComponent implements OnInit{
         this.property.images = data.map(imageBase64 => ({
           path: `data:image/jpeg;base64,${imageBase64}`
         }));
-        console.log("property images: ", this.property.images);
       },
       error => {
         console.error('Error fetching property images', error);

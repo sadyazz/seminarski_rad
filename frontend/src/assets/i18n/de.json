@@ -61,5 +61,6 @@
   "noReviews": "Sie haben keine Bewertungen",
   "noReservations": "Sie haben keine Reservierungen",
   "login": "Anmeldung",
-  "thereAreNoReviews": "Es gibt keine Bewertungen"
+  "thereAreNoReviews": "Es gibt keine Bewertungen",
+  "passwordsDontMatch":"Die Passwörter stimmen nicht überein. Bitte stellen Sie sicher, dass beide Passwörter übereinstimmen."
 }

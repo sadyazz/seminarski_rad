@@ -60,5 +60,6 @@
   "registrationSuccessful": "Registration successful",
   "noReviews": "You have no reviews",
   "noReservations": "You have no reservations",
-  "thereAreNoReviews" : "There are no reviews"
+  "thereAreNoReviews" : "There are no reviews",
+  "passwordsDontMatch": "The passwords do not match. Please ensure both passwords are the same."
 }

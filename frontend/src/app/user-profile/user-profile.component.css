@@ -137,3 +137,14 @@ mat-icon {
   z-index: 1050;
 }
 
+.buttons{
+  display: flex;  justify-content: space-around;
+}
+
+.file-input{
+  width:200px; margin: 0 0 20px 25px
+}
+
+input[type="file"] {
+  color: transparent;
+}

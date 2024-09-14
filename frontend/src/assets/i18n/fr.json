@@ -59,4 +59,6 @@
   "changesSuccessful": "Modifications enregistrées avec succès",
   "registrationSuccessful": "Inscription réussie",
   "noReviews": "Vous n'avez pas d'avis",
-  "noReservations": "Vous n'avez pas de réservations"
+  "noReservations": "Vous n'avez pas de réservations",
+  "login": "Connecter"
+}

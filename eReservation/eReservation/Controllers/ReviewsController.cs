@@ -82,7 +82,7 @@ namespace eReservation.Controllers
 
                 return Ok(reviewDtos);
             }
-            return NotFound();
+            return NoContent();
         }
 
         [HttpGet("{propertiesId}")]

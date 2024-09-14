@@ -87,8 +87,6 @@ export class UserProfileComponent implements OnInit{
         this.user = data;
         this.tempUser = { ...data };
         this.getProfileImage(userId);
-        this.getReviews();
-        //console.log(this.user);
       }, error => {
         console.error('Error fetching user data', error);
       });
@@ -114,29 +112,7 @@ export class UserProfileComponent implements OnInit{
   hidePassword1 = true;
   hideConfirmPassword = true;
   password:any;
-  noReviews= true;
   noReservations = true;
-
-  getReviews(): void {
-    const userId = this.myAuthService.returnId();
-    let url = MojConfig.adresa_servera+`/GetReviewByUserId?userId=${userId}`;
-    console.log("Request URL:", url);
-    this.httpClient.get<any[]>(url).subscribe(
-      (data) => {
-        if (data === null) {
-          this.noReviews = true;
-        } else {
-          this.reviews = data;
-          this.noReviews = false;
-        }
-      },
-      (error) => {
-        console.error('Error fetching reviews:', error);
-      }
-    );
-  }
-
-
 
   getUserData(id: number): Observable<any> {
     const userId = this.myAuthService.returnId();

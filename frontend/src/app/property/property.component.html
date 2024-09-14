@@ -166,25 +166,7 @@
 <div>
 
   <div class="review-container">
-    <h2 class="reviews-title">{{ 'reviews' | transloco }}</h2>
-    <span> {{'numberOfReviews' | transloco}} {{ numberOfReviews }}</span>
-    <div class="reviews-list">
-      <mat-card *ngFor="let review of property.reviews" class="reviews-card">
-        <mat-card-content>
-          <div class="review-header">
-            <span class="user-fullname">{{ review.userFullName }}</span>
-            <span class="user-username">&commat;{{ review.userName }}</span>
-          </div>
-          <p class="review-info">
-            <span class="review-rating">{{ 'rating' | transloco }}: {{ review.review }}</span>
-            <br>
-            <span class="review-comment">{{ review.comment }}</span>
-            <br>
-            <span class="review-date">{{ review.dateReview | date:'short' }}</span>
-          </p>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <review-component [type]="'property'" [id]="this.propertyId"></review-component>
   </div>
 
 

@@ -38,6 +38,7 @@ export class PropertyComponent implements OnInit{
   totalPrice = 0;
   pricePerNight = 0;
   numberOfReviews: number = 0;
+  noReviews= true;
 
 
   ngOnInit(): void {
@@ -79,28 +80,17 @@ export class PropertyComponent implements OnInit{
       this.pricePerNight=data.pricePerNight;
       this.property.reviews = data.reviews || [];
       this.numberOfReviews = this.property.reviews.length;
+      if (this.property.reviews === null || this.property.reviews.length === 0) {
+        this.noReviews = true;
+      } else {
+        this.noReviews = false;
+      }
       this.loadPropertyImages(id);
     }, error => {
       console.error('Error fetching property data', error);
     });
   }
-/*
-  loadPropertyImages(propertyId: number): void {
-    const url = `${MojConfig.adresa_servera}/GetPropertyImage?id=${propertyId}`;
-    this.httpKlijent.get(url, { responseType: 'text' }).subscribe(
-      data => {
 
-        this.property.images = [{
-          path: `data:image/jpeg;base64,${data}`
-        }];
-        console.log("property images: ", this.property.images);
-      },
-      error => {
-        console.error('Error fetching property images', error);
-      }
-    );
-  }
-*/
   loadPropertyImages(propertyId: number): void {
     const url = `${MojConfig.adresa_servera}/GetPropertyImages?propertyId=${propertyId}`;
     this.httpKlijent.get<string[]>(url).subscribe(

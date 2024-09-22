@@ -11,10 +11,12 @@ namespace eReservation.Controllers.AuthEndpoints.Signup
     public class AuthRegisterEndpoint : BaseEndpoint<AuthRegisterRequest, IActionResult>
     {
         private readonly DataContext _applicationDbContext;
+        private readonly EmailSenderService _emailSenderService;
 
-        public AuthRegisterEndpoint(DataContext applicationDbContext)
+        public AuthRegisterEndpoint(DataContext applicationDbContext, EmailSenderService emailSenderService)
         {
             _applicationDbContext = applicationDbContext;
+            _emailSenderService = emailSenderService;
         }
 
         [HttpPost("register")]
@@ -44,6 +46,13 @@ namespace eReservation.Controllers.AuthEndpoints.Signup
 
             _applicationDbContext.User.Add(newUser);
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
+
+            var welcomeEmailContent = $"Hello {newUser.Name},\n\n" +
+                             "Welcome to our platform! We are thrilled to have you.\n" +
+                             "Best regards,\neReservation Team";
+
+            _emailSenderService.Posalji(newUser.Email, "Welcome to Our Platform", welcomeEmailContent, false);
+
 
             return Ok(new { message = "Registration successful!", user = newUser });
         }

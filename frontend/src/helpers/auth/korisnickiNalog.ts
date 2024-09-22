@@ -5,4 +5,5 @@ export interface KorisnickiNalog {
   isUser: boolean
   isAdmin: boolean
   is2FActive: boolean
+  is2FACompleted: boolean
 }

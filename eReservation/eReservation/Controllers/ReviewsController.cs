@@ -3,6 +3,7 @@ using eReservation.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static eReservation.Controllers.PropertiesController;
+using eReservation.DTO;
 
 namespace eReservation.Controllers
 {
@@ -17,17 +18,6 @@ namespace eReservation.Controllers
             _db = db;
         }
 
-        public class UserDto
-        {
-            public int ID { get; set; }
-            public string Username { get; set; }
-            public string FullName { get; set; }
-            public string Email { get; set; }
-            public string PhoneNumber { get; set; }
-            public DateTime DateJoined { get; set; }
-            public List<ReviewDto> Reviews { get; set; }
-        }
-
         [HttpGet]
         public ActionResult<List<Reviews>> GetAll()
         {
@@ -38,22 +28,6 @@ namespace eReservation.Controllers
             }
             return NoContent();
         }
-
-        //[HttpGet()]
-        //[Route("/GetReviewByUserId")]
-        //public ActionResult<List<Reviews>> GetByUserId([FromQuery]int userId)
-        //{
-        //    var userReviews = _db.Reviews
-        //        .Include(r => r.User)
-        //        .Include(r => r.Properties)
-        //        .Where(r => r.UserID == userId).ToList();
-
-        //    if (userReviews.Any())
-        //    {
-        //        return Ok(userReviews);
-        //    }
-        //    return NotFound();
-        //}
 
         [HttpGet]
         [Route("/GetReviewByUserId")]

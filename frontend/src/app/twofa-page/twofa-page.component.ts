@@ -49,7 +49,7 @@ constructor(private httpClient: HttpClient,
   }
 
   provjeriKod() {
-    console.log('Verifikacijski kod:', this.verifikacijskiKod); // Log the verification code
+    console.log('Verifikacijski kod:', this.verifikacijskiKod);
     const provjeriKod = this.tfas.some(tfa => tfa.twoFKey === this.verifikacijskiKod);
 
     if (provjeriKod) {
@@ -77,24 +77,4 @@ constructor(private httpClient: HttpClient,
       }, 1500);
     }
   }
-
-  /* otkljucaj() {
-     let config=MojConfig.http_opcije();
-     this.httpClient.get<LoginInformacije>(MojConfig.adresa_servera+ "/api/Korisnik/Otkljucaj/" + this.code.value, config).subscribe((x:LoginInformacije)=>{
-       let currentToken=AutentifikacijaHelper.getLoginInfo();
-       if(currentToken.autentifikacijaToken.vrijednost==x.autentifikacijaToken.vrijednost)
-       {
-         x.autentifikacijaToken.gost=currentToken.autentifikacijaToken?.gost;
-         x.autentifikacijaToken.admin=currentToken.autentifikacijaToken?.admin;
-         x.autentifikacijaToken.vlasnik=currentToken.autentifikacijaToken?.vlasnik;
-       }
-       AutentifikacijaHelper.setLoginInfo(x);
-       this.token=AutentifikacijaHelper.getLoginInfo();
-       this.ProvjeriUlogu();
-       localStorage.setItem('Working-user', JSON.stringify(this.workingUser));
-       // @ts-ignore
-       porukaSuccess("Uspjesno ste se logirali!");
-       this.dialogRef.close();
-     });
-  }*/
 }

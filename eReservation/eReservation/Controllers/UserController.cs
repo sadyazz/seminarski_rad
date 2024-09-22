@@ -3,6 +3,7 @@ using eReservation.Models;
 using eReservation.Helpers.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using eReservation.DTO;
 
 namespace eReservation.Controllers
 {
@@ -17,18 +18,6 @@ namespace eReservation.Controllers
         {
             _db = db;
             _authService = authService;
-        }
-
-        public class UserUpdateDto
-        {
-            public string? Name { get; set; }
-            public string? Surname { get; set; }
-            public string? Email { get; set; }
-            public string? Phone { get; set; }
-            public DateTime DateBirth { get; set; }
-            public string? ProfileImage { get; set; }  
-            public string? NewPassword { get; set; }  
-            public string? Username { get; set; }
         }
 
         [HttpGet]
@@ -65,43 +54,6 @@ namespace eReservation.Controllers
             _db.SaveChanges();
             return Ok(user);
         }
-
-        //[HttpPut]
-        //[Route("/EditUser")]
-        //public ActionResult<User> Edit([FromQuery]int id, [FromBody] User updatedUser)
-        //{
-
-        //    if (!_authService.JelLogiran())
-        //    {
-        //        return Unauthorized("Korisnik nije prijavljen.");
-        //    }
-
-        //    var existingUser = _db.User.FirstOrDefault(u => u.ID == id);
-        //    if (existingUser == null)
-        //    {
-        //        return NotFound("Korisnik nije pronađen.");
-        //    }
-
-        //    existingUser.Name = updatedUser.Name;
-        //    existingUser.Surname = updatedUser.Surname;
-        //    existingUser.Email = updatedUser.Email;
-        //    existingUser.Phone = updatedUser.Phone;
-        //    existingUser.DateOfRegistraion = updatedUser.DateOfRegistraion;
-        //    existingUser.DateBirth = updatedUser.DateBirth;
-
-
-
-        //    try
-        //    {
-        //        _db.SaveChanges();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Greška prilikom ažuriranja korisnika: " + ex.Message);
-        //    }
-
-        //    return Ok(existingUser);
-        //}
 
         [HttpPut]
         [Route("/EditUser")]

@@ -1,5 +1,5 @@
 <div class="container">
-<h2 class="reviews-title">{{ 'myReviews' | transloco }}</h2>
+<h2 class="reviews-title">{{ type === 'property' ? ('reviews' | transloco) : ('myReviews' | transloco) }}</h2>
 <div *ngIf="noReviews" class="text-center"> {{ type === 'property' ? ('thereAreNoReviews' | transloco) : ('noReviews' | transloco) }}</div>
 <div class="reservations-list">
   <mat-card *ngFor="let review of reviews" class="reviews-card">

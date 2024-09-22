@@ -8,7 +8,7 @@ import {MojConfig} from "../moj-config";
 export class AutentifikacijaTwoFOtkljucajEndpoint implements  BaseEndpoint<AutentifikacijaTwoFOtkljucajRequest, void>{
   constructor(public httpClient:HttpClient) { }
   Handle(request: AutentifikacijaTwoFOtkljucajRequest): Observable<void> {
-    let url=MojConfig.adresa_servera + `Autentifikacija/2f-otkljucaj`;
+    let url=MojConfig.adresa_servera + `/Autentifikacija/2f-otkljucaj`;
 
     return this.httpClient.post<void>(url, request);
   }

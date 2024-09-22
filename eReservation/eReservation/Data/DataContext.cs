@@ -24,7 +24,7 @@ namespace eReservation.Data
         public DbSet<Reservations> Reservations { get; set; }
         public DbSet<Reviews>  Reviews { get; set; }
         public DbSet<User> User { get; set; }
-        public DbSet<Wishlist> Wishlist { get; set; }
+        //public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<Admin> Admin { get; set; }
 
         public DbSet<AutentifikacijaToken> AutentifikacijaToken { get; set; }
@@ -46,16 +46,16 @@ namespace eReservation.Data
               .HasForeignKey(p => p.AmenitiesID);
 
 
-            modelBuilder.Entity<Wishlist>()
-                .HasKey(w => new { w.UserID, w.PropertiesID });
-            modelBuilder.Entity<Wishlist>()
-                .HasOne(w => w.User)
-                .WithMany(wl => wl.Wishlist)
-                .HasForeignKey(w => w.UserID);
-            modelBuilder.Entity<Wishlist>()
-                .HasOne(w => w.Properties)
-                .WithMany(wl => wl.Wishlist)
-                .HasForeignKey(w => w.PropertiesID);
+            //modelBuilder.Entity<Wishlist>()
+            //    .HasKey(w => new { w.UserID, w.PropertiesID });
+            //modelBuilder.Entity<Wishlist>()
+            //    .HasOne(w => w.User)
+            //    .WithMany(wl => wl.Wishlist)
+            //    .HasForeignKey(w => w.UserID);
+            //modelBuilder.Entity<Wishlist>()
+            //    .HasOne(w => w.Properties)
+            //    .WithMany(wl => wl.Wishlist)
+            //    .HasForeignKey(w => w.PropertiesID);
 
             modelBuilder.Entity<Reservations>()
                 .Property(r => r.TotalPrice)

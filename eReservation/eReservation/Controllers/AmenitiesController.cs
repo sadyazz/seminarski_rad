@@ -37,6 +37,23 @@ namespace eReservation.Controllers
             }
         }
 
+        [HttpGet("{propertyId}")]
+        public ActionResult<List<Amenities>> GetAmenitiesByPropertyId(int propertyId)
+        {
+            var amenities = _db.PropertiesAmenities
+                .Where(pa => pa.PropertiesID == propertyId)
+                .Include(pa => pa.Amenities) 
+                .Select(pa => pa.Amenities)
+                .ToList();
+
+            if (amenities == null || !amenities.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(amenities);
+        }
+
         [HttpPost]
         public ActionResult<Amenities> Add([FromBody] Amenities amenity)
         {

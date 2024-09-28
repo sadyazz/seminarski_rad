@@ -19,6 +19,7 @@ builder.Services.AddTransient<AuthService>();
 builder.Services.AddTransient<ActionLogService>();
 builder.Services.AddTransient<EmailSenderService>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<FirebaseService>();
 
 var app = builder.Build();
 

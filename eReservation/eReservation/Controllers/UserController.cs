@@ -4,6 +4,7 @@ using eReservation.Helpers.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using eReservation.DTO;
+using eReservation.Services;
 
 namespace eReservation.Controllers
 {
@@ -13,11 +14,13 @@ namespace eReservation.Controllers
     {
         private readonly DataContext _db;
         private readonly AuthService _authService;
+        private readonly FirebaseService _firebaseService;
 
-        public UserController(DataContext db, AuthService authService)
+        public UserController(DataContext db, AuthService authService, FirebaseService firebaseService)
         {
             _db = db;
             _authService = authService;
+            _firebaseService = firebaseService;
         }
 
         [HttpGet]
@@ -118,7 +121,7 @@ namespace eReservation.Controllers
                 return Unauthorized("Korisnik nije prijavljen.");
             }
 
-            var user = _db.User.FirstOrDefault(u => u.ID == id);
+            var user = await _db.User.FindAsync(id);
             if (user == null)
             {
                 return NotFound("Korisnik nije pronađen.");
@@ -129,20 +132,14 @@ namespace eReservation.Controllers
                 return BadRequest("Slika nije validna.");
             }
 
-            // Konvertuj sliku u base64 string
-            using (var memoryStream = new MemoryStream())
-            {
-                await image.CopyToAsync(memoryStream);
-                var imageBytes = memoryStream.ToArray();
-                var base64Image = Convert.ToBase64String(imageBytes);
+            var uploadUrl = await _firebaseService.UploadImageAsync(image);
+            user.ProfileImage = uploadUrl; // Save the download URL in the user's profile
+            await _db.SaveChangesAsync();
 
-                // Spremi base64 string u bazu
-                user.ProfileImage = base64Image;
-                _db.SaveChanges();
-            }
-
-            return Ok(new { message = "Slika uspješno uploadovana." });
+            return Ok(new { message = "Slika uspješno uploadovana.", url = uploadUrl });
         }
+
+
 
         [HttpGet]
         [Route("/GetProfileImage")]
@@ -154,23 +151,50 @@ namespace eReservation.Controllers
                 return NotFound("Korisnik nema profilnu sliku.");
             }
 
+            // Return the stored URL for the profile image
             return Ok(user.ProfileImage);
         }
 
 
+        //[HttpDelete("{id}")]
+        //public ActionResult Delete(int id)
+        //{
+        //    var userToDelete = _db.User.FirstOrDefault(u => u.ID == id);
+
+        //    if (userToDelete == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _db.User.Remove(userToDelete);
+        //    _db.SaveChanges();
+        //    return Ok("User deleted.");
+        //}
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var userToDelete = _db.User.FirstOrDefault(u => u.ID == id);
+            // Pronađite korisnika
+            var userToDelete = await _db.User.FirstOrDefaultAsync(u => u.ID == id);
 
             if (userToDelete == null)
             {
                 return NotFound();
             }
 
+            var tokensToDelete = await _db.AutentifikacijaToken
+                                           .Where(token => token.KorisnickiNalogId == id)
+                                           .ToListAsync();
+
+            if (tokensToDelete.Any())
+            {
+                _db.AutentifikacijaToken.RemoveRange(tokensToDelete);
+            }
+
             _db.User.Remove(userToDelete);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
+
             return Ok("User deleted.");
         }
+
     }
 }

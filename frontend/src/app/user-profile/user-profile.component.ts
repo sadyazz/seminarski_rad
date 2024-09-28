@@ -68,7 +68,7 @@ export class UserProfileComponent implements OnInit{
     this.httpClient.get(url, { responseType: 'text' }).subscribe(
       (data: string) => {
         if (data) {
-          this.user.imagePath = `data:image/jpeg;base64,${data}`;
+          this.user.imagePath = data;
         } else {
           console.log('No image found');
         }

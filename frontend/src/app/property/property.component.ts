@@ -29,7 +29,7 @@ export class PropertyComponent implements OnInit{
   };
 
 
-
+  amenities: any[] = [];
   checkinDate: Date | null = null;
   checkoutDate: Date | null = null;
   guests = 1;
@@ -85,10 +85,23 @@ export class PropertyComponent implements OnInit{
       } else {
         this.noReviews = false;
       }
+      this.loadAmenities(id);
       this.loadPropertyImages(id);
     }, error => {
       console.error('Error fetching property data', error);
     });
+  }
+
+  loadAmenities(propertyId: number): void {
+    const url = `${MojConfig.adresa_servera}/api/Amenities/GetAmenitiesByPropertyId/${propertyId}`;
+    this.httpKlijent.get<any[]>(url).subscribe(
+      data => {
+        this.amenities = data;
+      },
+      error => {
+        console.error('Error fetching property amenities', error);
+      }
+    );
   }
 
   loadPropertyImages(propertyId: number): void {
@@ -96,7 +109,7 @@ export class PropertyComponent implements OnInit{
     this.httpKlijent.get<string[]>(url).subscribe(
       data => {
         this.property.images = data.map(imageBase64 => ({
-          path: `data:image/jpeg;base64,${imageBase64}`
+          path: imageBase64
         }));
       },
       error => {

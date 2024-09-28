@@ -66,7 +66,14 @@
     </a>
   </div>
 
-
+  <div class="amenities-section">
+    <h3>{{ 'amenities' | transloco }}</h3>
+    <ul class="list-group">
+      <li *ngFor="let amenity of amenities" class="list-group-item">
+        <strong>{{ amenity.name }}</strong>: {{ amenity.description }}
+      </li>
+    </ul>
+  </div>
 
 
   <div *ngIf="property" class="property-details">

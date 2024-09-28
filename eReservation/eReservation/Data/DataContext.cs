@@ -66,6 +66,12 @@ namespace eReservation.Data
                 .WithMany(p => p.Images)
                 .HasForeignKey(s => s.PropertyId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+    //        modelBuilder.Entity<PropertyType>()
+    //.HasMany(p => p.Property)
+    //.WithOne(p => p.PropertyType)
+    //.OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

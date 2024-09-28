@@ -37,7 +37,6 @@ constructor(private httpClient: HttpClient,
   }
 
   private fetchTfas() {
-    console.log('Fetching TFAs from endpoint:', this.TfagetAllEndpoint.Handle()); // Log endpoint URL if possible
     this.TfagetAllEndpoint.Handle().subscribe(
       (x: TfaGetAllResponse) => {
         this.tfas = x.tfas;

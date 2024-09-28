@@ -63,5 +63,6 @@
   "noReservations": "Vous n'avez pas de réservations",
   "login": "Connecter",
   "thereAreNoReviews": "Il n'y a pas d'avis",
-  "passwordsDontMatch":"Les mots de passe ne correspondent pas. Veuillez vous assurer que les deux mots de passe sont identiques."
+  "passwordsDontMatch":"Les mots de passe ne correspondent pas. Veuillez vous assurer que les deux mots de passe sont identiques.",
+  "amenities": "Commodités"
 }

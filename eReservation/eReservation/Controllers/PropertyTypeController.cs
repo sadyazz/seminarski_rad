@@ -65,19 +65,61 @@ namespace eReservation.Controllers
             return Ok(existingPropertyType);
         }
 
+        //[HttpDelete("{id}")]
+        //public ActionResult Delete(int id)
+        //{
+        //    var propertyTypeToDelete = _db.PropertyType.FirstOrDefault(p => p.ID == id);
+
+        //    if (propertyTypeToDelete == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _db.PropertyType.Remove(propertyTypeToDelete);
+        //    _db.SaveChanges();
+        //    return Ok("Property type deleted.");
+        //}
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var propertyTypeToDelete = _db.PropertyType.FirstOrDefault(p => p.ID == id);
+            // Find the property type to delete
+            var propertyTypeToDelete = _db.PropertyType.FirstOrDefault(pt => pt.ID == id);
 
             if (propertyTypeToDelete == null)
             {
                 return NotFound();
             }
 
+            // Find related properties
+            var relatedProperties = _db.Properties.Where(p => p.PropertyTypeID == id).ToList();
+
+            // If there are related properties, handle their reviews first
+            if (relatedProperties.Any())
+            {
+                foreach (var property in relatedProperties)
+                {
+                    // Find and remove related reviews for each property
+                    var relatedReviews = _db.Reviews.Where(r => r.PropertiesID == property.ID).ToList();
+                    if (relatedReviews.Any())
+                    {
+                        _db.Reviews.RemoveRange(relatedReviews);
+                    }
+                }
+
+                // Now remove the related properties
+                _db.Properties.RemoveRange(relatedProperties);
+                _db.SaveChanges(); // Save changes to remove properties and their reviews
+            }
+
+            // Now delete the property type
             _db.PropertyType.Remove(propertyTypeToDelete);
             _db.SaveChanges();
+
             return Ok("Property type deleted.");
         }
+
+
+
+
     }
 }

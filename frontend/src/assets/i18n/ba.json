@@ -63,5 +63,6 @@
   "noReservations": "Nemate rezervacija",
   "login": "Prijavi se",
   "thereAreNoReviews" : "Nema recenzija",
-  "passwordsDontMatch":"Lozinke se ne podudaraju. Molimo osigurajte da obje lozinke budu iste."
+  "passwordsDontMatch":"Lozinke se ne podudaraju. Molimo osigurajte da obje lozinke budu iste.",
+  "amenities": "Pogodnosti"
 }

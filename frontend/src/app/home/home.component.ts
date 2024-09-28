@@ -88,7 +88,6 @@ properties:PropertiesGetAllResponse[] = [];
 filteredProperties: PropertiesGetAllResponse[] = [];
 getSmjestaj() {
   let url = MojConfig.adresa_servera + '/api/Properties/GetAll';
-  console.log('Fetching properties from URL:', url);
 
   this.httpClient.get<PropertiesGetAllResponse[]>(url).subscribe(
     (x: PropertiesGetAllResponse[]) => {
@@ -123,7 +122,7 @@ getSmjestaj() {
 
   getImageSrc(images: { id: number, path: string }[]): string {
     if (images && images.length > 0 && images[0].path) {
-      return `data:image/jpeg;base64,${images[0].path}`;
+      return images[0].path;
     }
     return 'https://placehold.co/600x600'; // Placeholder image
   }
@@ -140,7 +139,7 @@ getSmjestaj() {
     this.httpClient.get(url, { responseType: 'text' }).subscribe(
       response => {
         if (response) {
-          this.profileImageSrc = `data:image/jpeg;base64,${response}`;
+          this.profileImageSrc = response;
         } else {
           this.profileImageSrc = '../assets/img/profile-pic.png';
         }

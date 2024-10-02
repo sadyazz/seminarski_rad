@@ -198,26 +198,35 @@ namespace eReservation.Controllers
             return Ok(imagePaths);
         }
 
-        [HttpGet]
-        [Route("/GetPropertyImages")]
-        public ActionResult<IEnumerable<string>> GetPropertyImages([FromQuery] int propertyId)
-        {
-            var property = _db.Properties
-                .Include(p => p.Images)
-                .FirstOrDefault(p => p.ID == propertyId);
+        //public string GetImageUrl(string imageName, string token)
+        //{
+        //    string bucketName = "bucket-5c7b9.appspot.com/images"; 
+        //    string encodedPath = Uri.EscapeDataString($"images/{imageName}"); 
+        //    string url = $"https://firebasestorage.googleapis.com/v0/b/{bucketName}/o/{encodedPath}?alt=media&token={token}";
 
-            if (property == null || !property.Images.Any())
-            {
-                return NotFound("Nekretnina ili slike nisu pronađene.");
-            }
+        //    return url;
+        //}
 
-            var imagePaths = property.Images
-                .Where(image => !string.IsNullOrEmpty(image.Path))
-                .Select(image => image.Path)
-                .ToList();
+        //[HttpGet]
+        //[Route("/GetPropertyImages")]
+        //public ActionResult<IEnumerable<string>> GetPropertyImages([FromQuery] int propertyId)
+        //{
+        //    var property = _db.Properties
+        //        .Include(p => p.Images)
+        //        .FirstOrDefault(p => p.ID == propertyId);
 
-            return Ok(imagePaths);
-        }
+        //    if (property == null || !property.Images.Any())
+        //    {
+        //        return NotFound("Nekretnina ili slike nisu pronađene.");
+        //    }
+
+        //    var imagePaths = property.Images
+        //        .Where(image => !string.IsNullOrEmpty(image.Path))
+        //        .Select(image => image.Path)
+        //        .ToList();
+
+        //    return Ok(imagePaths);
+        //}
 
 
 

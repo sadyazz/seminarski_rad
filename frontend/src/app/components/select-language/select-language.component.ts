@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, PLATFORM_ID} from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { TranslocoService } from '@ngneat/transloco';
+import {isPlatformBrowser} from "@angular/common";
 @Component({
   selector: 'select-language',
   templateUrl: './select-language.component.html',
@@ -18,17 +19,19 @@ export class SelectLanguageComponent implements OnInit {
     {name:'Français', code:'fr', flag:'../../assets/img/fr.png'}
   ];
 
-  constructor(private translocoService: TranslocoService) {
+  constructor(private translocoService: TranslocoService, @Inject(PLATFORM_ID) private platformId: Object) {
   }
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
   }
 
   ngOnInit() {
-    const savedLang = localStorage.getItem('selectedLang');
-    this.selectedLanguage = savedLang
-      ? this.languages.find(language => language.code === savedLang)
-      : this.languages.find(language => language.code === this.translocoService.getActiveLang());
+    if (isPlatformBrowser(this.platformId)) {
+      const savedLang = localStorage.getItem('selectedLang');
+      this.selectedLanguage = savedLang
+        ? this.languages.find(language => language.code === savedLang)
+        : this.languages.find(language => language.code === this.translocoService.getActiveLang());
+    }
   }
 
 

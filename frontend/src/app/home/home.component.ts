@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {Router} from "@angular/router";
 import {MojConfig} from "../moj-config";
 import {HttpClient} from "@angular/common/http";
 import {MyAuthService} from "../services/MyAuthService";
 import {PropertiesGetAllResponse} from "./properties-getall-response";
+import {isPlatformBrowser} from "@angular/common";
 
 
 @Component({
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit{
 
   isDarkTheme = false;
 
-  constructor(public router: Router, private httpClient: HttpClient, public myAuthService: MyAuthService) {
+  constructor(public router: Router, private httpClient: HttpClient, public myAuthService: MyAuthService, @Inject(PLATFORM_ID) private platformId: Object) {
   }
   profileImageSrc: string = '../assets/img/profile-pic.png';
   ngOnInit(): void {
@@ -31,8 +32,12 @@ export class HomeComponent implements OnInit{
   }
 
   loadTheme() {
+    if (isPlatformBrowser(this.platformId)){
+
     this.isDarkTheme = localStorage.getItem('theme') === 'dark';
     document.body.classList.toggle('dark-theme', this.isDarkTheme);
+    }
+
   }
 
   saveTheme() {
@@ -87,11 +92,11 @@ export class HomeComponent implements OnInit{
 properties:PropertiesGetAllResponse[] = [];
 filteredProperties: PropertiesGetAllResponse[] = [];
 getSmjestaj() {
-  let url = MojConfig.adresa_servera + '/api/Properties/GetAll';
+ let url = MojConfig.adresa_servera + '/api/Properties/GetAll';
+
 
   this.httpClient.get<PropertiesGetAllResponse[]>(url).subscribe(
     (x: PropertiesGetAllResponse[]) => {
-      //console.log('Properties fetched successfully:', x);
       this.properties = x;
       this.filteredProperties=x;
     },

@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,10 @@ import { TranslocoService } from '@ngneat/transloco';
 export class AppComponent implements OnInit{
   title = 'frontend';
 
-  constructor(private translocoService: TranslocoService) {}
+  constructor(private translocoService: TranslocoService, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
     const savedLang = localStorage.getItem('selectedLang');
     if (savedLang) {
       this.translocoService.setActiveLang(savedLang);
@@ -19,5 +21,5 @@ export class AppComponent implements OnInit{
       const defaultLang = this.translocoService.getActiveLang();
       this.translocoService.setActiveLang(defaultLang);
     }
-  }
+  }}
 }

@@ -70,7 +70,7 @@
     <h3>{{ 'amenities' | transloco }}</h3>
     <ul class="list-group">
       <li *ngFor="let amenity of amenities" class="list-group-item">
-        <strong>{{ amenity.name }}</strong>: {{ amenity.description }}
+        <strong>{{ amenity.name }}</strong> {{ amenity.description }}
       </li>
     </ul>
   </div>
@@ -138,8 +138,8 @@
             <div class="form-group">
               <label style="font-size: 16px; float: left;" for="paymentMethods">{{'paymentMethod'|transloco}}</label>
               <select class="form-control" id="paymentMethods" [(ngModel)]="paymentMethods">
-                <option value="1">{{'creditCard'|transloco}}</option>
-                <option value="2">{{'cash'|transloco}}</option>
+                <option value="1">{{'cash'|transloco}}</option>
+                <option value="2">{{'creditCard'|transloco}}</option>
               </select>
             </div>
             <button class="btn btn-primary btn-block"  (click)="reserve()">{{'reserve'|transloco}}</button>
@@ -171,14 +171,27 @@
 
 
 <div>
-
   <div class="review-container">
     <review-component [type]="'property'" [id]="this.propertyId"></review-component>
   </div>
-
-
 </div>
 
+<div class="review-section">
+  <h3>{{ 'Leave a review' | transloco }}</h3>
+  <form (submit)="addReview()">
+    <div class="form-group">
+      <label for="review">{{ 'rating' | transloco }}</label>
+      <select class="form-control" id="review" [(ngModel)]="review.review" name="review" required>
+        <option *ngFor="let rating of [1,2,3,4,5]" [value]="rating">{{ rating }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="comment">{{ 'Comment' | transloco }}</label>
+      <textarea class="form-control" id="comment" [(ngModel)]="review.comment" name="comment" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">{{ 'Submit review' | transloco }}</button>
+  </form>
+</div>
 
 
 

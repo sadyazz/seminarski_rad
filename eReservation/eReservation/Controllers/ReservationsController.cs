@@ -2,6 +2,7 @@
 using eReservation.Data;
 using eReservation.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace eReservation.Controllers
@@ -31,7 +32,14 @@ namespace eReservation.Controllers
         [HttpGet("{userId}")]
         public ActionResult<List<Reservations>> GetByUserId(int userId)
         {
-            var userReservations = _db.Reservations.Where(r => r.UserID == userId).ToList();
+            var userReservations = _db.Reservations
+                .Include(r => r.User) 
+                .Include(r => r.Properties)
+                .ThenInclude(p => p.City)
+                .ThenInclude(p=>p.Country)
+                .Where(r => r.UserID == userId)
+                .ToList();
+
             if (userReservations.Any())
             {
                 return Ok(userReservations);
@@ -104,6 +112,22 @@ namespace eReservation.Controllers
             return Ok(existingReservation);
         }
 
+        [HttpDelete("{reservationId}")]
+        public ActionResult DeleteReservationById(int reservationId)
+        {
+            var reservation = _db.Reservations.FirstOrDefault(r => r.ID == reservationId);
+
+            if (reservation == null)
+            {
+                return NotFound(new { message = "Reservation not found." });
+            }
+
+            _db.Reservations.Remove(reservation);
+            _db.SaveChanges();
+
+            return Ok(new { message = "Reservation deleted." });
+        }
+
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
@@ -118,5 +142,6 @@ namespace eReservation.Controllers
             _db.SaveChanges();
             return Ok("Reservation deleted.");
         }
+
     }
 }

@@ -224,24 +224,46 @@
 
 
        <div #reservations class="reservations-container">
-         <h2 class="reservations-title">{{'myReservations' | transloco}}</h2>
+        <h2 class="reservations-title">{{'myReservations' | transloco}}</h2>
+      
+        <div *ngIf="!noReservations" class="reservations-list">
+          <mat-card *ngFor="let res of userReservations || []" class="reservation-card">
+            <mat-card-content>
 
-<div *ngIf="noReservations" class="text-center">{{'noReservations'|transloco}}</div>
+              <h4 mat-card-title class="reservation-title">{{ res.properties?.name }}</h4>
+      
+              
+              <p class="reservation-info">
+                <strong>{{ res.properties?.city?.name }}, {{ res.properties?.city?.country?.name }}</strong><br>
+                <strong>{{ 'address' | transloco }}:</strong> {{ res.properties?.adress }}<br>
+                <strong>{{ 'Price per night' | transloco }}:</strong> {{ res.properties?.pricePerNight }} KM<br>
+                <strong>{{ 'Total Price' | transloco }}:</strong> {{ res.totalPrice }} KM
+              </p>
+            </mat-card-content>
+      
+            
+            <div class="reservation-actions">
+              <button mat-button class="cancel-button" (click)="openCancelDialog(res.id)">
+                {{'Cancel' | transloco}}
+              </button>
+            </div>
 
-         <div class="reservations-list">
-           <!--<mat-card *ngFor="let reservation of getReservations()" class="reservation-card">
-             <img mat-card-image src="https://placehold.co/80x80" alt="{{ reservation.name }}" class="reservation-image">
-             <mat-card-content>
-               <h4 mat-card-title class="reservation-title">{{ reservation.name }}</h4>
-               <p class="reservation-info">
-                 <strong>{{ reservation.city.name }}, {{ reservation.city.country.name }}</strong><br>
-                 {{'address' | transloco}}: {{ reservation.address }}<br>
-                 <strong>{{'price' | transloco}}: {{ reservation.price }} KM</strong><br>
-               </p>
-             </mat-card-content>
-           </mat-card>-->
-         </div>
-       </div>
+            <ng-template #cancelConfirmation>
+              <h2 mat-dialog-title>{{'Are you sure you want to cancel this reservation?' | transloco}}</h2>
+              <mat-dialog-actions>
+                <button mat-button (click)="cancelReservation(res.id)">Yes</button>
+                <button mat-button (click)="closeDialog()">No</button>
+              </mat-dialog-actions>
+            </ng-template>
+
+          </mat-card>
+        </div>
+      </div>
+      
+      
+      
+        
+        
 
        <div #revs class="reservations-container">
          <review-component  [type]="'user'" [id]="0"></review-component>

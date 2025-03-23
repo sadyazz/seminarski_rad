@@ -5,21 +5,21 @@
 namespace eReservation.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class adminuserfix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ActivationToken",
-                table: "User",
-                type: "nvarchar(max)",
+            migrationBuilder.AddColumn<bool>(
+                name: "isAdmin",
+                table: "KorisnickiNalog",
+                type: "bit",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "IsActive",
-                table: "User",
+                name: "isUser",
+                table: "KorisnickiNalog",
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
@@ -29,12 +29,12 @@ namespace eReservation.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ActivationToken",
-                table: "User");
+                name: "isAdmin",
+                table: "KorisnickiNalog");
 
             migrationBuilder.DropColumn(
-                name: "IsActive",
-                table: "User");
+                name: "isUser",
+                table: "KorisnickiNalog");
         }
     }
 }

@@ -25,14 +25,11 @@ namespace eReservation.Controllers.AuthEndpoints.Login
         [HttpPost("login")]
         public override async Task<MyAuthInfo> Obradi([FromBody] AuthLoginRequest request, CancellationToken cancellationToken)
         {
-            //1- provjera logina
             KorisnickiNalog? logiraniKorisnik = await _applicationDbContext.KorisnickiNalog
-                .FirstOrDefaultAsync(k =>
-                    k.Username == request.KorisnickoIme && k.Password == request.Lozinka, cancellationToken);
+                .FirstOrDefaultAsync(k => k.Username == request.KorisnickoIme && k.Password == request.Lozinka, cancellationToken);
 
             if (logiraniKorisnik == null)
             {
-                //pogresan username i password
                 return new MyAuthInfo(null);
             }
 
@@ -41,18 +38,15 @@ namespace eReservation.Controllers.AuthEndpoints.Login
             var user = logiraniKorisnik as User;
             if (user != null)
             {
-
                 if (logiraniKorisnik.Is2FActive)
                 {
-                        twoFKey = TokenGenerator.Generate(4);
-                        _emailSenderService.Posalji(user.Email, "2f", $"Vas 2f kljuc je {twoFKey}", false);
+                    twoFKey = TokenGenerator.Generate(4);
+                    _emailSenderService.Posalji(user.Email, "2f", $"Vas 2f kljuc je {twoFKey}", false);
                 }
             }
 
-            //2- generisati random string
             string randomString = TokenGenerator.Generate(10);
 
-            //3- dodati novi zapis u tabelu AutentifikacijaToken za logiraniKorisnikId i randomString
             var noviToken = new AutentifikacijaToken()
             {
                 ipAdresa = Request.HttpContext.Connection.RemoteIpAddress?.ToString(),
@@ -65,9 +59,11 @@ namespace eReservation.Controllers.AuthEndpoints.Login
             _applicationDbContext.Add(noviToken);
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
-            //4- vratiti token string
+            var isAdmin = logiraniKorisnik.isAdmin;
+
             return new MyAuthInfo(noviToken);
         }
+
 
     }
 }

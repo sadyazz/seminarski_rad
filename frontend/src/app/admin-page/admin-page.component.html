@@ -1,0 +1,44 @@
+<div class="admin-dashboard">
+    <div class="header">
+      <button mat-icon-button (click)="openAddPropertyDialog()" class="add-button">
+        <mat-icon>add</mat-icon>
+      </button>
+      <h1>Welcome to the Admin Dashboard,</h1><h2>{{ userName || 'Guest' }}</h2>
+    </div>
+  
+    <div class="button-container">
+      <button mat-raised-button class="rounded-button" (click)="onPropertiesClick()">Properties</button>
+      <button mat-raised-button class="rounded-button" (click)="onUsersClick()">Users</button>
+    </div>
+  
+    <div class="content">
+      <ng-container *ngIf="showProperties">
+        <mat-card *ngFor="let property of properties" class="property-card">
+          <mat-card-content>
+            <h4 mat-card-title class="card-title">{{ property?.name }}</h4>
+            <p class="footer-info">
+              <strong>{{ property?.city?.name || 'Unknown City' }}, {{ property?.city?.country?.name || 'Unknown Country' }}</strong><br>
+              Property Type: {{ property?.propertyType?.name || 'N/A' }}<br>
+              Address: {{ property?.adress || 'No Address' }}<br>
+              <strong>Price per Night: {{ property?.pricePerNight || 'N/A' }} KM</strong><br>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+  
+      <ng-container *ngIf="showUsers">
+        <mat-card *ngFor="let user of users" class="user-card">
+          <mat-card-content>
+            <h4 mat-card-title class="user-name">{{ user?.name || 'Unknown User' }} {{ user?.surname || 'Unknown' }}</h4>
+            <p class="footer-info">
+              <strong>Email: </strong>{{ user?.email || 'No email' }}<br>
+              <strong>Phone: </strong>{{ user?.phone || 'No phone' }}<br>
+              <strong>Registered on: </strong>{{ user?.dateOfRegistraion | date }}<br>
+              <strong>Birthdate: </strong>{{ user?.dateBirth | date }}<br>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+    </div>
+  </div>
+  

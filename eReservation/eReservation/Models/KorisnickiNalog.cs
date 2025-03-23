@@ -19,8 +19,8 @@ namespace eReservation.Models
         [JsonIgnore]
         public Admin? Administrator => this as Admin;
 
-        public bool isAdmin => Administrator != null;
-        public bool isUser => Korisnik != null;
+        public bool isAdmin { get; set; }
+        public bool isUser { get; set; }
 
         public bool Is2FActive { get; set; }
     }

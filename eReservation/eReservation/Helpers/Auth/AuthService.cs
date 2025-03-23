@@ -55,5 +55,7 @@ namespace eReservation.Helpers.Auth
 
         public bool isLogiran => korisnickiNalog != null;
 
+        public bool IsAdmin => korisnickiNalog?.isAdmin ?? false;
+
     }
 }

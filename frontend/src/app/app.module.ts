@@ -22,8 +22,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule, MatOption } from '@angular/material/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import {MatDivider} from "@angular/material/divider";
@@ -33,6 +33,12 @@ import { SelectLanguageComponent } from './components/select-language/select-lan
 import { TranslocoRootModule } from './transloco-root.module';
 import {translate} from '@ngneat/transloco';
 import { ReviewComponentComponent } from './components/review-component/review-component.component'
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { AddPropertyDialogComponent } from './add-property-dialog/add-property-dialog.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -44,7 +50,10 @@ import { ReviewComponentComponent } from './components/review-component/review-c
     PropertyComponent,
     TwofaPageComponent,
     SelectLanguageComponent,
-    ReviewComponentComponent
+    ReviewComponentComponent,
+    ConfirmationDialogComponent,
+    AdminPageComponent,
+    AddPropertyDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +64,8 @@ import { ReviewComponentComponent } from './components/review-component/review-c
       {path: 'home', component: HomeComponent},
       {path: 'profile', component: UserProfileComponent, canActivate: [AutorizacijaGuard]},
       {path: 'property/:id', component: PropertyComponent},
-      {path: 'twofaPage', component: TwofaPageComponent}
+      {path: 'twofaPage', component: TwofaPageComponent},
+      { path: 'admin', component: AdminPageComponent }
     ]),
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -71,7 +81,12 @@ import { ReviewComponentComponent } from './components/review-component/review-c
     MatIcon,
     MatCardContent,
     MatCard,
-    TranslocoRootModule
+    TranslocoRootModule,
+    MatDialogModule,
+    MatFormField,
+    ReactiveFormsModule,
+    MatOption,
+    MatSelectModule
   ],
   providers: [
     //provideClientHydration()

@@ -114,16 +114,86 @@ namespace eReservation.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Properties> Add([FromBody] Properties property)
+        public ActionResult<Properties> Add([FromBody] CreatePropertyDto propertyDto)
         {
-            if (property == null)
+            if (propertyDto == null)
             {
-                return BadRequest();
+                return BadRequest("Property data is null.");
             }
+
+            var city = _db.Cities.Find(propertyDto.CityID);
+            if (city == null)
+            {
+                return BadRequest("Invalid City ID.");
+            }
+
+            var propertyType = _db.PropertyType.Find(propertyDto.PropertyTypeID);
+            if (propertyType == null)
+            {
+                return BadRequest("Invalid Property Type ID.");
+            }
+
+            var user = _db.User.Find(propertyDto.UserID);
+            if (user == null)
+            {
+                return BadRequest("Invalid User ID.");
+            }
+
+            var property = new Properties
+            {
+                Name = propertyDto.Name,
+                Adress = propertyDto.Address,
+                NumberOfRooms = propertyDto.NumberOfRooms,
+                NumberOfBathrooms = propertyDto.NumberOfBathrooms,
+                PricePerNight = propertyDto.PricePerNight,
+                CityID = propertyDto.CityID,
+                PropertyTypeID = propertyDto.PropertyTypeID,
+                UserID = propertyDto.UserID,
+            };
+
+            if (property.Name == null || property.Adress == null)
+            {
+                return BadRequest("Property name and address cannot be null.");
+            }
+
+
             _db.Properties.Add(property);
             _db.SaveChanges();
+
+            if (propertyDto.AmenitiesIDs != null && propertyDto.AmenitiesIDs.Any())
+            {
+                var existingAmenities = _db.Amenities
+                    .Where(a => propertyDto.AmenitiesIDs.Contains(a.ID))
+                    .Select(a => a.ID)
+                    .ToList();
+
+                // Check if all provided Amenity IDs exist in the database
+                if (existingAmenities.Count != propertyDto.AmenitiesIDs.Count)
+                {
+                    return BadRequest("Some of the provided Amenity IDs are invalid.");
+                }
+
+                // Create the list of PropertiesAmenities to add
+                var propertyAmenities = propertyDto.AmenitiesIDs
+                    .Where(amenityId => existingAmenities.Contains(amenityId))  // Filter valid amenities
+                    .Select(amenityId => new PropertiesAmenities
+                    {
+                        PropertiesID = property.ID,
+                        AmenitiesID = amenityId
+                    })
+                    .ToList();
+
+                // Add the associations in bulk
+                if (propertyAmenities.Any())
+                {
+                    _db.PropertiesAmenities.AddRange(propertyAmenities);
+                    _db.SaveChanges();  // Save the associations
+                }
+            }
+
             return Ok(property);
         }
+
 
         [HttpPut("{id}")]
         public ActionResult<Properties> Edit(int id, [FromBody] Properties updatedProperty)

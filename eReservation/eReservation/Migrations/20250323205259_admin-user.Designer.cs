@@ -12,8 +12,8 @@ using eReservation.Data;
 namespace eReservation.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240922133535_test")]
-    partial class test
+    [Migration("20250323205259_admin-user")]
+    partial class adminuser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -214,6 +214,12 @@ namespace eReservation.Migrations
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isUser")
+                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 
@@ -449,10 +455,6 @@ namespace eReservation.Migrations
                 {
                     b.HasBaseType("eReservation.Models.KorisnickiNalog");
 
-                    b.Property<string>("ActivationToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateBirth")
                         .HasColumnType("datetime2");
 
@@ -463,9 +465,6 @@ namespace eReservation.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -475,7 +474,6 @@ namespace eReservation.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")

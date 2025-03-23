@@ -212,6 +212,12 @@ namespace eReservation.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isUser")
+                        .HasColumnType("bit");
+
                     b.HasKey("ID");
 
                     b.ToTable("KorisnickiNalog");

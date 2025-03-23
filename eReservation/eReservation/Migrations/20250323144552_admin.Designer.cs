@@ -12,8 +12,8 @@ using eReservation.Data;
 namespace eReservation.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240902190149_removeWishlistTest")]
-    partial class removeWishlistTest
+    [Migration("20250323144552_admin")]
+    partial class admin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -465,6 +465,9 @@ namespace eReservation.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")

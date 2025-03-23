@@ -12,8 +12,8 @@ using eReservation.Data;
 namespace eReservation.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240429121136_novaMigracija")]
-    partial class novaMigracija
+    [Migration("20250319120728_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,8 +54,14 @@ namespace eReservation.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<bool>("Is2FOtkljucano")
+                        .HasColumnType("bit");
+
                     b.Property<int>("KorisnickiNalogId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TwoFKey")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ipAdresa")
                         .HasColumnType("nvarchar(max)");
@@ -176,12 +182,16 @@ namespace eReservation.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("PropertiesID")
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PropertiesID");
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("Images");
                 });
@@ -193,6 +203,9 @@ namespace eReservation.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<bool>("Is2FActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -207,6 +220,42 @@ namespace eReservation.Migrations
                     b.ToTable("KorisnickiNalog");
 
                     b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("eReservation.Models.LogKretanjePoSistemu", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("ExceptionMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsException")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PostData")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QueryPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("LogKretanjePoSistemu");
                 });
 
             modelBuilder.Entity("eReservation.Models.PaymentMethods", b =>
@@ -331,6 +380,9 @@ namespace eReservation.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
@@ -378,24 +430,6 @@ namespace eReservation.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("eReservation.Models.Wishlist", b =>
-                {
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PropertiesID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateAdd")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("UserID", "PropertiesID");
-
-                    b.HasIndex("PropertiesID");
-
-                    b.ToTable("Wishlist");
-                });
-
             modelBuilder.Entity("eReservation.Models.Admin", b =>
                 {
                     b.HasBaseType("eReservation.Models.KorisnickiNalog");
@@ -431,6 +465,9 @@ namespace eReservation.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
@@ -494,13 +531,24 @@ namespace eReservation.Migrations
 
             modelBuilder.Entity("eReservation.Models.Images", b =>
                 {
-                    b.HasOne("eReservation.Models.Properties", "Properties")
-                        .WithMany()
-                        .HasForeignKey("PropertiesID")
+                    b.HasOne("eReservation.Models.Properties", "Property")
+                        .WithMany("Images")
+                        .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Properties");
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("eReservation.Models.LogKretanjePoSistemu", b =>
+                {
+                    b.HasOne("eReservation.Models.KorisnickiNalog", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("eReservation.Models.Properties", b =>
@@ -579,32 +627,13 @@ namespace eReservation.Migrations
             modelBuilder.Entity("eReservation.Models.Reviews", b =>
                 {
                     b.HasOne("eReservation.Models.Properties", "Properties")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("PropertiesID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("eReservation.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Properties");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("eReservation.Models.Wishlist", b =>
-                {
-                    b.HasOne("eReservation.Models.Properties", "Properties")
-                        .WithMany("Wishlist")
-                        .HasForeignKey("PropertiesID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("eReservation.Models.User", "User")
-                        .WithMany("Wishlist")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -639,14 +668,11 @@ namespace eReservation.Migrations
 
             modelBuilder.Entity("eReservation.Models.Properties", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("PropertiesAmenities");
 
-                    b.Navigation("Wishlist");
-                });
-
-            modelBuilder.Entity("eReservation.Models.User", b =>
-                {
-                    b.Navigation("Wishlist");
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

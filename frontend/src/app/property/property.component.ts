@@ -161,13 +161,48 @@ export class PropertyComponent implements OnInit{
   }
 
 
-
-
   nazad(){
     this.router.navigate(["/home"]);
   }
 
 
+  review = {
+    review: 1,
+    comment: '',
+    dateReview: new Date().toISOString(),
+    userID: 0,
+    propertiesID: 0
+  };
+
+  addReview() {
+    const userId = this.myAuthService.returnId();
+    if (!userId) {
+      this.snackBar.open('You need to be logged in to leave a review.', 'Close', { duration: 3000 });
+      this.router.navigate(["/login"]);
+      return;
+    }
+  
+    this.review.userID = userId;
+    this.review.propertiesID = Number(this.propertyId);
+    this.review.review = Number(this.review.review);
+    this.review.dateReview = new Date().toISOString();
+
+    console.log('Review payload before sending:', this.review);
+  
+    const url = `${MojConfig.adresa_servera}/api/Reviews/Add`;
+    this.httpKlijent.post(url, this.review).subscribe(response => {
+      this.snackBar.open('Review submitted successfully!', 'Close', { duration: 3000 });
+      this.review = { review: 1, comment: '', dateReview: new Date().toISOString(), userID: 0, propertiesID: 0 };
+      this.loadPropertyDetails(this.propertyId);
+      window.location.reload();
+    }, error => {
+      console.error('Error submitting review', error);
+      if (error.error && error.error.errors) {
+        console.error('Validation Errors:', error.error.errors);
+      }
+      this.snackBar.open('Failed to submit review. Please try again.', 'Close', { duration: 3000 });
+    });
+  }
 
 
 }

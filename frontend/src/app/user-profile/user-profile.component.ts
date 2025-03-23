@@ -6,6 +6,10 @@ import {MojConfig} from "../moj-config";
 import {Observable} from "rxjs";
 import {PropertiesGetAllResponse} from "../home/properties-getall-response";
 import {User} from "./edit-user";
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+
+
 
 @Component({
   selector: 'user-profile',
@@ -14,7 +18,7 @@ import {User} from "./edit-user";
 })
 export class UserProfileComponent implements OnInit{
 
-  constructor(public myAuthService: MyAuthService, public router :Router, private httpClient: HttpClient) {
+  constructor(public myAuthService: MyAuthService, public router :Router, private httpClient: HttpClient, private dialog: MatDialog) {
   }
   selectedFile: File | null = null;
   user: User = {};
@@ -92,10 +96,10 @@ export class UserProfileComponent implements OnInit{
       }, error => {
         console.error('Error fetching user data', error);
       });
+      this.getReservations();
     } else {
       console.error('User ID not found');
     }
-
 
 
     this.user = {
@@ -187,17 +191,83 @@ export class UserProfileComponent implements OnInit{
       }
     );
   }
-  getReservations() {
-    let url = MojConfig.adresa_servera + '/api/Properties/GetAll';
 
-    this.httpClient.get<PropertiesGetAllResponse[]>(url).subscribe(
-      (x: PropertiesGetAllResponse[]) => {
-        this.properties = x;
+  userReservations: any[] = [];
+
+  getReservations(): void {
+    const userId = this.myAuthService.returnId();
+    if (!userId) {
+      console.error("User ID not found");
+      return;
+    }
+  
+    let url = `${MojConfig.adresa_servera}/api/Reservations/GetByUserId/${userId}`;
+  
+    this.httpClient.get<any[]>(url).subscribe(
+      (response: any[] | null) => {
+        if (!response || response.length === 0) {
+          this.userReservations = [];
+          this.noReservations = true;
+          return;
+        }
+        this.userReservations = response;
+        this.noReservations = false;
       },
       error => {
-        console.error('Error fetching properties', error);
+        console.error('Error fetching user reservations', error);
       }
     );
-
   }
+
+
+  reservationToCancel: number | null = null;
+
+  openCancelDialog(reservationId: number): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px', 
+      data: { reservationId } 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.cancelReservation(reservationId);
+      }
+    });
+  }
+
+  closeDialog(): void {
+    this.dialog.closeAll();
+  }
+
+  cancelReservation(reservationId: number): void {
+    const userId = this.myAuthService.returnId();  
+    if (!userId) {
+      console.error("User ID not found");
+      return;
+    }
+  
+    const url = `${MojConfig.adresa_servera}/api/Reservations/Delete/${reservationId}`;
+  
+    this.httpClient.delete(url, { responseType: 'text' }).subscribe(
+      (response) => {
+        console.log('Reservation canceled:', response);  
+        this.userReservations = this.userReservations.filter(reservation => reservation.id !== reservationId);
+  
+        if (this.userReservations.length === 0) {
+          this.noReservations = true;
+        }
+        
+        
+      },
+      (error) => {
+        console.error('Error canceling reservation', error);
+      }
+    );
+  }
+  
+  
+  
+  
+  
+  
 }

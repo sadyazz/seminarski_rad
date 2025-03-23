@@ -1,0 +1,67 @@
+<h2 mat-dialog-title>Add New Property</h2>
+<mat-dialog-content [formGroup]="propertyForm">
+  <!-- Property Name -->
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+
+  <!-- Address -->
+  <mat-form-field>
+    <mat-label>Address</mat-label>
+    <input matInput formControlName="address">
+  </mat-form-field>
+
+  <!-- Number of Rooms -->
+  <mat-form-field>
+    <mat-label>Rooms</mat-label>
+    <input type="number" matInput formControlName="numberOfRooms">
+  </mat-form-field>
+
+  <!-- Number of Bathrooms -->
+  <mat-form-field>
+    <mat-label>Bathrooms</mat-label>
+    <input type="number" matInput formControlName="numberOfBathrooms">
+  </mat-form-field>
+
+  <!-- Price Per Night -->
+  <mat-form-field>
+    <mat-label>Price Per Night</mat-label>
+    <input type="number" matInput formControlName="pricePerNight">
+  </mat-form-field>
+
+  <!-- City Selection -->
+  <mat-form-field>
+    <mat-label>City</mat-label>
+    <mat-select formControlName="cityID">
+      <mat-option *ngFor="let city of cities" [value]="city.id">
+        {{ city.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Property Type Selection -->
+  <mat-form-field>
+    <mat-label>Property Type</mat-label>
+    <mat-select formControlName="propertyTypeID">
+      <mat-option *ngFor="let propertyType of propertyTypes" [value]="propertyType.id">
+        {{ propertyType.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>User</mat-label>
+    <mat-select formControlName="userID">
+      <mat-option *ngFor="let user of users" [value]="user.id">
+        {{ user.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Amenities Selection -->
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [disabled]="propertyForm.invalid" (click)="submit()">Add</button>
+</mat-dialog-actions>

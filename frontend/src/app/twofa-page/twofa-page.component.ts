@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {MojConfig} from "../moj-config";
 import {Router} from "@angular/router";
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {MyAuthService} from "../services/MyAuthService";
 import { TfaGetAllResponse, TfaGetAllResponseTfa, TfasGetallEndpoint } from "../endpoints/twofa-endpoint";
 import { AutentifikacijaTwoFOtkljucajEndpoint, AutentifikacijaTwoFOtkljucajRequest } from "../endpoints/tfa-otkljucaj-endpoint";
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'twofa-page',
@@ -19,7 +20,9 @@ constructor(private httpClient: HttpClient,
             public dialogRef: MatDialogRef<TwofaPageComponent>,
             private TfagetAllEndpoint: TfasGetallEndpoint,
             private myAuthService: MyAuthService,
-            private AutentifikacijaTwoFOtkljucajEndpoint:AutentifikacijaTwoFOtkljucajEndpoint) {
+            private AutentifikacijaTwoFOtkljucajEndpoint:AutentifikacijaTwoFOtkljucajEndpoint,
+            @Inject(MAT_DIALOG_DATA) public data: { targetRoute: string }
+          ) {
 }
 
   public kljuc:AutentifikacijaTwoFOtkljucajRequest = {
@@ -65,7 +68,7 @@ constructor(private httpClient: HttpClient,
 
       setTimeout(() => {
         this.dialogRef.close();
-        this.router.navigate(['/home']);
+        this.router.navigate([this.data.targetRoute]);
       }, 3000);
     } else {
       this.neuspjesnaVerifikacija = true;

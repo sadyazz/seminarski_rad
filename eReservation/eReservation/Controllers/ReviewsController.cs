@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static eReservation.Controllers.PropertiesController;
 using eReservation.DTO;
+using Newtonsoft.Json;
 
 namespace eReservation.Controllers
 {
@@ -88,15 +89,28 @@ namespace eReservation.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Reviews> Add([FromBody] Reviews review)
+        public ActionResult<Reviews> Add([FromBody] ReviewCreateDto reviewDto )
         {
-            if (review == null)
+            Console.WriteLine($"Received Review: {JsonConvert.SerializeObject(reviewDto)}");
+
+            if (reviewDto == null || reviewDto.UserID==0 || reviewDto.PropertiesID==0)
             {
-                return BadRequest();
+                return BadRequest("Invalid review data.");
             }
+
+            var review = new Reviews
+            {
+                UserID = reviewDto.UserID,
+                PropertiesID = reviewDto.PropertiesID,
+                Review = reviewDto.Review,
+                Comment = reviewDto.Comment,
+                DateReview = DateTime.Now
+            };
+
             _db.Reviews.Add(review);
             _db.SaveChanges();
-            return Ok(review);
+
+            return Json(new { message = "Review added successfully." });
         }
 
         [HttpDelete("{id}")]

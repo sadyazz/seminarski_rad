@@ -83,26 +83,42 @@ console.log('register request -> ',this.registerRequest);
       this.tabLogin.nativeElement.click();
     }
   }
-  open2Fa(){
-    const dialogRef = this.dialog.open(TwofaPageComponent,{width:'20rem',height:'15rem'});
+  open2Fa(targetRoute: string) {
+    const dialogRef = this.dialog.open(TwofaPageComponent, {
+      width: '20rem',
+      height: '15rem',
+      data: { targetRoute: targetRoute }  // Pass target route to the dialog
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // After 2FA verification, navigate to the target route
+        this.router.navigate([result]);
+      }
+    });
   }
 
-  signIn(){
+  signIn() {
     let url = MojConfig.adresa_servera + "/Autentifikacija/login";
-    this.httpClient.post<AuthLoginResponse>(url, this.loginRequest).subscribe((x)=>{
-      if(!x.isLogiran){
-        alert("pogresan username / password")
-      }else{
+    this.httpClient.post<AuthLoginResponse>(url, this.loginRequest).subscribe((x) => {
+      if (!x.isLogiran) {
+        alert("Incorrect username/password");
+      } else {
         this.myAuthService.setLogiraniKorisnik(x.autentifikacijaToken);
-
-        if(this.myAuthService.is2FActive()){
-          this.open2Fa();
-        }else {
-          this.router.navigate(["/home"])
+  
+        let targetRoute = x.isAdmin ? '/admin' : '/home';  // Store the target route based on the admin status
+  
+        if (this.myAuthService.is2FActive()) {
+          // Open 2FA dialog and pass the target route as data
+          this.open2Fa(targetRoute);
+        } else {
+          // If 2FA is not active, just redirect to the target route directly
+          this.router.navigate([targetRoute]);
         }
       }
-    })
+    });
   }
+  
 
 
   hideAlert(): void {

@@ -5,7 +5,7 @@
 namespace eReservation.Migrations
 {
     /// <inheritdoc />
-    public partial class propertyReviews : Migration
+    public partial class adminuser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

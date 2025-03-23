@@ -60,4 +60,10 @@ export class MyAuthService{
     }
 
   }
+
+  getUser(): any {
+    const token = this.getAuthorizationToken();
+    return token ? token.korisnickiNalog : null;
+  }
+
 }

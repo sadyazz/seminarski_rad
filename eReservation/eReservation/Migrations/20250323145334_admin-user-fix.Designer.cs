@@ -12,8 +12,8 @@ using eReservation.Data;
 namespace eReservation.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240922150152_MakeProfileImageNullable")]
-    partial class MakeProfileImageNullable
+    [Migration("20250323145334_admin-user-fix")]
+    partial class adminuserfix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -214,6 +214,12 @@ namespace eReservation.Migrations
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isUser")
+                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 

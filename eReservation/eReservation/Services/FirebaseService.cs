@@ -1,9 +1,29 @@
-﻿using Firebase.Storage;
+﻿using FirebaseAdmin;
+using Firebase.Storage;
+using Google.Apis.Auth.OAuth2;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 public class FirebaseService
 {
-    private readonly string _bucketName = "bucket-5c7b9.appspot.com"; // Replace with your bucket name
+    private readonly string _bucketName = "images-5f6f1.appspot.com";  // Firebase Storage Bucket name
+    private readonly string _pathToServiceAccountKey = "C:\\Users\\Krhan\\Desktop\\seminarski_rad\\images-5f6f1.json"; // Path to your Firebase service account key file
 
+    // Initialize Firebase Admin SDK
+    public FirebaseService()
+    {
+        if (FirebaseApp.DefaultInstance == null)
+        {
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile(_pathToServiceAccountKey)
+            });
+        }
+    }
+
+    // Upload image to Firebase Storage
     public async Task<string> UploadImageAsync(IFormFile imageFile)
     {
         if (imageFile.Length == 0) return null;
@@ -11,18 +31,18 @@ public class FirebaseService
         var stream = imageFile.OpenReadStream();
         var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
 
-        var task = new FirebaseStorage(_bucketName)
-            .Child("images") // You can specify your folder structure here
-            .Child(fileName)
-            .PutAsync(stream);
+        // Create an instance of FirebaseStorage
+        var firebaseStorage = new FirebaseStorage(_bucketName);
 
-        // Track progress of the upload
-        task.Progress.ProgressChanged += (s, e) =>
-            Console.WriteLine($"Progress: {e.Percentage} %");
+        // Get reference to Firebase Storage
+        var storageReference = firebaseStorage.Child("images").Child(fileName);
 
-        // Await the task to get the download URL after upload completes
-        var downloadUrl = await task;
+        // Upload the file to Firebase Storage
+        await storageReference.PutAsync(stream);
 
-        return downloadUrl; // This will return the URL of the uploaded image
+        // Get the download URL of the uploaded file
+        var downloadUrl = await storageReference.GetDownloadUrlAsync();
+
+        return downloadUrl;  // Return the URL of the uploaded image
     }
 }

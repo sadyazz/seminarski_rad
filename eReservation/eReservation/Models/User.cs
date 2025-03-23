@@ -6,8 +6,6 @@ namespace eReservation.Models
     [Table("User")]
     public class User : KorisnickiNalog
     {
-        [Key]
-        public int ID { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }

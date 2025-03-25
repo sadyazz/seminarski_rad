@@ -39,6 +39,7 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 import { AddPropertyDialogComponent } from './add-property-dialog/add-property-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 
 @NgModule({
@@ -86,7 +87,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormField,
     ReactiveFormsModule,
     MatOption,
-    MatSelectModule
+    MatSelectModule,
+    LeafletModule
   ],
   providers: [
     //provideClientHydration()

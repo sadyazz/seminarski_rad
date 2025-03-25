@@ -143,6 +143,7 @@
               </select>
             </div>
             <button class="btn btn-primary btn-block"  (click)="reserve()">{{'reserve'|transloco}}</button>
+            <button *ngIf="showDownloadPdfButton" class="btn btn-secondary" (click)="downloadPdf()">Download Reservation PDF</button>
             <div class="row mt-3">
               <div class="col-md-6  fs-6">
                 KM {{pricePerNight}} x {{ nights }} {{'nights'|transloco}}
@@ -169,6 +170,10 @@
 
   </div>
 
+  <div class="map-container">
+    <div id="map"></div>
+  </div>
+
 
 <div>
   <div class="review-container">
@@ -192,6 +197,5 @@
     <button type="submit" class="btn btn-primary">{{ 'Submit review' | transloco }}</button>
   </form>
 </div>
-
 
 

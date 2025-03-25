@@ -1,10 +1,12 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {AutentifikacijaToken} from "../../helpers/auth/autentifikacijaToken";
+import { Router } from "@angular/router";
 
 @Injectable({providedIn: 'root'})
 export class MyAuthService{
-  constructor(private httpClient: HttpClient) {
+
+  constructor(private httpClient: HttpClient, private router: Router) {
   }
 
   private getLocalStorageItem(key: string): string | null {
@@ -65,5 +67,11 @@ export class MyAuthService{
     const token = this.getAuthorizationToken();
     return token ? token.korisnickiNalog : null;
   }
+
+  logout(): void {
+    localStorage.removeItem('user'); // Brisanje korisničkih podataka iz localStorage-a
+    this.router.navigate(['/login']); // Preusmeravanje na login stranicu
+  }
+  
 
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using eReservation.DTO;
+using eReservation.Helpers.Auth;
 
 namespace eReservation.Controllers
 {
@@ -12,10 +13,14 @@ namespace eReservation.Controllers
     public class PropertiesController : Controller
     {
         private readonly DataContext _db;
+        private readonly AuthService _authService;
+        private readonly FirebaseService _firebaseService;
 
-        public PropertiesController(DataContext db)
+        public PropertiesController(DataContext db, AuthService authService, FirebaseService firebaseService)
         {
             _db = db;
+            _authService = authService;
+            _firebaseService = firebaseService;
         }
 
         [HttpGet]
@@ -220,33 +225,49 @@ namespace eReservation.Controllers
         [Route("/UploadPropertyImage")]
         public async Task<ActionResult> UploadPropertyImage([FromQuery] int id, [FromForm] IFormFile image)
         {
-            var property = _db.Properties.Include(p => p.Images).FirstOrDefault(p => p.ID == id);
+            // Check if user is logged in (optional, depending on your auth logic)
+            if (!_authService.JelLogiran())
+            {
+                return Unauthorized("Korisnik nije prijavljen.");
+            }
+
+            // Find the property by ID
+            var property = await _db.Properties.Include(p => p.Images).FirstOrDefaultAsync(p => p.ID == id);
             if (property == null)
             {
                 return NotFound("Nekretnina nije pronađena.");
             }
 
+            // Validate the image file
             if (image == null || image.Length == 0)
             {
                 return BadRequest("Slika nije validna.");
             }
 
-            using (var memoryStream = new MemoryStream())
+            try
             {
-                await image.CopyToAsync(memoryStream);
-                var imageBytes = memoryStream.ToArray();
-                var base64Image = Convert.ToBase64String(imageBytes);
+                // Upload the image to Firebase (or your storage service)
+                var uploadUrl = await _firebaseService.UploadImageAsync(image); // Assuming FirebaseService handles this
 
+                // Save the image URL to the Images collection for the property
                 property.Images.Add(new Images
                 {
-                    Path = base64Image,
+                    Path = uploadUrl,
                     PropertyId = id
                 });
-                await _db.SaveChangesAsync();
-            }
 
-            return Ok(new { message = "Slika uspješno uploadovana." });
+                // Save changes to the database
+                await _db.SaveChangesAsync();
+
+                return Ok(new { message = "Slika uspješno uploadovana.", url = uploadUrl });
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors
+                return StatusCode(500, "Greška prilikom uploadovanja slike: " + ex.Message);
+            }
         }
+
 
 
         [HttpGet]
@@ -257,7 +278,8 @@ namespace eReservation.Controllers
 
             if (property == null || !property.Images.Any())
             {
-                return NotFound("Nekretnina ili slike nisu pronađene.");
+                Console.WriteLine($"Property with ID {propertyId} not found or has no images.");
+                return NotFound("Property or images not found.");
             }
 
             var imagePaths = property.Images
@@ -267,6 +289,7 @@ namespace eReservation.Controllers
 
             return Ok(imagePaths);
         }
+
 
         //public string GetImageUrl(string imageName, string token)
         //{
@@ -313,7 +336,8 @@ namespace eReservation.Controllers
 
             _db.Properties.Remove(propertyToDelete);
             _db.SaveChanges();
-            return Ok("Property deleted.");
+            return Ok(new { message = "Property deleted." });
+
         }
 
     }

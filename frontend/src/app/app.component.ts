@@ -5,7 +5,7 @@ import {isPlatformBrowser} from "@angular/common";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
   title = 'frontend';
@@ -14,12 +14,13 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-    const savedLang = localStorage.getItem('selectedLang');
-    if (savedLang) {
-      this.translocoService.setActiveLang(savedLang);
-    } else {
-      const defaultLang = this.translocoService.getActiveLang();
-      this.translocoService.setActiveLang(defaultLang);
-    }
+
+      const savedLang = localStorage.getItem('selectedLang');
+      if (savedLang) {
+        this.translocoService.setActiveLang(savedLang);
+      } else {
+        const defaultLang = this.translocoService.getActiveLang();
+        this.translocoService.setActiveLang(defaultLang);
+      }
   }}
 }

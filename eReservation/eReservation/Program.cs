@@ -2,6 +2,10 @@ using eReservation.Data;
 using eReservation.Helpers.Auth;
 using eReservation.Services;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
+using Quartz.Impl;
+using eReservation.Data;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +24,21 @@ builder.Services.AddTransient<ActionLogService>();
 builder.Services.AddTransient<EmailSenderService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<FirebaseService>();
+builder.Services.AddTransient<EmailJob>();
+
+builder.Services.AddQuartz(q =>
+{
+    q.UseSimpleTypeLoader();
+    q.UseInMemoryStore();
+});
+
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+builder.Services.AddSingleton<IScheduler>(provider =>
+{
+    var schedulerFactory = provider.GetRequiredService<ISchedulerFactory>();
+    return schedulerFactory.GetScheduler().Result;
+});
 
 var app = builder.Build();
 
@@ -40,6 +59,23 @@ app.UseCors(
         .AllowAnyHeader()
         .AllowCredentials()
 ); //This needs to set everything allowed
+
+var scheduler = app.Services.GetRequiredService<IScheduler>();
+await scheduler.Start();
+
+IJobDetail emailJob = JobBuilder.Create<EmailJob>()
+    .WithIdentity("emailJob", "group1")
+    .Build();
+
+ITrigger trigger = TriggerBuilder.Create()
+    .WithIdentity("emailTrigger", "group1")
+    .StartNow()
+    .WithSimpleSchedule(x => x
+        .WithIntervalInMinutes(1) 
+        .RepeatForever())
+    .Build();
+
+await scheduler.ScheduleJob(emailJob, trigger);
 
 app.UseHttpsRedirection();
 

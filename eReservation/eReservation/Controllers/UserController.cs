@@ -112,6 +112,8 @@ namespace eReservation.Controllers
             return Ok(existingUser);
         }
 
+
+
         [HttpPost]
         [Route("/UploadProfileImage")]
         public async Task<ActionResult> UploadProfileImage([FromQuery] int id, [FromForm] IFormFile image)
@@ -156,24 +158,9 @@ namespace eReservation.Controllers
         }
 
 
-        //[HttpDelete("{id}")]
-        //public ActionResult Delete(int id)
-        //{
-        //    var userToDelete = _db.User.FirstOrDefault(u => u.ID == id);
-
-        //    if (userToDelete == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _db.User.Remove(userToDelete);
-        //    _db.SaveChanges();
-        //    return Ok("User deleted.");
-        //}
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            // Pronađite korisnika
             var userToDelete = await _db.User.FirstOrDefaultAsync(u => u.ID == id);
 
             if (userToDelete == null)
@@ -181,20 +168,28 @@ namespace eReservation.Controllers
                 return NotFound();
             }
 
+            var userProperties = await _db.Properties.Where(p => p.UserID == id).ToListAsync();
+
+            var propertyIds = userProperties.Select(p => p.ID).ToList();
+            var reviewsToDelete = await _db.Reviews.Where(r => propertyIds.Contains(r.PropertiesID)).ToListAsync();
+
+            var userReviews = await _db.Reviews.Where(r => r.UserID == id).ToListAsync();
+
             var tokensToDelete = await _db.AutentifikacijaToken
                                            .Where(token => token.KorisnickiNalogId == id)
                                            .ToListAsync();
 
-            if (tokensToDelete.Any())
-            {
-                _db.AutentifikacijaToken.RemoveRange(tokensToDelete);
-            }
+            if (reviewsToDelete.Any()) _db.Reviews.RemoveRange(reviewsToDelete);
+            if (userReviews.Any()) _db.Reviews.RemoveRange(userReviews);
+            if (userProperties.Any()) _db.Properties.RemoveRange(userProperties);
+            if (tokensToDelete.Any()) _db.AutentifikacijaToken.RemoveRange(tokensToDelete);
 
             _db.User.Remove(userToDelete);
             await _db.SaveChangesAsync();
 
-            return Ok("User deleted.");
+            return Ok(new { message = "User deleted successfully." });
         }
+
 
     }
 }

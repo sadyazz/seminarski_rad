@@ -270,3 +270,24 @@ span.carousel-control-prev-icon:after{
   }
 }
 
+
+.map-container {
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+  margin: 0 auto;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative; /* Ensure positioning */
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  position: absolute; /* Ensure full coverage */
+  top: 0;
+  left: 0;
+}
+
+

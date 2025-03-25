@@ -1,9 +1,12 @@
 <div class="admin-dashboard">
     <div class="header">
-      <button mat-icon-button (click)="openAddPropertyDialog()" class="add-button">
+      <button *ngIf="showProperties" mat-icon-button (click)="openAddPropertyDialog()" class="add-button">
         <mat-icon>add</mat-icon>
       </button>
       <h1>Welcome to the Admin Dashboard,</h1><h2>{{ userName || 'Guest' }}</h2>
+      <button mat-icon-button (click)="logout()" class="logout-button">
+        <mat-icon color="warn">logout</mat-icon>
+      </button>
     </div>
   
     <div class="button-container">
@@ -16,12 +19,26 @@
         <mat-card *ngFor="let property of properties" class="property-card">
           <mat-card-content>
             <h4 mat-card-title class="card-title">{{ property?.name }}</h4>
+            <div *ngFor="let image of property?.images">
+              <img [src]="getPropertyImagePath(image)" alt="Property Image" class="property-image"/>
+            </div>
             <p class="footer-info">
               <strong>{{ property?.city?.name || 'Unknown City' }}, {{ property?.city?.country?.name || 'Unknown Country' }}</strong><br>
               Property Type: {{ property?.propertyType?.name || 'N/A' }}<br>
               Address: {{ property?.adress || 'No Address' }}<br>
               <strong>Price per Night: {{ property?.pricePerNight || 'N/A' }} KM</strong><br>
             </p>
+
+            <div class="upload-container">
+              <input type="file" (change)="uploadImage($event, property.id)" />
+              <button mat-icon-button class="upload-button">
+                <mat-icon>cloud_upload</mat-icon>
+              </button>
+            </div>
+
+            <button mat-icon-button class="delete-button" (click)="deleteProperty(property.id)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
           </mat-card-content>
         </mat-card>
       </ng-container>
@@ -36,6 +53,9 @@
               <strong>Registered on: </strong>{{ user?.dateOfRegistraion | date }}<br>
               <strong>Birthdate: </strong>{{ user?.dateBirth | date }}<br>
             </p>
+            <button mat-icon-button class="delete-button" (click)="deleteUser(user.id)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
           </mat-card-content>
         </mat-card>
       </ng-container>

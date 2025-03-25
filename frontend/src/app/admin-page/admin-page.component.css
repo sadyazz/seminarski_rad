@@ -92,3 +92,27 @@
     background-color: #ccc;
   }
   
+  .delete-button{
+    margin-top: 50px;
+    float: right;
+  }
+
+  .logout-button{
+    float: right;
+  }
+
+.property-image {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px; 
+  overflow: hidden;
+}
+
+.upload-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+

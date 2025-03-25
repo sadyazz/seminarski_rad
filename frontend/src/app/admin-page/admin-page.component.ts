@@ -8,6 +8,7 @@ import { User } from '../home/properties-getall-response';
 import { AddPropertyDialogComponent } from '../add-property-dialog/add-property-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreatePropertyDto } from '../add-property-dialog/add-property-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'admin-page',
@@ -22,11 +23,24 @@ export class AdminPageComponent implements OnInit {
   showProperties: boolean = false;
   showUsers: boolean = false;
 
+  property: any = {
+    name: '',
+    adress: '',
+    numberOfRooms: 0,
+    numberOfBathrooms: 0,
+    pricePerNight: 0,
+    city: { name: '' },
+    propertyType: { name: '' },
+    images: [],
+    reviews: []
+  };
+
   constructor(
     private myAuthService: MyAuthService,
     private router: Router,
     private httpClient: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +49,7 @@ export class AdminPageComponent implements OnInit {
       this.userName = user.username;
       this.isAdmin = user.isAdmin;
     } else {
-      this.router.navigate(['/login']); // Redirect to login if no user is logged in
+      this.router.navigate(['/login']);
     }
   }
 
@@ -50,8 +64,6 @@ export class AdminPageComponent implements OnInit {
       }
     );
   }
-  
-  
   
   
 
@@ -101,5 +113,90 @@ export class AdminPageComponent implements OnInit {
       this.getProperties();
     });
   }
+
+  deleteProperty(propertyId: number): void {
+    const url = `${MojConfig.adresa_servera}/api/Properties/Delete/${propertyId}`;
+    this.httpClient.delete(url).subscribe(() => {
+      this.getProperties();
+      window.location.reload();
+    }, (error) => {
+      console.error('Error deleting property:', error);
+    });
+  }
+
+  deleteUser(userId: number):void {
+    const url = `${MojConfig.adresa_servera}/api/User/Delete/${userId}`;
+
+    this.httpClient.delete(url).subscribe(() => {
+      window.location.reload();
+      this.getProperties();
+    }, (error) => {
+      console.error('Error deleting user:', error);
+    });
+  }
+
+  logout(): void {
+    this.myAuthService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  loadPropertyImages(propertyId: number): void {
+    const url = `${MojConfig.adresa_servera}/api/Properties/GetPropertyImages?propertyId=${propertyId}`;
+    this.httpClient.get<string[]>(url).subscribe(
+      (data) => {
+        const updatedProperties = this.properties.map((property) => {
+          if (property.id === propertyId) {
+            property.images = data.map((imagePath, index) => ({
+              id: index + 1,
+              path: imagePath
+            }));
+          }
+          return property;
+        });
+        this.properties = updatedProperties;
+      },
+      (error) => {
+        console.error('Error fetching property images', error);
+      }
+    );
+  }
+  
+  
+  
+
+  getPropertyImagePath(image: { id: number, path: string }): string {
+    return image && image.path ? image.path : 'https://placehold.co/100x100';
+  }
+
+  uploadImage(event: any, propertyId: number): void {
+    const files = event.target.files;
+  
+
+    if (files && files[0]) {
+      const file = files[0];
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('id', propertyId.toString());
+  
+      const url = `${MojConfig.adresa_servera}/UploadPropertyImage?id=${propertyId}`;
+  
+      this.httpClient.post(url, formData).subscribe(
+        (response) => {
+          this.snackBar.open('Image uploaded successfully!', 'Close', { duration: 3000 });
+          this.loadPropertyImages(propertyId);
+        },
+        (error) => {
+          console.error('Error uploading image', error);
+          this.snackBar.open('Failed to upload image. Please try again.', 'Close', { duration: 3000 });
+        }
+      );
+    } else {
+      this.snackBar.open('No image selected', 'Close', { duration: 3000 });
+    }
+  }
+  
+  
+  
+  
   
 }

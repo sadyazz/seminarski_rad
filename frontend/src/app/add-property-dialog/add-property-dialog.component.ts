@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { MojConfig } from '../moj-config';
@@ -12,6 +12,7 @@ export interface CreatePropertyDto {
   pricePerNight: number;
   cityID: number;
   propertyTypeID: number;
+  amenitiesIDs: number[];
   userID: number;  // Add user ID to the request
 }
 
@@ -47,6 +48,7 @@ export class AddPropertyDialogComponent implements OnInit {
   propertyTypes: PropertyType[] = [];
   amenities: Amenities[] = [];
   users: User[] = [];
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -63,18 +65,28 @@ export class AddPropertyDialogComponent implements OnInit {
       cityID: [null, Validators.required],
       propertyTypeID: [null, Validators.required],
       userID: [null, Validators.required],
+      amenities: this.fb.array([]),
     });
   }
 
   ngOnInit(): void {
-    // Load Cities
+
     this.httpClient.get<City[]>(`${MojConfig.adresa_servera}/api/City/GetAll`).subscribe(cities => {
       this.cities = cities;
     });
 
-    // Load Property Types
     this.httpClient.get<PropertyType[]>(`${MojConfig.adresa_servera}/api/PropertyType/GetAll`).subscribe(propertyTypes => {
       this.propertyTypes = propertyTypes;
+    });
+
+    this.httpClient.get<Amenities[]>(`${MojConfig.adresa_servera}/api/Amenities/GetAll`).subscribe(amenities => {
+      this.amenities = amenities;
+
+      const amenitiesFormArray = this.propertyForm.get('amenities') as FormArray;
+
+      this.amenities.forEach(() => {
+        amenitiesFormArray.push(this.fb.control(false));
+      });
     });
 
 
@@ -83,12 +95,20 @@ export class AddPropertyDialogComponent implements OnInit {
     });
   }
 
+  get amenitiesFormArray() {
+    return (this.propertyForm.get('amenities') as FormArray);
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   submit(): void {
     if (this.propertyForm.valid) {
+      const selectedAmenities = this.amenitiesFormArray.controls
+      .map((control, index) => control.value ? this.amenities[index].id : null)
+      .filter((id): id is number => id !== null);
+
       const property: CreatePropertyDto = {
         name: this.propertyForm.value.name,
         address: this.propertyForm.value.address,
@@ -97,15 +117,17 @@ export class AddPropertyDialogComponent implements OnInit {
         pricePerNight: this.propertyForm.value.pricePerNight,
         cityID: this.propertyForm.value.cityID,
         propertyTypeID: this.propertyForm.value.propertyTypeID,
-        userID: this.propertyForm.value.userID  // Send the selected userID
+        amenitiesIDs: selectedAmenities,
+        userID: this.propertyForm.value.userID,
       };
 
       console.log(property);
 
       this.httpClient.post(`${MojConfig.adresa_servera}/api/Properties/Add`, property)
         .subscribe(
-          (response) => {
+          (response: any) => {
             console.log("Property added successfully", response);
+            this.dialogRef.close(response); 
           },
           (error) => {
             console.error("Error adding property", error);
@@ -114,6 +136,13 @@ export class AddPropertyDialogComponent implements OnInit {
     }
   }
 
+  onFileSelected(event: any): void {
+    const files = event.target.files;
+    if (files) {
+      this.selectedFile = files;
+    }
+  }
 
+ 
 
 }

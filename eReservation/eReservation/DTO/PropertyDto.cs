@@ -18,5 +18,7 @@ namespace eReservation.DTO
         public List<ReviewDto> Reviews { get; set; }
         public decimal AverageRating { get; set; }
         public List<ImageDto> Images { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

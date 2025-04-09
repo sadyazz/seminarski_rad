@@ -1,8 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MojConfig } from '../moj-config';
+import { isPlatformBrowser } from '@angular/common';
+import * as L from 'leaflet';
 
 export interface CreatePropertyDto {
   name: string;
@@ -13,7 +15,9 @@ export interface CreatePropertyDto {
   cityID: number;
   propertyTypeID: number;
   amenitiesIDs: number[];
-  userID: number;  // Add user ID to the request
+  userID: number; 
+  latitude: number;
+  longitude:number;
 }
 
 
@@ -50,11 +54,15 @@ export class AddPropertyDialogComponent implements OnInit {
   users: User[] = [];
   selectedFile: File | null = null;
 
+  map!: L.Map;
+  marker!: L.Marker;
+
   constructor(
     private fb: FormBuilder,
     private httpClient: HttpClient,
     public dialogRef: MatDialogRef<AddPropertyDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.propertyForm = this.fb.group({
       name: ['', Validators.required],
@@ -66,6 +74,8 @@ export class AddPropertyDialogComponent implements OnInit {
       propertyTypeID: [null, Validators.required],
       userID: [null, Validators.required],
       amenities: this.fb.array([]),
+      latitude: [0, Validators.required],
+      longitude: [0, Validators.required]
     });
   }
 
@@ -95,6 +105,35 @@ export class AddPropertyDialogComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.initMap();  // Initialize the map only in the browser
+    }
+  }
+
+  initMap(): void {
+    const initialLat = this.propertyForm.value.latitude;
+    const initialLng = this.propertyForm.value.longitude;
+
+    this.map = L.map('map').setView([initialLat, initialLng], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+    }).addTo(this.map);
+
+    this.marker = L.marker([initialLat, initialLng], { draggable: true }).addTo(this.map);
+
+    this.marker.on('dragend', () => {
+      const { lat, lng } = this.marker.getLatLng();
+      this.propertyForm.patchValue({ latitude: lat, longitude: lng });
+    });
+
+    this.map.on('click', (e: L.LeafletMouseEvent) => {
+      const { lat, lng } = e.latlng;
+      this.marker.setLatLng(e.latlng);
+      this.propertyForm.patchValue({ latitude: lat, longitude: lng });
+    });
+  }
+
   get amenitiesFormArray() {
     return (this.propertyForm.get('amenities') as FormArray);
   }
@@ -119,9 +158,13 @@ export class AddPropertyDialogComponent implements OnInit {
         propertyTypeID: this.propertyForm.value.propertyTypeID,
         amenitiesIDs: selectedAmenities,
         userID: this.propertyForm.value.userID,
+        latitude: this.propertyForm.value.latitude,
+        longitude: this.propertyForm.value.longitude
       };
 
       console.log(property);
+
+      const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
       this.httpClient.post(`${MojConfig.adresa_servera}/api/Properties/Add`, property)
         .subscribe(

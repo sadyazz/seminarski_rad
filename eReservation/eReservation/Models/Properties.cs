@@ -36,5 +36,9 @@ namespace eReservation.Models
         public ICollection<Images> Images { get; set; } = new List<Images>();
         public List<Reviews> Reviews { get; set; }
 
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
     }
 }

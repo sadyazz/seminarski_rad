@@ -29,7 +29,9 @@ export class PropertyComponent implements OnInit {
     city: { name: '' },
     propertyType: { name: '' },
     images: [],
-    reviews: []
+    reviews: [],
+    latitude:0,
+    longitude:0
   };
   
   amenities: any[] = [];
@@ -50,7 +52,6 @@ export class PropertyComponent implements OnInit {
     5: { lat:43.34414, lng:17.80979 },
     6: { lat:43.33788, lng:17.81314 },
     7: { lat:43.34483, lng:17.81351 },
-    8: { lat:43.34426, lng:17.81096 },
   };
 
   showDownloadPdfButton = false;
@@ -79,7 +80,7 @@ export class PropertyComponent implements OnInit {
   map!: any;
 
   ngAfterViewInit(): void {
-    if (typeof window !== 'undefined' && isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       import('leaflet').then((leaflet) => {
         setTimeout(() => {
           this.initializeMap(leaflet);
@@ -91,38 +92,42 @@ export class PropertyComponent implements OnInit {
     }
   }
   
-  initializeMap(leaflet: any): void {
-    const { Map, tileLayer, icon, marker, latLng } = leaflet;
-
-    const propertyCoords = this.propertyCoordinates[this.propertyId];
-    if (!propertyCoords) {
-      console.error('No coordinates found for this property');
-      return;
-    }
-    
-    const location = latLng(propertyCoords.lat, propertyCoords.lng);
-    
-
-    this.map = new Map('map', {
-      zoomControl: true,
-    }).setView(location, 16);
-    
-    tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(this.map);
+  initializeMap(location: any): void {
+    import('leaflet').then((leaflet) => {
+      const { Map, tileLayer, icon, marker, latLng } = leaflet;
   
-    const redIcon = icon({
-      iconUrl: 'assets/img/gps.png',
-      iconSize: [32, 32],
+      this.map = new Map('map', {
+        zoomControl: true,
+      }).setView(location, 16);
+      
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(this.map);
+    
+      const redIcon = icon({
+        iconUrl: 'assets/img/gps.png',
+        iconSize: [32, 32],
+      });
+      
+      marker(location, { icon: redIcon }).addTo(this.map);
+    }).catch(error => {
+      console.error('Error loading Leaflet:', error);
     });
-    
-    this.mapMarkers=[];
-
-    marker(location, { icon: redIcon }).addTo(this.map);
-    
-    setTimeout(() => {
-      this.map.invalidateSize();
-    }, 500);
+  }
+  
+  getPropertyCoordinates(propertyId: number): void {
+    const url = `${MojConfig.adresa_servera}/GetCoordinates?id=${propertyId}`;
+    this.httpKlijent.get<any>(url).subscribe(
+      data => {
+        const lat = data.latitude;
+        const lon = data.longitude;
+        const location = latLng(lat, lon);
+        this.initializeMap(location);
+      },
+      error => {
+        console.error('Error fetching property coordinates', error);
+      }
+    );
   }
   
   addMarker(location: any, redIcon: any): void {
@@ -169,10 +174,7 @@ export class PropertyComponent implements OnInit {
       const lat = data.latitude;
       const lon = data.longitude;
       const location = latLng(lat, lon);
-      const redIcon = icon({
-        iconUrl: 'assets/img/gps.png',
-        iconSize: [32, 32],
-      });
+      this.initializeMap(location);
 
 
     }, error => {

@@ -40,6 +40,7 @@ import { AddPropertyDialogComponent } from './add-property-dialog/add-property-d
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { UpdateCoordinatesDialogComponent } from './update-coordinates-dialog/update-coordinates-dialog.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     ReviewComponentComponent,
     ConfirmationDialogComponent,
     AdminPageComponent,
-    AddPropertyDialogComponent
+    AddPropertyDialogComponent,
+    UpdateCoordinatesDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +90,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     ReactiveFormsModule,
     MatOption,
     MatSelectModule,
-    LeafletModule
+    LeafletModule,
+    FormsModule,
   ],
   providers: [
     //provideClientHydration()

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Quartz.Impl;
 using eReservation.Data;
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);

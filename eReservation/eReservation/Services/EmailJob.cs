@@ -66,7 +66,7 @@ public class EmailJob : IJob
             try
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, false);
-                await client.AuthenticateAsync("ereservation149@gmail.com", "");
+                await client.AuthenticateAsync("ereservation149@gmail.com", "lcnl pqou qwve ricq");
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
                 Console.WriteLine($"Email sent successfully to {user.Korisnik.Email} at: {DateTime.Now}");

@@ -16,6 +16,13 @@ export interface PropertiesGetAllResponse {
   propertiesAmenities: PropertiesAmenity[]
   wishlist: Wishlist[]
   images: PropertyImage[];
+  latitude:number,
+  longitude:number
+}
+
+export interface CoordinateDto {
+  latitude: number;
+  longitude: number;
 }
 
 export interface PropertyImage {

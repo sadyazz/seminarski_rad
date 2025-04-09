@@ -36,6 +36,12 @@
               </button>
             </div>
 
+            <button mat-stroked-button class="update-coordinates-button" (click)="toggleUpdateCoordinates(property.id)">
+              <mat-icon>location_on</mat-icon>
+              Edit Coordinates
+            </button>
+
+
             <button mat-icon-button class="delete-button" (click)="deleteProperty(property.id)">
               <mat-icon color="warn">delete</mat-icon>
             </button>

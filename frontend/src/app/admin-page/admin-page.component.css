@@ -115,4 +115,29 @@
   margin-top: 10px;
 }
 
+.update-coordinates-button {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1976d2;
+  border-color: #1976d2;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: auto;
+  white-space: nowrap;
+  text-transform: none;
+}
+
+.update-coordinates-button:hover {
+  background-color: #1976d2;
+  color: white;
+  border-color: #1976d2;
+}
+
+.update-coordinates-button mat-icon {
+  font-size: 18px;
+}
 

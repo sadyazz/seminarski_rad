@@ -67,8 +67,23 @@
     </div>
   </div>
 
+  <mat-form-field>
+    <mat-label>Latitude</mat-label>
+    <input matInput formControlName="latitude" type="number">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Longitude</mat-label>
+    <input matInput formControlName="longitude" type="number">
+  </mat-form-field>
+
+  <div class="map-container">
+    <div id="map" style="height: 200px;"></div>
+  </div>
+  
+
   <mat-dialog-actions align="end">
-    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onNoClick()">Close</button>
     <button mat-button [disabled]="propertyForm.invalid" (click)="submit()">Add</button>
   </mat-dialog-actions>
 

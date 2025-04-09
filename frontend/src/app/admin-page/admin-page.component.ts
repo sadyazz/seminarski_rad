@@ -9,6 +9,9 @@ import { AddPropertyDialogComponent } from '../add-property-dialog/add-property-
 import { MatDialog } from '@angular/material/dialog';
 import { CreatePropertyDto } from '../add-property-dialog/add-property-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as L from 'leaflet';
+import { UpdateCoordinatesDialogComponent } from '../update-coordinates-dialog/update-coordinates-dialog.component';
+import { CoordinateDto } from '../home/properties-getall-response';
 
 @Component({
   selector: 'admin-page',
@@ -23,6 +26,9 @@ export class AdminPageComponent implements OnInit {
   showProperties: boolean = false;
   showUsers: boolean = false;
 
+  private coordinateEditorVisibility: { [key: number]: boolean } = {};
+  private mapInstances: { [key: number]: any } = {};
+
   property: any = {
     name: '',
     adress: '',
@@ -32,7 +38,9 @@ export class AdminPageComponent implements OnInit {
     city: { name: '' },
     propertyType: { name: '' },
     images: [],
-    reviews: []
+    reviews: [],
+    latitude:null,
+    longitude:null,
   };
 
   constructor(
@@ -50,6 +58,12 @@ export class AdminPageComponent implements OnInit {
       this.isAdmin = user.isAdmin;
     } else {
       this.router.navigate(['/login']);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.properties.length > 0) {
+      this.initializeMapForProperty(this.properties[0].id, this.properties[0].latitude, this.properties[0].longitude);
     }
   }
 
@@ -79,6 +93,85 @@ export class AdminPageComponent implements OnInit {
     );
   }
 
+  toggleUpdateCoordinates(propertyId: number): void {
+    const property = this.properties.find(p => p.id === propertyId);
+    
+    if (property) {
+      this.openUpdateCoordinatesDialog(property);
+    }
+  }
+
+  isCoordinateEditorVisible(propertyId: number): boolean {
+    return this.coordinateEditorVisibility[propertyId] || false;
+  }
+
+  initializeMapForProperty(propertyId: number, latitude: number, longitude: number): void {
+    const mapElement = document.getElementById(`map-${propertyId}`);
+    if (!mapElement) return;
+
+    if (this.mapInstances[propertyId]) {
+      this.mapInstances[propertyId].remove();
+    }
+
+    const map = L.map(mapElement).setView([latitude, longitude], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([latitude, longitude]).addTo(map);
+
+    this.mapInstances[propertyId] = map;
+  }
+
+  openUpdateCoordinatesDialog(property: PropertiesGetAllResponse): void {
+    const url = `${MojConfig.adresa_servera}/api/Properties/GetPropertyCoordinates/GetPropertyCoordinates?propertyId=${property.id}`;
+  
+    this.httpClient.get<CoordinateDto>(url).subscribe(
+      (response) => {
+        const dialogRef = this.dialog.open(UpdateCoordinatesDialogComponent, {
+          width: '400px',
+          data: {
+            latitude: response.latitude,
+            longitude: response.longitude
+          }
+        });
+        
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this.updateCoordinates(property, result.latitude, result.longitude);
+          }
+        });
+      },
+      (error) => {
+        console.error('Error fetching property coordinates:', error);
+        this.snackBar.open('Failed to fetch coordinates. Please try again.', 'Close', { duration: 3000 });
+      }
+    );
+  }
+  
+
+  updateCoordinates(property: PropertiesGetAllResponse, latitude: number, longitude: number): void {
+    const updatedProperty = {
+      id: property.id,
+      latitude: latitude,
+      longitude: longitude
+    };
+  
+    const url = `${MojConfig.adresa_servera}/api/Properties/UpdateCoordinates/${property.id}/update-coordinates`;
+    this.httpClient.put(url, updatedProperty).subscribe(
+      () => {
+        this.snackBar.open('Coordinates updated successfully!', 'Close', { duration: 3000 });
+        this.getProperties();
+      },
+      (error) => {
+        console.error('Error updating coordinates:', error);
+        this.snackBar.open('Failed to update coordinates. Please try again.', 'Close', { duration: 3000 });
+      }
+    );
+  }
+  
+
   onPropertiesClick() {
     this.showUsers = false;
     this.showProperties = true; 
@@ -100,9 +193,11 @@ export class AdminPageComponent implements OnInit {
       width: '400px'
     });
 
-    dialogRef.afterClosed().subscribe((result: CreatePropertyDto | undefined) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.addProperty(result);
+        this.showProperties = true;
+        this.getProperties();
+        this.snackBar.open('Property added successfully!', 'Close', { duration: 3000 });
       }
     });
   }
@@ -184,6 +279,7 @@ export class AdminPageComponent implements OnInit {
         (response) => {
           this.snackBar.open('Image uploaded successfully!', 'Close', { duration: 3000 });
           this.loadPropertyImages(propertyId);
+          this.getProperties();
         },
         (error) => {
           console.error('Error uploading image', error);
@@ -194,8 +290,6 @@ export class AdminPageComponent implements OnInit {
       this.snackBar.open('No image selected', 'Close', { duration: 3000 });
     }
   }
-  
-  
   
   
   

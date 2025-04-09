@@ -89,6 +89,8 @@ namespace eReservation.Controllers
                     CityName = property.City != null ? property.City.Name : "Unknown",
                     CountryName = property.City != null && property.City.Country != null ? property.City.Country.Name : "Unknown",
                     PropertyTypeID = property.PropertyTypeID,
+                    Latitude = property.Latitude,
+                    Longitude = property.Longitude,
                     PropertyTypeName = property.PropertyType != null ? property.PropertyType.Name : "Unknown",
                     Reviews = property.Reviews.Select(r => new ReviewDto
                     {
@@ -113,8 +115,35 @@ namespace eReservation.Controllers
             }
             catch (Exception ex)
             {
-                // Log exception here
                 return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetPropertyCoordinates")]
+        public ActionResult<CoordinateDto> GetPropertyCoordinates(int propertyId)
+        {
+            try
+            {
+                var property = _db.Properties
+                    .FirstOrDefault(p => p.ID == propertyId);
+
+                if (property == null)
+                {
+                    return NotFound("Property not found.");
+                }
+
+                var coordinatesDto = new CoordinateDto
+                {
+                    Latitude = property.Latitude,
+                    Longitude = property.Longitude
+                };
+
+                return Ok(coordinatesDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
 
@@ -154,6 +183,8 @@ namespace eReservation.Controllers
                 CityID = propertyDto.CityID,
                 PropertyTypeID = propertyDto.PropertyTypeID,
                 UserID = propertyDto.UserID,
+                Latitude = propertyDto.Latitude,
+                Longitude = propertyDto.Longitude,
             };
 
             if (property.Name == null || property.Adress == null)
@@ -172,15 +203,13 @@ namespace eReservation.Controllers
                     .Select(a => a.ID)
                     .ToList();
 
-                // Check if all provided Amenity IDs exist in the database
                 if (existingAmenities.Count != propertyDto.AmenitiesIDs.Count)
                 {
                     return BadRequest("Some of the provided Amenity IDs are invalid.");
                 }
 
-                // Create the list of PropertiesAmenities to add
                 var propertyAmenities = propertyDto.AmenitiesIDs
-                    .Where(amenityId => existingAmenities.Contains(amenityId))  // Filter valid amenities
+                    .Where(amenityId => existingAmenities.Contains(amenityId))
                     .Select(amenityId => new PropertiesAmenities
                     {
                         PropertiesID = property.ID,
@@ -188,16 +217,46 @@ namespace eReservation.Controllers
                     })
                     .ToList();
 
-                // Add the associations in bulk
                 if (propertyAmenities.Any())
                 {
                     _db.PropertiesAmenities.AddRange(propertyAmenities);
-                    _db.SaveChanges();  // Save the associations
+                    _db.SaveChanges();
                 }
             }
 
-            return Ok(property);
+            var response = new PropertyDto 
+            { Address = property.Adress,
+              Name = property.Name,
+              NumberOfRooms = property.NumberOfRooms,
+              NumberOfBathrooms = property.NumberOfBathrooms,
+              PricePerNight = property.PricePerNight,
+              CityID = property.CityID,
+              PropertyTypeID = property.PropertyTypeID,
+              Latitude = property.Latitude,
+              Longitude = property.Longitude,
+            };
+
+            return Ok(response);
         }
+
+        [HttpPut("{id}/update-coordinates")]
+        public ActionResult<Properties> UpdateCoordinates(int id, [FromBody] UpdateCoordinateDto updatedCoordinates)
+        {
+            var existingProperty = _db.Properties.FirstOrDefault(p => p.ID == id);
+            if (existingProperty == null)
+            {
+                return NotFound("Property not found.");
+            }
+
+            existingProperty.Latitude = updatedCoordinates.Latitude;
+            existingProperty.Longitude = updatedCoordinates.Longitude;
+
+            _db.SaveChanges();
+
+            return Ok(existingProperty);
+        }
+
+
 
 
         [HttpPut("{id}")]
